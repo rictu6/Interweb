@@ -2,21 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AllotmentClass;
+use App\Models\BudgetType;
+use App\Models\FundCluster;
+use App\Models\FundSource;
 use App\Models\LCE;
+use App\Models\ORSHeader;
+use App\Models\PAP;
+use App\Models\Payee;
+use App\Models\ResponsibilityCenter;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\PatientRequest;
 use App\Http\Requests\Admin\DoctorRequest;
 use App\Http\Requests\Admin\DivisionRequest;
-use App\Models\Patient;
-use App\Models\Doctor;
-use App\Models\Group;
-use App\Models\Option;
+
+
 use App\Models\Role;
 use App\Models\Nationality;
 use App\Models\User;
-use App\Models\Test;
-use App\Models\Culture;
-use App\Models\Antibiotic;
+
+
 use App\Models\Division;
 use App\Models\Folder;
 use App\Models\File;
@@ -31,15 +36,14 @@ use App\Models\EmpStatus;
 use App\Models\Muncit;
 use App\Models\Permission;
 use App\Models\Chat;
-use App\Models\Visit;
+
 use App\Models\Branch;
-use App\Models\Contract;
-use App\Models\Expense;
+
+
 use App\Models\Language;
-use App\Models\TestOption;
-use App\Models\ExpenseCategory;
+
 use Yajra\DataTables\Html\Button;
-use App\Mail\PatientCode;
+
 use DataTables;
 use Mail;
 use Str;
@@ -68,7 +72,7 @@ class AjaxController extends Controller
         return response()->json($lce);
     }
     /**
-    * get patient by name select2
+    * get lce by name select2
     *
     * @access public
     * @var  @Request $request
@@ -87,6 +91,136 @@ class AjaxController extends Controller
         return response()->json($lces);
 
     }
+    //payee
+    public function get_payee_by_name(Request $request)
+    {
+        if(isset($request->term))
+        {
+
+            $payees=Payee::where('name','like','%'.$request->term.'%')->get();
+        }
+        else{
+            $payees = Payee::take(20)->get();
+        }
+
+        return response()->json($payees);
+
+    }
+    //allotment class
+    public function get_alot_by_desc(Request $request)
+    {
+        if(isset($request->term))
+        {
+
+            $allotmentclasses=AllotmentClass::where('description','like','%'.$request->term.'%' && 'uacs_classification_id','=',5)->get();
+        }
+        else{
+            $allotmentclasses = AllotmentClass::where('uacs_classification_id','=',5)->get();
+        }
+
+        return response()->json($allotmentclasses);
+
+    }
+    //pap
+    public function load_paps_auth_fundsource_chargeto(Request $request)
+    {
+
+    if(isset($request->budget_type))
+    {
+       // $allotmentclasses=AllotmentClass::where('description','like','%'.$request->term.'%' && 'uacs_classification_id','=',5)->get();
+        $paps=PAP::where('budget_type','=',$request->budget_type && charge_to)->get();
+
+    }
+
+    return response()->json($paps);
+}
+
+//pap by fundsource
+
+public function get_paps_by_fundsource(Request $request)
+{
+
+if(isset($request->fund_source_id))
+{
+   // $allotmentclasses=AllotmentClass::where('description','like','%'.$request->term.'%' && 'uacs_classification_id','=',5)->get();
+    $paps=PAP::where('fund_source_id','=',$request->fund_source_id )->get();
+
+}
+
+return response()->json($paps);
+}
+    //get_fund_cluster_by_desc
+    public function get_fund_cluster_by_desc(Request $request)
+    {
+        if(isset($request->term))
+        {
+
+            $fundclusters=FundCluster::where('description','like','%'.$request->term.'%')->get();
+        }
+        else{
+            $fundclusters = FundCluster::take(20)->get();
+        }
+        return response()->json($fundclusters);
+    }
+    //authorization budget type
+    public function get_budget_type_by_desc(Request $request)
+    {
+        if(isset($request->term))
+        {
+            $budgettypes=BudgetType::where('description','like','%'.$request->term.'%')->get();
+        }
+        else{
+            $budgettypes = BudgetType::take(20)->get();
+        }
+        return response()->json($budgettypes);
+    }
+    //get authorization budget type
+    public function get_authorizations(Request $request)
+    {
+        if(isset($request->term))
+        {
+            $budget_types=BudgetType::where('description','like','%'.$request->term.'%')->get();
+        }
+        else{
+            $budget_types=BudgetType::All();
+        }
+
+        return response()->json($budget_types);
+    }
+
+//get fundsource
+public function get_fundsource_by_auth(Request $request)
+{
+    if(isset($request->budget_type))
+    {
+
+        $fundsources=FundSource::where('budget_type','=',$request->budget_type)->get();
+
+    }
+
+    return response()->json($fundsources);
+}
+//get responsibility center
+public function get_res_center(Request $request)
+{
+    if(isset($request->term))
+    {
+        $rescenter=ResponsibilityCenter::where('description','like','%'.$request->term.'%')->get();
+    }
+    else{
+        $rescenter=ResponsibilityCenter::All();
+    }
+
+    return response()->json($rescenter);
+}
+    //get ors
+    public function get_orsheaders(Request $request)
+    {
+
+        $ors=ORSHeader::all();
+
+        return response()->json($ors);
+    }
     public function get_muncits(Request $request)
     {
         if(isset($request->term))
@@ -100,13 +234,7 @@ class AjaxController extends Controller
         return response()->json($muncits);
     }
 
-    public function get_muncit_by_prov(Request $request)
-    {
 
-        $municipalities=Muncit::where('prov_code','like','%'.$request->term.'%')->get();
-
-        return response()->json($municipalities);
-    }
 
     public function get_office_by_desc(Request $request)
     {
@@ -255,9 +383,7 @@ class AjaxController extends Controller
         else{
             $muncits=Muncit::All();
         }
-
         return response()->json($muncits);
-
     }
     public function get_muncits_by_prov(Request $request)
     {//wala sya ng gana pag omit ko muncit::all kay didti sya ga dirirtso after ka if condition
@@ -343,25 +469,7 @@ class AjaxController extends Controller
         return response()->json($positions);
 
     }
-    /**
-    * get patient by name select2
-    *
-    * @access public
-    * @var  @Request $request
-    */
-    public function get_patient_by_name(Request $request)
-    {
-        if(isset($request->term))
-        {
-            $patients=Patient::where('name','like','%'.$request->term.'%')->get();
-        }
-        else{
-            $patients=Patient::take(20)->get();
-        }
 
-        return response()->json($patients);
-
-    }
     public function get_weekday_by_name(Request $request)
     {
         if(isset($request->term))
@@ -413,85 +521,6 @@ class AjaxController extends Controller
 
         return response()->json($folders);
 
-    }
-
-
-    /**
-    * create patient
-    *
-    * @access public
-    * @var  @Request $request
-    */
-    public function create_patient(PatientRequest $request)
-    {
-        $request['code']=patient_code();
-
-        $patient=Patient::create($request->except('_token'));
-
-        send_notification('patient_code',$patient);
-
-        return response()->json($patient);
-    }
-
-    /**
-    * get doctors select2
-    *
-    * @access public
-    * @var  @Request $request
-    */
-    public function get_doctors(Request $request)
-    {
-        if(isset($request->term))
-        {
-            $doctors=Doctor::where('name','like','%'.$request->term.'%')->get();
-        }
-        else{
-            $doctors=Doctor::take(20)->get();
-        }
-
-        return response()->json($doctors);
-    }
-
-    /**
-    * get tests select2
-    *
-    * @access public
-    * @var  @Request $request
-    */
-    public function get_tests(Request $request)
-    {
-        if(isset($request->term))
-        {
-            $tests=Test::where(function($q){
-              return $q->where('parent_id',0)->orWhere('separated',true);
-            })->where('name','like','%'.$request->term.'%')->get();
-        }
-        else{
-            $tests=Test::where(function($q){
-                return $q->where('parent_id',0)->orWhere('separated',true);
-              })->take(20)->get();
-        }
-
-        return response()->json($tests);
-    }
-
-    /**
-    * get cultures select2
-    *
-    * @access public
-    * @var  @Request $request
-    */
-    public function get_cultures(Request $request)
-    {
-        if(isset($request->term))
-        {
-            $cultures=Culture::where('name','like','%'.$request->term.'%')->get();
-        }
-        else{
-            $cultures=Culture::All();
-        }
-
-        return response()->json($cultures);
     }
 
 
@@ -695,28 +724,6 @@ class AjaxController extends Controller
         return response()->json($provinces);
     }
 
-    /**
-    * create doctor
-    *
-    * @access public
-    * @var  @Request $request
-    */
-
-    public function create_doctor(Request $request)
-    {
-        $request->validate([
-            'name'=>[
-                'required',
-                Rule::unique('doctors')->whereNull('deleted_at')
-            ],
-        ]);
-
-        $request['code']=doctor_code();
-
-        $doctor=Doctor::create($request->except('_token'));
-
-        return response()->json($doctor);
-    }
     public function create_filecategory(Request $request)
     {
         $request->validate([
@@ -992,23 +999,6 @@ class AjaxController extends Controller
     }
 
 
-    /**
-    * Change visit status
-    *
-    * @access public
-    * @var  @Request $request
-    */
-    public function change_visit_status($id)
-    {
-        $visit=Visit::find($id);
-
-        $visit->update([
-            'read'=>true,
-            'status'=>($visit['status'])?false:true,
-        ]);
-
-        return response()->json(__('Visit status updated successfully'));
-    }
 
     /**
     * Change lang status
@@ -1103,74 +1093,6 @@ class AjaxController extends Controller
         return response()->json($chats);
     }
 
-    /**
-    * get new visits
-    *
-    * @access public
-    * @var  @Request $request
-    */
-    public function get_new_visits()
-    {
-        $visits=Visit::where('read',false)->orderBy('id','desc')->with('patient')->get();
-
-        return response()->json($visits);
-
-    }
-
-    /**
-    * get current patient
-    *
-    * @access public
-    * @var  @Request $request
-    */
-    public function get_current_patient()
-    {
-        $patient=Patient::where('id',auth()->guard('patient')->user()['id'])->first();
-
-        return response()->json($patient);
-    }
-
-
-    /**
-    * get patient
-    *
-    * @access public
-    * @var  @Request $request
-    */
-    public function get_patient(Request $request)
-    {
-        $patient=Patient::find($request->id);
-
-        return response()->json($patient);
-    }
-
-
-    /**
-    * delete test
-    *
-    * @access public
-    * @var  @Request $request
-    */
-    public function delete_test($test_id)
-    {
-        $test=Test::find($test_id);
-
-        if(isset($test))
-        {
-            $test->options()->delete();
-
-            $test->delete();
-        }
-
-        return response()->json('success');
-    }
-
-    public function delete_option($option_id)
-    {
-        TestOption::where('id',$option_id)->delete();
-
-        return response()->json('success');
-    }
 
 
 }

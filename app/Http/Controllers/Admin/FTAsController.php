@@ -122,16 +122,7 @@ class FTAsController extends Controller
         if($request['filter_status']!=null) {
             $model->where('status',$request['filter_status']);
         }
-        // if($request['filter_date']!=null) {
-        //     //format date
-        //     $date=explode('-',$request['filter_date']);
-        //     $from=date('Y-m-d',strtotime($date[0]));
-        //     $to=date('Y-m-d 23:59:59',strtotime($date[1]));
 
-        //     //select groups of date between
-        //     ($from==$to)?$model->whereDate('dateto',$from):$model->whereRaw("DATE_FORMAT(dateto, '%Y-%m-%d %H:%i:%s') BETWEEN ? AND ?", [$from, $to]);
-
-        // }
         if ($request->has('filter_date')) {
             $dateRange = explode('-', $request->input('filter_date'));
             $startDate = date('Y-m-d', strtotime($dateRange[0]));
@@ -164,47 +155,6 @@ class FTAsController extends Controller
     }
 }
 
-    // public function ajax(Request $request)
-    // {
-    //     try {
-    //         $model = FTA::query()->with('local_chief_exec.province','local_chief_exec.muncit');//('l_c_e');//('LCE.Province','LCE.Muncit');
-
-    //         if($request['filter_status']!=null)
-    //         {
-    //             $model->where('status',$request['filter_status']);
-    //         }
-
-
-    //         if($request['filter_date']!=null)
-    //         {
-    //             //format date
-    //             $date=explode('-',$request['filter_date']);
-    //             $from=date('Y-m-d',strtotime($date[0]));
-    //             $to=date('Y-m-d 23:59:59',strtotime($date[1]));
-
-    //             //select groups of date between
-    //             ($from==$to)?$model->whereDate('dateto',$from):$model->whereBetween('dateto',[$from,$to]);
-    //         }
-
-    //     return DataTables::eloquent($model)
-
-    //     ->editColumn('status',function($fta){
-    //        return view('admin.ftas._status',compact('fta'));
-    //     })
-    //     ->editColumn('frequency_of_travel',function($fta){
-    //         return view('admin.ftas._frequency_of_travel',compact('fta'));
-    //     })
-    //     ->addColumn('action',function($fta){
-    //         return view('admin.ftas._action',compact('fta'));
-    //     })
-    //     ->toJson();
-
-    // } catch (\Exception $th) {
-    //         dd($th->getMessage());
-    // }
-
-
-    // }
 
     /**
      * Show the form for creating a new resource.

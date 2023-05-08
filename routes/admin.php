@@ -54,7 +54,12 @@ Route::resource('ftas','FTAsController');
 Route::get('get_ftas','FTAsController@ajax')->name('get_ftas');
 Route::get('get_fta_list','FTAsController@fta_list')->name('fta_list');
 
-
+//ORS
+Route::resource('orsheaders','ORSHeaderController');
+Route::get('get_orsheaders','ORSHeaderController@ajax')->name('get_orsheaders');
+Route::get('get_orsheader_list','ORSHeaderController@orsheader_list')->name('orsheader_list');
+//Sub Allotment
+Route::resource('suballotments','SubAllotmentController');
 
 Route::resource('menus','MenusController');
 Route::get('get_contactus','MenusController@contactus')->name('contactus');
@@ -148,36 +153,14 @@ Route::get('get_keyofficials','MenusController@keyofficials')->name('keyofficial
     Route::resource('empstatuss','EmpStatussController');
     Route::get('get_empstatuss','EmpStatussController@ajax')->name('get_empstatuss');
 
-    //patients
-    Route::resource('patients','PatientsController');
-    Route::get('get_patients','PatientsController@ajax')->name('get_patients');
-    Route::get('patients_export','PatientsController@export')->name('patients.export');
-    Route::get('patients_download_template','PatientsController@download_template')->name('patients.download_template');
-    Route::post('patients_import','PatientsController@import')->name('patients.import');
-
-    //cultures
-    Route::resource('cultures','CulturesController');
-    Route::get('get_cultures','CulturesController@ajax')->name('get_cultures');//datatable
-
-    //culture options
-    Route::resource('culture_options','CultureOptionsController');
-    Route::get('get_culture_options','CultureOptionsController@ajax')->name('culture_options.ajax');
-
-    //groups
-    Route::resource('groups','GroupsController');
-    Route::post('groups/delete_analysis/{id}','GroupsController@delete_analysis');
-    Route::get('get_groups','GroupsController@ajax')->name('get_groups');
-    Route::post('groups/print_barcode/{group_id}','GroupsController@print_barcode')->name('groups.print_barcode');
 
 
 
 
-    //doctors
-    Route::resource('doctors','DoctorsController');
-    Route::get('get_doctors','DoctorsController@ajax')->name('get_doctors');
-    Route::get('doctors_export','DoctorsController@export')->name('doctors.export');
-    Route::get('doctors_download_template','DoctorsController@download_template')->name('doctors.download_template');
-    Route::post('doctors_import','DoctorsController@import')->name('doctors.import');
+
+
+
+
 
     //reports
     Route::resource('reports','ReportsController');
@@ -191,23 +174,7 @@ Route::get('get_keyofficials','MenusController@keyofficials')->name('keyofficial
     Route::get('get_roles','RolesController@ajax')->name('get_roles');
 
 
-    //tests price list
-    Route::get('prices/tests','PricesController@tests')->name('prices.tests');
-    Route::post('prices/tests','PricesController@tests_submit')->name('prices.tests_submit');
-    Route::get('tests_prices_export','PricesController@tests_prices_export')->name('prices.tests_prices_export');
-    Route::post('tests_prices_import','PricesController@tests_prices_import')->name('prices.tests_prices_import');
 
-    //cultures price list
-    Route::get('prices/cultures','PricesController@cultures')->name('prices.cultures');
-    Route::post('prices/cultures','PricesController@cultures_submit')->name('prices.cultures_submit');
-    Route::get('cultures_prices_export','PricesController@cultures_prices_export')->name('prices.cultures_prices_export');
-    Route::post('cultures_prices_import','PricesController@cultures_prices_import')->name('prices.cultures_prices_import');
-
-    //accounting reports
-    Route::get('accounting','AccountingController@index')->name('accounting.index');
-    Route::get('generate_report','AccountingController@generate_report')->name('accounting.generate_report');
-    Route::get('doctor_report','AccountingController@doctor_report')->name('accounting.doctor_report');
-    Route::get('generate_doctor_report','AccountingController@generate_doctor_report')->name('accounting.generate_doctor_report');
 
     //chat
     Route::get('chat','ChatController@index')->name('chat.index');

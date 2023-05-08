@@ -57,49 +57,7 @@
         </li>
         @endcan
 
-        @can('view_test')
-        <li class="nav-item">
-            <a href="{{route('admin.tests.index')}}" class="nav-link" id="tests">
-                <i class="nav-icon fas fa-flask"></i>
-                <p>
-                    {{__('Tests')}}
-                </p>
-            </a>
-        </li>
-        @endcan
 
-        @can('view_culture')
-        <li class="nav-item">
-            <a href="{{route('admin.cultures.index')}}" class="nav-link" id="cultures">
-                <i class="nav-icon fas fa-vial"></i>
-                <p>
-                    {{__('Cultures')}}
-                </p>
-            </a>
-        </li>
-        @endcan
-
-        @can('view_culture_option')
-        <li class="nav-item">
-            <a href="{{route('admin.culture_options.index')}}" class="nav-link" id="culture_options">
-                <i class="nav-icon fas fa-vial"></i>
-                <p>
-                    {{__('Culture options')}}
-                </p>
-            </a>
-        </li>
-        @endcan
-
-        @can('view_antibiotic')
-        <li class="nav-item">
-            <a href="{{route('admin.antibiotics.index')}}" class="nav-link" id="antibiotics">
-                <i class="nav-icon fas fa-capsules"></i>
-                <p>
-                    {{__('Antibiotics')}}
-                </p>
-            </a>
-        </li>
-        @endcan
         @canany(['view_hrmis','view_user','view_fta','view_legal'])
         <li class="nav-item has-treeview" id="users_roles">
             <a href="#" class="nav-link" id="users_roles_link">
@@ -115,14 +73,14 @@
                 <li class="nav-item">
                     <a href="{{route('admin.users.index')}}" class="nav-link" id="users">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>{{__('USER EMPLOYEE')}}</p>
+                        <p>{{__('USER MANAGEMENT')}}</p>
                     </a>
                 </li>
                 @endcan
 
                 @can('view_hrmis')
                 <li class="nav-item">
-                   
+
                         <a href="http://hrmis.region6.dilg.gov.ph" target="_blank" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>{{__('HRMIS')}}
@@ -133,7 +91,7 @@
 
                 </li>
                 @endcan
-              
+
                 @can('view_fta')
                 <li class="nav-item">
                     <a href="{{route('admin.ftas.index')}}" class="nav-link" id="ftas">
@@ -149,6 +107,15 @@
                     <a href="{{route('admin.files.index')}}" class="nav-link" id="legalopinion">
                         <i class="far fa-circle nav-icon"></i>
                         <p>{{__('LEGAL OPINION')}}
+                        </p>
+                    </a>
+                </li>
+                @endcan
+                @can('view_orsheader')
+                <li class="nav-item">
+                    <a href="{{route('admin.orsheaders.index')}}" class="nav-link" id="orsheaders">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{__('FUND DISBURSEMENT MONITORING SYSTEM')}}
                         </p>
                     </a>
                 </li>
@@ -193,6 +160,7 @@
                             </a>
                         </li>
                         @endcan
+
                     </ul>
                 </li>
                 @endcan
@@ -581,7 +549,7 @@
                 </p>
             </a>
 
-         
+
         </li> --}}
 
 
