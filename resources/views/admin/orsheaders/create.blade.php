@@ -61,90 +61,103 @@
 @endsection
 @section('scripts')
 <script>
-//components
+    //components
 
-$('.add_component').on('click', function() {
-    count++;
-    $('.components .items').append(`
-   <tr id="component_${count}" num="${count}">
-      <td>
+    $('.add_component').on('click', function() {
+        count++;
+        $('.components .items').append(`
+       <tr id="component_${count}" num="${count}">
+          <td>
 
-        <div class="form-group">
-            <label for="res_center_id">{{__('Responsibility Center')}}</label>
-                                            <select class="form-control" name="component[${count}][responsibility_center]"
-                                                id="responsibility_center">
-                                                @if(isset($ors)&&isset($ors['orsdetails']))
-                                                <option value="{{$ors['orsdetails']['responsibilitycenter']}}" selected>
-                                                    {{$ors['orsdetails']['responsibilitycenter']['code']}} -
-                                                    {{$ors['orsdetails']['responsibilitycenter']['description']}}
-                                                </option>
-                                                @endif
-                                            </select>
-      </td>
+            <div class="form-group">
 
-      <td>
-        <select   name="component[${count}][charge_to]" id="charge_to"
-        class="form-control">
-        <option value="">Charge to</option>
-        <option value="1">Allotment</option>
-        <option value="2">Sub-Allotment</option>
-        </select>
-      </td>
+                                                <select class="form-control" name="component[${count}][responsibility_center]"
+                                                    id="responsibility_center">
+                                                    @if(isset($ors)&&isset($ors['orsdetails']))
+                                                    <option value="{{$ors['orsdetails']['responsibilitycenter']}}" selected>
+                                                        {{$ors['orsdetails']['responsibilitycenter']['code']}} -
+                                                        {{$ors['orsdetails']['responsibilitycenter']['description']}}
+                                                    </option>
+                                                    @endif
+                                                </select>
+          </td>
 
-      <td>
-           <div class="form-group">
-            <label for="ORSDetails[0][pap_id]">{{__('PAP')}}</label>
-                                            <select class="form-control" name="component[${count}][pap_id]" id="pap_id">
-                                                @if(isset($ors)&&isset($ors['fundsource']))
-                                                <option value="{{$ors['orsdetails']['pap_id']}}" selected>
-                                                    {{$ors['orsdetails']['pap']['code']}} -
-                                                    {{$ors['orsdetails']['pap']['description']}}
-                                                </option>
-                                                @endif
-                                            </select>
-           </div>
-      </td>
-    <td>
-      <div class="form-group">
+          <td>
+            <select   name="component[${count}][charge_to]" id="charge_to"
+            class="form-control">
+            <option value="">Charge to</option>
+            <option value="1">Allotment</option>
+            <option value="2">Sub-Allotment</option>
+            </select>
+          </td>
 
-       <input type="text" class="form-control" name="component[${count}][sub_allotment]" placeholder="{{__('Sub-Allotment')}}"  required>
-        </div>
-    </td>
+          <td>
+               <div class="form-group">
+
+                                                <select class="form-control" name="component[${count}][pap_id]" id="pap_id">
+                                                    @if(isset($ors)&&isset($ors['fundsource']))
+                                                    <option value="{{$ors['orsdetails']['pap_id']}}" selected>
+                                                        {{$ors['orsdetails']['pap']['code']}} -
+                                                        {{$ors['orsdetails']['pap']['description']}}
+                                                    </option>
+                                                    @endif
+                                                </select>
+               </div>
+          </td>
+
         <td>
-           <div class="form-group">
-            <label for="ORSDetails[0][pap_id]">{{__('UACS')}}</label>
-                                            <select class="form-control" name="component[${count}][uacs_subobject_code]" id="pap_id">
-                                                @if(isset($ors)&&isset($ors['fundsource']))
-                                                <option value="{{$ors['orsdetails']['pap_id']}}" selected>
-                                                    {{$ors['orsdetails']['pap']['code']}} -
-                                                    {{$ors['orsdetails']['pap']['description']}}
+                                        <div class="form-group">
+
+                                            {{-- <label for="ORSDetails[0][pap_id]">{{__('Sub-Allotment')}}</label> --}}
+                                            <select class="form-control" name="component[${count}][sub_allotment_id]" id="sub_allotment_id">
+                                                @if(isset($ors)&&isset($ors['suballotment']))
+                                                <option value="{{$ors['orsdetails']['sub_allotment_id']}}" selected>
+                                                    {{$ors['orsdetails']['suballotment']['code']}} -
+                                                    {{$ors['orsdetails']['suballotment']['description']}}
                                                 </option>
                                                 @endif
                                             </select>
-           </div>
-      </td>
-      <td>
-      <div class="form-group">
+                                        </div>
+                                    </td>
+            <td>
+               <div class="form-group">
 
-       <input type="number" class="form-control" name="component[${count}][amount]" placeholder="{{__('Amount')}}"  required>
-       <span class="input-group-text">
-                    {{get_currency()}}
-                </span>
-        </div>
-    </td>
-      <td>
-           <button type="button" class="btn btn-danger delete_row">
-               <i class="fa fa-trash"></i>
-           </button>
-      </td>
-   </tr>
-   `);
-    //initialize text editor
-    $('#component_' + count).find('textarea').summernote({
-        toolbar: []
+                                                <select class="form-control" name="component[${count}][uacs_subobject_code]" id="pap_id">
+                                                    @if(isset($ors)&&isset($ors['fundsource']))
+                                                    <option value="{{$ors['orsdetails']['pap_id']}}" selected>
+                                                        {{$ors['orsdetails']['pap']['code']}} -
+                                                        {{$ors['orsdetails']['pap']['description']}}
+                                                    </option>
+                                                    @endif
+                                                </select>
+               </div>
+          </td>
+          <td>
+                                            <div class="form-group">
+                                                                <div class="input-group form-group mb-3">
+                                                                    <input type="number" class="form-control" name="component[${count}][amount]"  min="0" class="amount" required>
+                                                                    <div class="input-group-append">
+                                                                    <span class="input-group-text">
+                                                                        {{get_currency()}}
+                                                                    </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+          <td>
+               <button type="button" class="btn btn-danger delete_row">
+                   <i class="fa fa-trash"></i>
+               </button>
+          </td>
+       </tr>
+       `);
+        //initialize text editor
+        $('#component_' + count).find('textarea').summernote({
+            toolbar: []
+        });
     });
-});
-</script>
+    </script>
 <script src="{{url('plugins/datetimepicker/js/jquery.datetimepicker.full.js')}}"></script>
 <script src="{{url('js/admin/disableInspectElecment.js')}}"></script>
 <script src="{{url('js/admin/orsheaders.js')}}"></script>

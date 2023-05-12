@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AllotmentClass;
+use App\Models\ApproSetup;
 use App\Models\BudgetType;
 use App\Models\FundCluster;
 use App\Models\FundSource;
@@ -11,6 +12,7 @@ use App\Models\ORSHeader;
 use App\Models\PAP;
 use App\Models\Payee;
 use App\Models\ResponsibilityCenter;
+use App\Models\UACS;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\PatientRequest;
 use App\Http\Requests\Admin\DoctorRequest;
@@ -121,6 +123,16 @@ class AjaxController extends Controller
         return response()->json($allotmentclasses);
 
     }
+    public function get_sub_allotment_by_pap(Request $request){
+        if(isset($request->pap_code))
+    {
+       // $allotmentclasses=AllotmentClass::where('description','like','%'.$request->term.'%' && 'uacs_classification_id','=',5)->get();
+        $paps=ApproSetup::where('pap_code','=',$request->pap_code )->get();
+
+    }
+
+    return response()->json($paps);
+    }
     //pap
     public function load_paps_auth_fundsource_chargeto(Request $request)
     {
@@ -213,6 +225,35 @@ public function get_res_center(Request $request)
 
     return response()->json($rescenter);
 }
+//get uacs subobject code
+public function get_uacs_subobject_code(Request $request)
+{
+    if(isset($request->term))
+    {
+        $uacs=UACS::where('description','like','%'.$request->term.'%')->get();
+    }
+    else{
+        $uacs=UACS::All();
+    }
+
+    return response()->json($uacs);
+}
+
+//delete uacs
+public function delete_uacs($dtl_id)
+    {
+        $uacs=UACS::find($dtl_id);
+
+        if(isset($uacs))
+        {
+            $uacs->approdtls()->delete();
+
+            $uacs->delete();
+        }
+
+        return response()->json('success');
+    }
+
     //get ors
     public function get_orsheaders(Request $request)
     {

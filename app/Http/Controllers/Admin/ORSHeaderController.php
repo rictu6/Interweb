@@ -106,6 +106,9 @@ public function create()
 // dd($orsdtl);
     return view('admin.orsheaders.create');
 }
+function store (Request $request){
+dd ($request);
+}
     function saveors(Request $request){
 
         dd($request->all());

@@ -35,7 +35,7 @@ class ORSDetails extends Model
      {
        return $this->belongsTo(PAP::class,'pap_id','pap_id');
      }
-     public function suballotment()
+     public function suballotment()//omit coz loaded here is aprrosetup
      {
        return $this->belongsTo(SubAllotment::class,'sub_allotment_id','sub_allotment_id');
      }
@@ -43,4 +43,14 @@ class ORSDetails extends Model
      {
        return $this->belongsTo(UACS::class,'uacs_subobject_id','uacs_id');
      }
+     public function appro_sub_allotment()
+     {
+       return $this->belongsTo(ApproSetup::class,'sub_allotment_no','sub_allotment_id');
+     }
+
+     public function approsetupdtl_uacs()
+     {
+       return $this->belongsTo(ApproSetupDetail::class,'uacs_subobject_code','uacs_id');
+     }
+
 }

@@ -38,7 +38,7 @@
         <h3 class="card-title">{{ __('Create Sub-Allotment') }}</h3>
     </div>
     <!-- /.card-header -->
-    <form method="POST" action="{{route('admin.orsheaders.store')}}" enctype="multipart/form-data">
+    <form method="POST" action="{{route('admin.suballotments.store')}}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="col-lg-12">
@@ -60,28 +60,28 @@
 
 @endsection
 @section('scripts')
+
 <script>
     //components
-
+    var count=$('#count').val();
  $('.add_component').on('click',function(){
    count++;
    $('.components .items').append(`
-   <tr id="component_${count}" num="${count}">
+   <tr id="approdtls${count}" num="${count}">
     <td>
-                                                    <div class="form-group">
-                                                        {{-- <label for="uacs_subobject_code">{{__('UACS')}}</label> --}}
-                                                        <select  class="form-control" name="component[${count}][uacs_subobject_code]" id="fund_source_id">
-                                                            @if(isset($saro)&&isset($saro['fundsource']))
-                                                            <option value="{{$saro['approdtls']['uacs_subobject_code']}}" selected>{{$saro['approdtls']['uacs_subobject_code']}}
-                                                              </option>
-                                                              @endif
-                                                        </select>
-                                                      </div>
-                                                </td>
+        <div class="form-group">
+        <select class="form-control" id="uacs_subobject_code" name="approdtls[${count}][uacs_subobject_code]" >
+        <option value="">Select</option>
+        @foreach ($uacs as $row)
+        <option value="{{$row->uacs_subobject_id}}">{{ $row->description}}</option>
+        @endforeach
+        </select>
+        </div>
+    </td>
                                                 <td>
-                                               <div class="form-group">
+                                            <div class="form-group">
                                                                 <div class="input-group form-group mb-3">
-                                                                    <input type="number" class="form-control" name="component[${count}][allotment_received]"  min="0" class="price" required>
+                                                                    <input type="number" class="form-control" name="approdtls[${count}][allotment_received]"  min="0" class="allotment_received" required>
                                                                     <div class="input-group-append">
                                                                     <span class="input-group-text">
                                                                         {{get_currency()}}

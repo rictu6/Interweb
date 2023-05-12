@@ -1,20 +1,24 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use App\Models\Employee;
-
 use App\Models\PAP;
 use App\Models\UACS;
-use App\Models\Payee;
 
+use App\Models\Payee;
+use App\Models\Employee;
 use App\Models\ORSHeader;
+use App\Models\ApproSetup;
+
 use App\Models\BudgetType;
 use App\Models\FundSource;
 use App\Models\ORSDetails;
 use App\Models\FundCluster;
+use App\Models\SubAllotment;
 use Illuminate\Http\Request;
 use App\Models\AllotmentClass;
+use App\Models\ApproSetupDetail;
 use App\Models\ResponsibilityCenter;
+use Illuminate\Support\Facades\Auth;
 
 class SubAllotmentController extends \Illuminate\Routing\Controller
 {
@@ -36,8 +40,8 @@ class SubAllotmentController extends \Illuminate\Routing\Controller
     public function index()
     {
         try {
-
-            return view('admin.suballotments.index');
+            $uacs=UACS::all();//for next uacs ke hindi ya ma load
+            return view('admin.suballotments.index',compact('uacs'));
         } catch (\Exception $th) {
 
             dd($th->getMessage());
@@ -96,6 +100,48 @@ public function create()
 
     return view('admin.orsheaders.create',compact('payees','responsibilitycenters',
     'allotments','fundclusters','budgettypes','fundsources','paps','uacs'));
+}
+
+function store(Request $request){
+
+    //  dd($request);
+
+     $user =     Auth::guard('admin')->user()->first_name;// +' '+ Auth::guard('admin')->user()->last_name;
+
+$appro=new ApproSetup();
+
+$appro->budget_year=$request->budget_year;
+$appro->month=$request->month;
+$appro->fund_source_id=$request->fund_source_id;
+$appro->pap_code=$request->pap_id;
+$appro->allotment_class_id=2;
+$appro->sub_allotment_no=$request->sub_allotment_no;
+$appro->remarks=$request->remarks;
+
+$appro->budget_type=$request->budget_type;
+$appro->processedby=  $user;
+
+
+     foreach ($request->approdtls as $detail) {
+        if ($appro->save()) {
+            //dd($request);
+            ApproSetupDetail::create([
+                'appro_setup_id' => $appro['appro_setup_id'],
+                'uacs_subobject_code' => $detail['uacs_subobject_code'],
+                'allotment_received' => $detail['allotment_received'],
+            ]);
+        }
+     }
+// if ($appro->save()) {
+//     $appro->approdtls()->create([
+//         'uacs_subobject_code' => $request->uacs_subobject_code,
+//         'allotment_received' => $request->allotment_received,
+//     ]);
+   return back()->with('success', 'New Sub-Allotment has been successfully added to the database');
+// } else {
+//     return back()->with('fail', 'Please try again');
+// }
+
 }
     function saveors(Request $request){
 

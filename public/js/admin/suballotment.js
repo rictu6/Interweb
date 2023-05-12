@@ -134,7 +134,7 @@ $('#datefrom, #dateto').on('change', function() {
 });
 
 //get budgetype
-$('#budget_type_id').select2({
+$('#budget_type').select2({
     width:"100%",
     placeholder:trans("Authorization"),
     ajax: {
@@ -162,9 +162,9 @@ $('#budget_type_id').select2({
        }
   });
 
-  //fundsource
+  //fundsource by budget_id and get pap by fundsource
 
-  $(document).on('select2:select', '#budget_type_id', function (e) {
+  $(document).on('select2:select', '#budget_type', function (e) {
     var el=$(e.target);
     var data = e.params.data;
     $.ajax({
@@ -178,6 +178,9 @@ $('#budget_type_id').select2({
         {
             $('#fund_source_id').empty();
             $.each(fundsrc, function(index, item) {
+                if(index == 0) {
+                    $('#fund_source_id').append('<option value="">-SELECT-</option>');
+                }
                 $('#fund_source_id').append('<option value="' + item.fund_source_id + '">' + item.code + ' - ' + item.description + '</option>');
             });
 
@@ -194,7 +197,10 @@ $('#budget_type_id').select2({
                     {
                         $('#pap_id').empty();
                         $.each(pap, function(index, item) {
-                            $('#pap_id').append('<option value="' + item.pap_id + '">'+ item.code+'-'  + item.description + '</option>');
+                            if(index == 0) {
+                                $('#pap_id').append('<option value="">-SELECT-</option>');
+                            }
+                            $('#pap_id').append('<option value="' + item.code + '">'+ item.code+'-'  + item.description + '</option>');
                         });
                     },
                     complete:function()
@@ -312,52 +318,129 @@ $('#budget_type_id').select2({
           }
        }
   });
-
- //selected province
-
- $(document).on('select2:select','#budget_type_id', function (e) {
-  var el=$(e.target);
-  var data = e.params.data;
-  $.ajax({
-      url:ajax_url('get_fundsource_by_auth'+'?budget_type='+ data.id),
-      beforeSend:function(){
-        $('.preloader').show();
-        $('.loader').show();
-      },
-
-      success:function(fundsrc)
-      {
-        $('#fund_source_id').empty();
-        $.each(fundsrc, function(index, item) {
-
-            $('#fund_source_id').append('<option value="' + item.fund_source_id + '">' + item.code + ' - ' + item.description + '</option>'); // name refers to the objects value when you do you ->lists('name', 'id') in laravel
-        });
-
-
-      },
-      complete:function()
-      {
-        $('.preloader').hide();
-        $('.loader').hide();
-      }
+//get uacs_subobject_code
+$('#uacs_subobject_code').select2({
+    width:"100%",
+    placeholder:trans("UACS"),
+    ajax: {
+       beforeSend:function()
+       {
+          $('.preloader').show();
+          $('.loader').show();
+       },
+       url: ajax_url('get_uacs_subobject_code'),
+       processResults: function (data) {
+             return {
+                   results: $.map(data, function (item) {
+                      return {
+                         text: item.description,
+                         id: item.uacs_subobject_id
+                      }
+                   })
+             };
+          },
+          complete:function()
+          {
+             $('.preloader').hide();
+             $('.loader').hide();
+          }
+       }
   });
- });
+  //get uacs_subobject_code
+$('#component_2_uacs_subobject_code').select2({
+    width:"100%",
+    placeholder:trans("UACS"),
+    ajax: {
+       beforeSend:function()
+       {
+          $('.preloader').show();
+          $('.loader').show();
+       },
+       url: ajax_url('get_uacs_subobject_code'),
+       processResults: function (data) {
+             return {
+                   results: $.map(data, function (item) {
+                      return {
+                         text: item.description,
+                         id: item.uacs_subobject_id
+                      }
+                   })
+             };
+          },
+          complete:function()
+          {
+             $('.preloader').hide();
+             $('.loader').hide();
+          }
+       }
+  });
+ //get
 
-    //delete fta
-    $(document).on('click','.delete_fta',function(e){
+//  $(document).on('select2:select','#budget_type_id', function (e) {
+//   var el=$(e.target);
+//   var data = e.params.data;
+//   $.ajax({
+//       url:ajax_url('get_fundsource_by_auth'+'?budget_type='+ data.id),
+//       beforeSend:function(){
+//         $('.preloader').show();
+//         $('.loader').show();
+//       },
+
+//       success:function(fundsrc)
+//       {
+//         $('#fund_source_id').empty();
+//         $.each(fundsrc, function(index, item) {
+
+//             $('#fund_source_id').append('<option value="' + item.fund_source_id + '">' + item.code + ' - ' + item.description + '</option>'); // name refers to the objects value when you do you ->lists('name', 'id') in laravel
+//         });
+
+
+//       },
+//       complete:function()
+//       {
+//         $('.preloader').hide();
+//         $('.loader').hide();
+//       }
+//   });
+//  });
+
+    //delete row
+    $(document).on('click','.delete_row',function(e){
+        var dtl_id=$(this).closest('tr').attr('dtl_id');
         e.preventDefault();
         var el=$(this);
         swal({
-            title: trans("Are you sure to delete fta ?"),
+            title: trans("Are you sure to delete UACS ?"),
             type: "warning",
             showCancelButton: true,
             confirmButtonClass: "btn-danger",
             confirmButtonText: trans("Delete"),
             cancelButtonText: trans("Cancel"),
-            closeOnConfirm: false
+            closeOnConfirm: true
         },
         function(){
-            $(el).parent().submit();
+            if(dtl_id!==undefined)
+            {
+              $.ajax({
+                url:ajax_url('delete_uacs/'+dtl_id),
+                beforeSend:function()
+                {
+                   $('.preloader').show();
+                   $('.loader').show();
+                },
+                success:function()
+                {
+                  $(el).parent().parent().remove();
+                },
+                complete:function(){
+                  $('.preloader').hide();
+                  $('.loader').hide();
+                }
+              });
+            }
+            else{
+              $(el).parent().parent().remove();
+            }
         });
     });
 

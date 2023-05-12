@@ -9,16 +9,16 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 
 
-class ApproSetup extends Model
+class ApproSetupDetail extends Model
 {
     use Notifiable;
     use LogsActivity;
     use SoftDeletes;
 
 
-    protected $table = 'tbl_appropriation_setup';
+    protected $table = 'tbl_appro_setup_dtl';
 
-    protected $primaryKey = 'appro_setup_id';
+    protected $primaryKey = 'appro_dtl_id';
     /**
      * The attributes that are mass assignable.
      *
@@ -34,7 +34,7 @@ class ApproSetup extends Model
     'created_at',
     'deleted_at'
     ];
-    public function local_chief_exec()
+    public function aprrosetup()
     {
         return $this->belongsTo(ApproSetup::class,'appro_setup_id','appro_setup_id')->withTrashed();
     }

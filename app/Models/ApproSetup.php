@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Arr;
+use Yajra\DataTables\Html\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use League\Fractal\Resource\Collection;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 
 
@@ -16,7 +20,7 @@ class ApproSetup extends Model
     use SoftDeletes;
 
 
-    protected $table = 'tbl_appropriation_setup';
+    protected $table = 'tbl_appro_setup';
 
     protected $primaryKey = 'appro_setup_id';
     /**
@@ -28,7 +32,7 @@ class ApproSetup extends Model
         'appro_setup_id' ,
     'budget_year' ,
         'month' ,
-            'fund_source' ,
+            'fund_source_id' ,
              'pap_code' ,
   'allotment_class_id' ,
   'sub_allotment_no' ,
@@ -41,7 +45,6 @@ class ApproSetup extends Model
   'upload_date' ,
      'cms_status_id' ,
 
-  'uacs_subobject_code' ,
   'updated_at' ,
   'created_at' ,
   'deleted_at'

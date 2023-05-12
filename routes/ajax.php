@@ -19,7 +19,7 @@ Route::get('get_payee_by_name','AjaxController@get_payee_by_name')->name('get_pa
 //get ORs
 Route::get('get_orsheaders','AjaxController@get_orsheaders')->name('get_lces');
 //allotment class
-Route::get('get_alot_by_desc','AjaxlController@get_alot_by_desc')->name('get_alot_by_desc');
+Route::get('get_alot_by_desc','AjaxController@get_alot_by_desc')->name('get_alot_by_desc');
 //fund cluster
 Route::get('get_fund_cluster_by_desc','AjaxController@get_fund_cluster_by_desc')->name('get_fund_cluster_by_desc');
 // authorization budget type
@@ -31,9 +31,15 @@ Route::get('get_fundsource_by_auth','AjaxController@get_fundsource_by_auth')->na
 Route::get('get_res_center','AjaxController@get_res_center')->name('get_res_center');
 //pap by funsource select2 slect
 Route::get('get_paps_by_fundsource','AjaxController@get_paps_by_fundsource')->name('get_paps_by_fundsource');
+//uacs subobject code
+Route::get('get_uacs_subobject_code','AjaxController@get_uacs_subobject_code')->name('get_uacs_subobject_code');
+//suballotment by pap
+Route::get('get_sub_allotment_by_pap','AjaxController@get_sub_allotment_by_pap')->name('get_sub_allotment_by_pap');
 
     //delete option
     Route::get('delete_option/{option_id}','AjaxController@delete_option')->name('delete_option');
+        //delete uacs
+        Route::get('delete_uacs/{dtl_id}','AjaxController@delete_uacs')->name('delete_uacs');
 
 
 

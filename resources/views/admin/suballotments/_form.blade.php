@@ -11,8 +11,8 @@
              </select>
       </div>
       <div class="col-lg-12">
-        <label for="budget_type_id">{{__('Authorization')}}</label>
-        <select  class="form-control" name="budget_type_id" id="budget_type_id">
+        <label for="budget_type">{{__('Authorization')}}</label>
+        <select  class="form-control" name="budget_type" id="budget_type">
             @if(isset($saro)&&isset($ors['budgettype']))
             <option value="{{$saro['budgettype']['budget_type_id']}}" selected> {{$saro['budgettype']['description']}}
               </option>
@@ -62,7 +62,7 @@
     <label for="pap_id">{{__('PAP')}}</label>
     <select  class="form-control" name="pap_id" id="pap_id">
         @if(isset($saro)&&isset($saro['pap']))
-        <option value="{{$saro['pap']['pap_id']}}" selected>{{$saro['pap']['code']}} - {{$saro['pap']['description']}}
+        <option value="{{$saro['pap']['code']}}" selected>{{$saro['pap']['code']}} - {{$saro['pap']['description']}}
           </option>
           @endif
     </select>
@@ -99,7 +99,7 @@
                         <table class="table table-striped table-bordered table-hover components" width="100%">
                             <thead class="btn-primary">
                                 <th width="400px">{{__('UACS')}}</th>
-                                <th width="200px">{{__('Allotment Received')}}</th>
+                                <th width="100px">{{__('Allotment Received')}}</th>
                                 <th width="10px">{{__('Action')}}</th>
                             </thead>
                             <tbody class="items">
@@ -107,18 +107,21 @@
                                   $count=0;
                                   $option_count=0;
                                 @endphp
-                                {{-- @if(isset($test))
-                                    @foreach($test['components'] as $component) --}}
+                                @if(isset($saro))
+                                {{-- para ni sa mag edit later on, kung set na an saro, cons ni wala gashow ang uacs initially --}}
+                                    @foreach($saro['approdtls'] as $detail)
+                                    {{-- bisan wala na ang if kg foreach gagana ang code, gn butang ko lg parasa id sang tr --}}
                                         @php
                                             $count++;
                                         @endphp
                                         {{-- num="{{$count}}" test_id="{{$component['id']}}" --}}
-                                        <tr >
+                                        <tr dtl_id="{{$detail['appro_dtl_id']}}" >
                                             {{-- @if($component['title']) --}}
                                                 <td>
                                                     <div class="form-group">
                                                         {{-- <label for="uacs_subobject_code">{{__('UACS')}}</label> --}}
-                                                        <select  class="form-control" name="approdtls[0][uacs_subobject_code]" id="fund_source_id">
+                                                        <input type="hidden" id="count" value="{{ $count }}">
+                                                        <select  class="form-control" name="approdtls[0][uacs_subobject_code]" id="uacs_subobject_code">
                                                             @if(isset($saro)&&isset($saro['approdtls']))
                                                             <option value="{{$saro['approdtls']['uacs_subobject_code']}}" selected>{{$saro['approdtls']['uacs_subobject_code']}}
                                                               </option>
@@ -128,14 +131,12 @@
                                                 </td>
                                                 <td>
                                                <div class="form-group">
-
-                                                                    <input type="number" class="form-control" name="approdtls[0][allotment_received]"  min="0" class="price" required>
-
-                                                                    <span class="input-group-text">
-                                                                        {{get_currency()}}
-                                                                    </span>
-
-
+                                                <div class="input-group-append">
+                                                                    <input type="number" class="form-control" name="approdtls[0][allotment_received]"  min="0" class="allotment_received" required>
+                                                                        <span class="input-group-text">
+                                                                            {{get_currency()}}
+                                                                        </span>
+                                                                        </div>
                                                             </div>
                                                         </td>
                                                 <td>
@@ -145,8 +146,8 @@
                                                 </td>
                                             {{-- @endif --}}
                                         </tr>
-                                    {{-- @endforeach
-                                @endif --}}
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -155,4 +156,6 @@
          </div>
     </div>
 </div>
+<input type="hidden" name="" id="count" value="{{$count}}">
+<input type="hidden" name="" id="option_count" value="{{$option_count}}">
 

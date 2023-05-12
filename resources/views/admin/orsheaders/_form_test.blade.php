@@ -65,8 +65,8 @@
     </div>
     <div class="col-3">
 
-        <label for="budget_type_id">{{__('Authorization')}}</label>
-        <select class="form-control" name="budget_type_id" id="budget_type_id">
+        <label for="budget_type">{{__('Authorization')}}</label>
+        <select class="form-control" name="budget_type" id="budget_type">
             @if(isset($ors)&&isset($ors['budgettype']))
             <option value="{{$ors['budgettype']['budget_type_id']}}" selected> {{$ors['budgettype']['description']}}
             </option>
@@ -124,16 +124,17 @@
                                 $count=0;
                                 $option_count=0;
                                 @endphp
-                                {{-- @if(isset($ors)) --}}
-                                {{-- @foreach($ors['orsdetails'] as $component) --}}
+                                {{-- @if(isset($ors))
+                                @foreach($ors['orsdetails'] as $orsdtl) --}}
                                 @php
                                 $count++;
                                 @endphp
                                {{-- num="{{$count}}"  test_id="{{$component['id']}}" --}}
+                               {{-- dtl_id="{{$orsdtl['ors_dtl_id']}}" --}}
                                <tr>
                                     <td>
                                         <div class="form-group">
-                                            <label for="res_center_id">{{__('Responsibility Center')}}</label>
+                                            {{-- <label for="res_center_id">{{__('Responsibility Center')}}</label> --}}
                                             <select class="form-control" name="ORSDetails[0][responsibility_center]"
                                                 id="responsibility_center">
                                                 @if(isset($ors)&&isset($ors['orsdetails']))
@@ -148,7 +149,7 @@
                                     <td>
                                         <div class="form-group">
 
-                                            <label for="charge_to">{{__('Charge to')}}</label>
+                                            {{-- <label for="charge_to">{{__('Charge to')}}</label> --}}
 
                                             <select class="form-control" name="charge_to" placeholder="{{__(' to')}}" id="charge_to" required>
                                                 <option value="" disabled selected>{{__('CHARGE TO')}}</option>
@@ -163,9 +164,9 @@
                                     <td>
                                         <div class="form-group">
 
-                                            <label for="ORSDetails[0][pap_id]">{{__('PAP')}}</label>
+                                            {{-- <label for="ORSDetails[0][pap_id]">{{__('PAP')}}</label> --}}
                                             <select class="form-control" name="ORSDetails[0][pap_id]" id="pap_id">
-                                                @if(isset($ors)&&isset($ors['fundsource']))
+                                                @if(isset($ors)&&isset($ors['pap']))
                                                 <option value="{{$ors['orsdetails']['pap_id']}}" selected>
                                                     {{$ors['orsdetails']['pap']['code']}} -
                                                     {{$ors['orsdetails']['pap']['description']}}
@@ -177,12 +178,11 @@
                                     <td>
                                         <div class="form-group">
 
-                                            <label for="ORSDetails[0][pap_id]">{{__('Sub-Allotment')}}</label>
-                                            <select class="form-control" name="ORSDetails[0][pap_id]" id="pap_id">
-                                                @if(isset($ors)&&isset($ors['fundsource']))
-                                                <option value="{{$ors['orsdetails']['pap_id']}}" selected>
-                                                    {{$ors['orsdetails']['pap']['code']}} -
-                                                    {{$ors['orsdetails']['pap']['description']}}
+                                            {{-- <label for="ORSDetails[0][pap_id]">{{__('Sub-Allotment')}}</label> --}}
+                                            <select class="form-control" name="ORSDetails[0][sub_allotment_id]" id="sub_allotment_id">
+                                                @if(isset($ors)&&isset($ors['orsdetails']))
+                                                <option value="{{$ors['orsdetails']['sub_allotment_id']}}" selected>
+                                                    {{$ors['orsdetails']['appro_sub_allotment']['sub_allotment_no']}}
                                                 </option>
                                                 @endif
                                             </select>
@@ -191,12 +191,11 @@
                                     <td>
                                         <div class="form-group">
 
-                                            <label for="ORSDetails[0][pap_id]">{{__('UACS')}}</label>
-                                            <select class="form-control" name="ORSDetails[0][pap_id]" id="pap_id">
-                                                @if(isset($ors)&&isset($ors['fundsource']))
-                                                <option value="{{$ors['orsdetails']['pap_id']}}" selected>
-                                                    {{$ors['orsdetails']['pap']['code']}} -
-                                                    {{$ors['orsdetails']['pap']['description']}}
+                                            {{-- <label for="ORSDetails[0][pap_id]">{{__('UACS')}}</label> --}}
+                                            <select class="form-control" name="ORSDetails[0][uacs_id]" id="uacs_id">
+                                                @if(isset($ors)&&isset($ors['orsdetails']))
+                                                <option value="{{$ors['orsdetails']['uacs_id']}}" selected>
+                                                    {{$ors['orsdetails']['approsetupdtl_uacs']['uacs_subobject_code']}}
                                                 </option>
                                                 @endif
                                             </select>
@@ -218,8 +217,8 @@
                                     </td>
 
                                 </tr>
-                                {{-- @endforeach --}}
-                                {{-- @endif --}}
+                                {{-- @endforeach
+                             @endif --}}
                             </tbody>
                         </table>
                     </div>

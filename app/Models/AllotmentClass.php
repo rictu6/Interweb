@@ -10,4 +10,10 @@ class AllotmentClass extends Model
     use SoftDeletes;
     protected $table = 'tbl_uacs_subclass';
     protected $primaryKey = 'uacs_subclass_id';
+    protected $fillable=['uacs_subclass_id', 'uacs_classification_id',
+    'code', 'description', 'cluster_code',
+     'acronym',
+           'updated_at',
+          'created_at',
+          'deleted_at'];
 }
