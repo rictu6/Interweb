@@ -6,8 +6,12 @@
     $('#users_profiles_link').addClass('active');
     $('#users_profiles').addClass('menu-open');
     var count=$('#count').val();
-
-
+    var dynamic_chargeto;
+    var currentDate = new Date();
+    var formattedDate = currentDate.toISOString().split('T')[0];
+    var dynamic_fund_source;
+    var dynamic_budget_type;
+    var pap_datas;
    //active
 
     //datatable
@@ -105,12 +109,72 @@
     table.draw();
  });
 
+ //ors_date
+ $('#ors_date').val(formattedDate);
+ function setORSNO(){//not used
+    //ors_no
+var uacs_subclass_Value = $('#uacs_subclass_id').val();
+
+var currentDate = new Date();
+var formattedDate = currentDate.toISOString().slice(0, 7);
+var orsNoValue = uacs_subclass_Value+'-'  + fundSourceCode + '-' + formattedDate;
+// Set the value of the ors_no input field to the constructed ORS No value
+$('#ors_no').val(orsNoValue);
+ }
+
+function trigger_get_pAp(){
+    $.ajax({
+        url:ajax_url('get_paps'+'?fund_source_id='+ dynamic_fund_source+ '&allotment_class_id=' + dynamic_chargeto+ '&budget_type=' + dynamic_budget_type),
+        beforeSend:function(){
+            $('.preloader').show();
+            $('.loader').show();
+        },
+        success:function(pap)
+        {
+            //$('#pap_id').empty();
+
+
+            var papIds = [];
+            $.each(pap, function(index, item) {
+
+                 papIds.push(item.pap_code);
+            });
+     //Make a new AJAX request to retrieve the $paps data
+    $.ajax({
+        url:ajax_url('get_pap_by_id'+'?pap_ids=' + papIds),
+        success: function(pap_data) {
+            // Process the $paps data as needed
+            $('#pap_id').empty();
+            $.each(pap_data, function(index, item) {
+                if(index == 0) {
+                    $('#pap_id').append('<option value="">-SELECT-</option>');
+                }
+
+
+                 $('#pap_id').append('<option value="' + item.pap_id + '">'+ item.code + "-"  + item.description +'</option>');
+
+            });
+            console.log(pap_data);
+            //pap_datas=pap_data;
+        }
+    });
+        },
+        complete:function()
+        {
+            $('.preloader').hide();
+            $('.loader').hide();
+        }
+    });
+}
+
   $('.datepickerrange').val('');
 
     // $('#filter_date').datepicker({
     //   format: 'yyyy-mm-dd',
     //   autoclose: true
     // });
+
+
 
 // Datepicker
 $('#datefrom, #dateto').datepicker({
@@ -120,6 +184,12 @@ $('#datefrom, #dateto').datepicker({
     changeMonth: true,
     changeYear: true,
     yearRange: '-100:+0'
+});
+//assign value to dynamic allotment class
+$('#allotment_class_id').on('change', function() {
+    var selectedChargeto = $(this).val();
+dynamic_chargeto=selectedChargeto;
+trigger_get_pAp();
 });
 
 // Validate date range
@@ -134,70 +204,10 @@ $('#datefrom, #dateto').on('change', function() {
 });
 
 
-//change lce
-$('#lce_id').select2({
-    width:"100%",
-    placeholder:trans("LCE Name"),
-    ajax: {
-    url: ajax_url('get_lce_by_name'),
-    processResults: function (data) {
-            return {
-                results: $.map(data, function (item) {
-                    return {
-                        text: item.fullname,
-                        id: item.lce_id
-                    }
-                })
-            };
-        }
-    }
-});
-
-
-//selected lce
-$(document).on('select2:select','#lce_id', function (e) {
-    var el=$(e.target);
-    var data = e.params.data;
-    $.ajax({
-        url:ajax_url('get_lce'+'?lce_id='+data.id),
-        beforeSend:function()
-        {
-            $('.preloader').show();
-            $('.loader').show();
-        },
-        success:function(lce)
-        {
-            $("#fullname").val(lce.fullname);
-            $("#designation").val(lce.designation);
-            $("#prov_code").val(lce.province.prov_desc);
-            if(lce.muncit_id>0){
-                $("#muncit_id").val(lce.muncit.muncit_desc);
-            }else{
-                $("#muncit_id").val(lce.province.prov_desc);
-            }
-        },
-        complete:function(){
-            $('.preloader').hide();
-            $('.loader').hide();
-        }
-    });
-});
-var des=$('#destination').val();
-$('#destination').change(
-
-    function (){
-        if($('#destination').val()==='FOREIGN'){
-            $("#appear").show();
-        }
-        else{
-           $("#appear").hide();
-        }
-//alert ($('#destination').val());
-        }
 
 
 
-);
+
 //select payee
 $('#payee_id').select2({
     width:"100%",
@@ -218,16 +228,18 @@ $('#payee_id').select2({
 });
 //select allotmentclass
 $('#uacs_subclass_id').select2({
+
     width:"100%",
     placeholder:trans("Allotment Class"),
     ajax: {
     url: ajax_url('get_alot_by_desc'),
     processResults: function (data) {
+
             return {
                 results: $.map(data, function (item) {
                     return {
-                        text:item.code + ' - ' + item.description,
-                        id: item.uacs_subclass_id
+                        text:item.cluster_code + ' - ' + item.description,
+                        id: item.cluster_code
                     }
                 })
             };
@@ -280,7 +292,7 @@ $('#budget_type').select2({
           }
        }
   });
-//rescen
+//ORS DETAILS
 //get budgetype
 $('#responsibility_center').select2({
     width:"100%",
@@ -309,11 +321,13 @@ $('#responsibility_center').select2({
           }
        }
   });
+
    //fundsource by budget_id and get pap by fundsource
 
    $(document).on('select2:select', '#budget_type', function (e) {
     var el=$(e.target);
     var data = e.params.data;
+dynamic_budget_type=data.id;
     $.ajax({
         url:ajax_url('get_fundsource_by_auth'+'?budget_type='+ data.id),
         beforeSend:function(){
@@ -330,32 +344,12 @@ $('#responsibility_center').select2({
                 }
                 $('#fund_source_id').append('<option value="' + item.fund_source_id + '">' + item.code + ' - ' + item.description + '</option>');
             });
-
-            // Load PAP dropdown based on fundsource selection
+        // Load PAP dropdown based on fundsource selection
             $('#fund_source_id').on('change', function() {
                 var selectedFundsourceId = $(this).val();
-                $.ajax({
-                    url:ajax_url('get_paps_by_fundsource'+'?fund_source_id='+ selectedFundsourceId),
-                    beforeSend:function(){
-                        $('.preloader').show();
-                        $('.loader').show();
-                    },
-                    success:function(pap)
-                    {
-                        $('#pap_id').empty();
-                        $.each(pap, function(index, item) {
-                            if(index == 0) {
-                                $('#pap_id').append('<option value="">-SELECT-</option>');
-                            }
-                            $('#pap_id').append('<option value="' + item.code + '">'+ item.code+'-'  + item.description + '</option>');
-                        });
-                    },
-                    complete:function()
-                    {
-                        $('.preloader').hide();
-                        $('.loader').hide();
-                    }
-                });
+                dynamic_fund_source=selectedFundsourceId;
+
+                trigger_get_pAp();
             });
 
             // Get sub-allotment number based on PAP selection
@@ -374,7 +368,7 @@ $('#responsibility_center').select2({
                             $('#sub_allotment_id').append('<option value="">-SELECT-</option>');
                         }
 
-                        $('#sub_allotment_id').append('<option value="' + item.appro_setup_id + '">'+ item.sub_allotment_no + '</option>');
+                        $('#sub_allotment_id').append('<option value="' + item.sub_allotment_no + '">'+ item.sub_allotment_no + '</option>');
                        });
 
                         // $('#sub_allotment_no').val(subAllotmentNo);
@@ -391,6 +385,76 @@ $('#responsibility_center').select2({
                     }
                 });
             });
+             // Get uacs by pap
+             // DIRI ANG CONDITION IF PAG CLICK SANG PAP UACS KUHAON YA OR SUB ALLOTMENT
+            //  if(selected_chargeto==1)
+             $('#sub_allotment_id').on('change', function() {
+                var selectedaclass = $(this).val();
+
+                $.ajax({
+
+                    url:ajax_url('get_uacs_by_sub_allotment'+'?sub_allotment_no='+ selectedaclass.trimEnd()),
+                    beforeSend:function(){
+                        $('.preloader').show();
+                        $('.loader').show();
+                    },
+                    success:function(allotmentclass)
+                    {   $('#uacs_id').empty();
+                        $.each(allotmentclass, function(index, item) {
+                        if(index == 0) {
+                            $('#uacs_id').append('<option value="">-SELECT-</option>');
+                        }
+
+                        $('#uacs_id').append('<option value="' + item.appro_setup_id + '">'+ item.uacs_subobject_code + '</option>');
+                       });
+
+                        // $('#sub_allotment_no').val(subAllotmentNo);
+                    },
+                    error:function(xhr, status, error)
+                    {
+                        console.error('Error:', error); // log the error to console
+                    },
+
+                    complete:function()
+                    {
+                        $('.preloader').hide();
+                        $('.loader').hide();
+                    }
+                });
+            });
+                //  // Get uacs by sub- allotment if any
+                //  $('#uacs_id').on('change', function() {
+                //     var selectedPapId = $(this).val();
+                //     $.ajax({
+                //         url:ajax_url('get_sub_allotment_by_pap'+'?pap_code='+ selectedPapId),
+                //         beforeSend:function(){
+                //             $('.preloader').show();
+                //             $('.loader').show();
+                //         },
+                //         success:function(subAllotmentNo)
+                //         {   $('#sub_allotment_id').empty();
+                //             $.each(subAllotmentNo, function(index, item) {
+                //             if(index == 0) {
+                //                 $('#sub_allotment_id').append('<option value="">-SELECT-</option>');
+                //             }
+
+                //             $('#sub_allotment_id').append('<option value="' + item.appro_setup_id + '">'+ item.sub_allotment_no + '</option>');
+                //            });
+
+                //             // $('#sub_allotment_no').val(subAllotmentNo);
+                //         },
+                //         error:function(xhr, status, error)
+                //         {
+                //             console.error('Error:', error); // log the error to console
+                //         },
+
+                //         complete:function()
+                //         {
+                //             $('.preloader').hide();
+                //             $('.loader').hide();
+                //         }
+                //     });
+                // });
 
         },
         complete:function()
@@ -400,7 +464,225 @@ $('#responsibility_center').select2({
         }
     });
 });
+function setupORSComponents(){
+    $('#budget_type').select2({
+        width:"100%",
+        placeholder:trans("Authorization"),
+        ajax: {
+           beforeSend:function()
+           {
+              $('.preloader').show();
+              $('.loader').show();
+           },
+           url: ajax_url('get_budget_type_by_desc'),
+           processResults: function (data) {
+                 return {
+                       results: $.map(data, function (item) {
+                          return {
+                             text: item.description,
+                             id: item.budget_type_id
+                          }
+                       })
+                 };
+              },
+              complete:function()
+              {
+                 $('.preloader').hide();
+                 $('.loader').hide();
+              }
+           }
+      });
+    //ORS DETAILS
+    //get budgetype
+    $('#responsibility_center').select2({
+        width:"100%",
+        placeholder:trans("Resposibility Center"),
+        ajax: {
+           beforeSend:function()
+           {
+              $('.preloader').show();
+              $('.loader').show();
+           },
+           url: ajax_url('get_res_center'),
+           processResults: function (data) {
+                 return {
+                       results: $.map(data, function (item) {
+                          return {
+                             text: item.description,
+                             id: item.res_center_id
+                          }
+                       })
+                 };
+              },
+              complete:function()
+              {
+                 $('.preloader').hide();
+                 $('.loader').hide();
+              }
+           }
+      });
+       //fundsource by budget_id and get pap by fundsource
 
+       $(document).on('select2:select', '#budget_type', function (e) {
+        var el=$(e.target);
+        var data = e.params.data;
+        $.ajax({
+            url:ajax_url('get_fundsource_by_auth'+'?budget_type='+ data.id),
+            beforeSend:function(){
+                $('.preloader').show();
+                $('.loader').show();
+            },
+
+            success:function(fundsrc)
+            {
+                $('#fund_source_id').empty();
+                $.each(fundsrc, function(index, item) {
+                    if(index == 0) {
+                        $('#fund_source_id').append('<option value="">-SELECT-</option>');
+                    }
+                    $('#fund_source_id').append('<option value="' + item.fund_source_id + '">' + item.code + ' - ' + item.description + '</option>');
+                });
+
+                // Load PAP dropdown based on fundsource selection
+                $('#fund_source_id').on('change', function() {
+                    var selectedFundsourceId = $(this).val();
+                    $.ajax({
+                        url:ajax_url('get_paps_by_fundsource'+'?fund_source_id='+ selectedFundsourceId),
+                        beforeSend:function(){
+                            $('.preloader').show();
+                            $('.loader').show();
+                        },
+                        success:function(pap)
+                        {
+                            $('#pap_id').empty();
+                            $.each(pap, function(index, item) {
+                                if(index == 0) {
+                                    $('#pap_id').append('<option value="">-SELECT-</option>');
+                                }
+                                $('#pap_id').append('<option value="' + item.code + '">'+ item.code+'-'  + item.description + '</option>');
+                            });
+                        },
+                        complete:function()
+                        {
+                            $('.preloader').hide();
+                            $('.loader').hide();
+                        }
+                    });
+                });
+
+                // Get sub-allotment number based on PAP selection
+                $('#pap_id').on('change', function() {
+                    var selectedPapId = $(this).val();
+                    $.ajax({
+                        url:ajax_url('get_sub_allotment_by_pap'+'?pap_code='+ selectedPapId),
+                        beforeSend:function(){
+                            $('.preloader').show();
+                            $('.loader').show();
+                        },
+                        success:function(subAllotmentNo)
+                        {   $('#sub_allotment_id').empty();
+                            $.each(subAllotmentNo, function(index, item) {
+                            if(index == 0) {
+                                $('#sub_allotment_id').append('<option value="">-SELECT-</option>');
+                            }
+
+                            $('#sub_allotment_id').append('<option value="' + item.sub_allotment_no + '">'+ item.sub_allotment_no + '</option>');
+                           });
+
+                            // $('#sub_allotment_no').val(subAllotmentNo);
+                        },
+                        error:function(xhr, status, error)
+                        {
+                            console.error('Error:', error); // log the error to console
+                        },
+
+                        complete:function()
+                        {
+                            $('.preloader').hide();
+                            $('.loader').hide();
+                        }
+                    });
+                });
+                 // Get uacs by pap
+                 // DIRI ANG CONDITION IF PAG CLICK SANG PAP UACS KUHAON YA OR SUB ALLOTMENT
+                //  if(selected_chargeto==1)
+                 $('#sub_allotment_id').on('change', function() {
+                    var selectedaclass = $(this).val();
+
+                    $.ajax({
+
+                        url:ajax_url('get_uacs_by_sub_allotment'+'?sub_allotment_no='+ selectedaclass.trimEnd()),
+                        beforeSend:function(){
+                            $('.preloader').show();
+                            $('.loader').show();
+                        },
+                        success:function(allotmentclass)
+                        {   $('#uacs_id').empty();
+                            $.each(allotmentclass, function(index, item) {
+                            if(index == 0) {
+                                $('#uacs_id').append('<option value="">-SELECT-</option>');
+                            }
+
+                            $('#uacs_id').append('<option value="' + item.appro_setup_id + '">'+ item.uacs_subobject_code + '</option>');
+                           });
+
+                            // $('#sub_allotment_no').val(subAllotmentNo);
+                        },
+                        error:function(xhr, status, error)
+                        {
+                            console.error('Error:', error); // log the error to console
+                        },
+
+                        complete:function()
+                        {
+                            $('.preloader').hide();
+                            $('.loader').hide();
+                        }
+                    });
+                });
+                    //  // Get uacs by sub- allotment if any
+                    //  $('#uacs_id').on('change', function() {
+                    //     var selectedPapId = $(this).val();
+                    //     $.ajax({
+                    //         url:ajax_url('get_sub_allotment_by_pap'+'?pap_code='+ selectedPapId),
+                    //         beforeSend:function(){
+                    //             $('.preloader').show();
+                    //             $('.loader').show();
+                    //         },
+                    //         success:function(subAllotmentNo)
+                    //         {   $('#sub_allotment_id').empty();
+                    //             $.each(subAllotmentNo, function(index, item) {
+                    //             if(index == 0) {
+                    //                 $('#sub_allotment_id').append('<option value="">-SELECT-</option>');
+                    //             }
+
+                    //             $('#sub_allotment_id').append('<option value="' + item.appro_setup_id + '">'+ item.sub_allotment_no + '</option>');
+                    //            });
+
+                    //             // $('#sub_allotment_no').val(subAllotmentNo);
+                    //         },
+                    //         error:function(xhr, status, error)
+                    //         {
+                    //             console.error('Error:', error); // log the error to console
+                    //         },
+
+                    //         complete:function()
+                    //         {
+                    //             $('.preloader').hide();
+                    //             $('.loader').hide();
+                    //         }
+                    //     });
+                    // });
+
+            },
+            complete:function()
+            {
+                $('.preloader').hide();
+                $('.loader').hide();
+            }
+        });
+    });
+}
 // //get pap
 // $('#pap_id').select2({
 //     width:"100%",

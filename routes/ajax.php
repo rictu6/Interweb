@@ -30,11 +30,17 @@ Route::get('get_fundsource_by_auth','AjaxController@get_fundsource_by_auth')->na
 //rescenter
 Route::get('get_res_center','AjaxController@get_res_center')->name('get_res_center');
 //pap by funsource select2 slect
+Route::get('get_paps','AjaxController@get_paps')->name('get_paps');
 Route::get('get_paps_by_fundsource','AjaxController@get_paps_by_fundsource')->name('get_paps_by_fundsource');
+Route::get('get_pap_by_id','AjaxController@get_pap_by_id')->name('get_pap_by_id');
 //uacs subobject code
 Route::get('get_uacs_subobject_code','AjaxController@get_uacs_subobject_code')->name('get_uacs_subobject_code');
 //suballotment by pap
 Route::get('get_sub_allotment_by_pap','AjaxController@get_sub_allotment_by_pap')->name('get_sub_allotment_by_pap');
+//uacs by suballotment
+Route::get('get_uacs_by_sub_allotment','AjaxController@get_uacs_by_sub_allotment')->name('get_uacs_by_sub_allotment');
+//uacs by pap
+Route::get('get_uacs_by_pap','AjaxController@get_uacs_by_pap')->name('get_uacs_by_pap');
 
     //delete option
     Route::get('delete_option/{option_id}','AjaxController@delete_option')->name('delete_option');

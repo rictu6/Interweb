@@ -62,7 +62,7 @@
     <label for="pap_id">{{__('PAP')}}</label>
     <select  class="form-control" name="pap_id" id="pap_id">
         @if(isset($saro)&&isset($saro['pap']))
-        <option value="{{$saro['pap']['code']}}" selected>{{$saro['pap']['code']}} - {{$saro['pap']['description']}}
+        <option value="{{$saro['pap']['pap_id']}}" selected>{{$saro['pap']['code']}} - {{$saro['pap']['description']}}
           </option>
           @endif
     </select>

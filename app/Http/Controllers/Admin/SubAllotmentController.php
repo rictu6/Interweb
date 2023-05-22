@@ -104,7 +104,7 @@ public function create()
 
 function store(Request $request){
 
-    //  dd($request);
+    //   dd($request);
 
      $user =     Auth::guard('admin')->user()->first_name;// +' '+ Auth::guard('admin')->user()->last_name;
 
@@ -124,7 +124,7 @@ $appro->processedby=  $user;
 
      foreach ($request->approdtls as $detail) {
         if ($appro->save()) {
-            //dd($request);
+           // dd($request);
             ApproSetupDetail::create([
                 'appro_setup_id' => $appro['appro_setup_id'],
                 'uacs_subobject_code' => $detail['uacs_subobject_code'],

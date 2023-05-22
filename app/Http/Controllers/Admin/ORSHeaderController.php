@@ -12,9 +12,12 @@ use App\Models\BudgetType;
 use App\Models\FundSource;
 use App\Models\ORSDetails;
 use App\Models\FundCluster;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\AllotmentClass;
 use App\Models\ResponsibilityCenter;
+use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Html\Editor\Fields\Date;
 
 class ORSHeaderController extends \Illuminate\Routing\Controller
 {
@@ -37,12 +40,6 @@ class ORSHeaderController extends \Illuminate\Routing\Controller
     {
         try {
 
-        // $fta_count_ongoing = FTA::query()
-        // ->where(function ($query) {
-        //     $query->whereRaw("STR_TO_DATE(datefrom, '%d-%m-%Y') <= NOW()")
-        //         ->whereRaw("STR_TO_DATE(dateto, '%d-%m-%Y') >= DATE(NOW())");
-        // })
-        // ->count();
 
 
             return view('admin.orsheaders.index');
@@ -104,10 +101,82 @@ public function create()
 //         $orsdtl = ORSDetails::with(['responsibilitycenters', 'allotments', 'fundclusters', 'budgettypes', 'fundsources', 'paps', 'uacs'])->get();
 // $ors=ORSHeader::with(['orsdtl','payee']);
 // dd($orsdtl);
+
+
     return view('admin.orsheaders.create');
 }
 function store (Request $request){
-dd ($request);
+// dd ($request);
+$ors =new ORSHeader;
+$ors_last_no=ORSHeader::latest()->first();
+if (empty($ors_last_no)) {
+    $ors_last_no = new ORSHeader();
+    $ors_last_no->ors_hdr_id = 1;
+} else {
+    $ors_last_no->ors_hdr_id += 1;
+}
+$user_id =     Auth::guard('admin')->user()->emp_id;
+ $ors->office_id= $request->office_id;
+//  $ors->type= $request->type;
+//  $ors->ors_id= $request->ors_id;
+$currentDate = Carbon::now()->format('Y-n');
+$fund_source_code=FundSource::where('fund_source_id', '=', $request->fund_source_id)->first();
+
+
+ $ors->ors_date= $currentDate;
+ $ors->particulars= $request->particulars;
+ $ors->budget_type= $request->budget_type;
+ $ors->fund_cluster_id= $request->fund_cluster_id;
+ $ors->fund_source_id= $request->fund_source_id;
+ $ors->uacs_subclass_id= $request->uacs_subclass_id;
+ $ors->payee= $request->payee;
+ $ors->office_id= $request->office_id;
+ $ors->address= $request->address;
+//  $ors->status_code= $request->status_code;
+ $ors->created_by= $user_id;
+ $ors->date_created= $currentDate;
+ $ors->date_received= $request->date_received;
+//  $ors->dv_received_id= $request->dv_received_id;
+//  $ors->cms_submission_history_id= $request->cms_submission_history_id;
+ $ors->payee= $request->payee;
+//  $ors->dv_trust_receipts_id= $request->dv_trust_receipts_id;
+$ors_number=$request->uacs_subclass_id."-".$fund_source_code->code."-".$currentDate."-"."000".$ors_last_no->ors_hdr_id;
+$ors->ors_no= $ors_number;
+// dd($ors_number);
+//dd($request->ORSDetails);
+foreach ($request->ORSDetails as $detail) {
+    if ($ors->save()) {
+
+        ORSDetails::create([
+            'ors_id' => $ors->ors_hdr_id,
+            'allotment_class_id' => $detail['allotment_class_id'],
+            'responsibility_center' => $detail['responsibility_center'],
+            'pap_id' => $detail['pap_id'],
+            'uacs_id' => $detail['uacs_id'],
+            'sub_allotment_id' => $detail['sub_allotment_id'],
+            'amount' => $detail['amount'],
+        ]);
+    }
+ }
+
+
+//  $ors=ORSHeader::findOrFail($request->ors_id);
+//  $ors->orsdetails()->create([
+//      'charge_to'=>$request->charge_to,
+//      'responsibility_center'=>$request->responsibility_center,
+//      'pap_id'=>$request->pap_id,
+//      'uacs_id'=> $request->uacs_id,
+//      'sub_allotment_id'=>$request->sub_allotment_id,
+//      'subsidiary_ledger'=>$request->subsidiary_ledger,
+//      'amount'=>$request->amount,
+//  ]);
+
+ //$save=$ors->save();
+ //if($save){
+     return back()->with('success', 'New ORS has been successfully added to database');
+ ///}else{
+   //  return back()->with('fail', 'Please try again');
+ //}
 }
     function saveors(Request $request){
 

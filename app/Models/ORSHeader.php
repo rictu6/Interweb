@@ -28,9 +28,9 @@ class ORSHeader extends Model
           'created_at',
           'deleted_at'];
 
-          public function orsdetails()
+          public function ORSDetails()
           {
-            return $this->hasMany(ORSDetails::class,'ors_hdr_id','ors_hdr_id');
+            return $this->hasMany(ORSDetails::class,'ors_id','ors_hdr_id');
           }
           public function payee()
           {

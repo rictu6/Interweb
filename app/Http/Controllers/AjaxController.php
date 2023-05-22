@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AllotmentClass;
 use App\Models\ApproSetup;
+use App\Models\ApproSetupDetail;
 use App\Models\BudgetType;
 use App\Models\FundCluster;
 use App\Models\FundSource;
@@ -126,41 +127,88 @@ class AjaxController extends Controller
     public function get_sub_allotment_by_pap(Request $request){
         if(isset($request->pap_code))
     {
-       // $allotmentclasses=AllotmentClass::where('description','like','%'.$request->term.'%' && 'uacs_classification_id','=',5)->get();
-        $paps=ApproSetup::where('pap_code','=',$request->pap_code )->get();
+
+        $paps=ApproSetup::where('pap_code','=',$request->pap_code )->get();//value pass is pap_id
 
     }
 
     return response()->json($paps);
+    }
+    //uacs by suballotment
+    public function get_uacs_by_sub_allotment(Request $request)
+    {
+        if (isset($request->sub_allotment_no)) {
+            $appro_setup = ApproSetup::where('sub_allotment_no', '=', $request->sub_allotment_no)->first();
+            if ($appro_setup) {
+                $uacs = ApproSetupDetail::where('appro_setup_id', '=', $appro_setup->appro_setup_id)->get();
+               // $uacs= UACS::whereIn('code','=',$detail->uacs_subobject_code)->get();
+            } else {
+                $uacs = [];
+            }
+        }
+
+        return response()->json($uacs);
+    }
+      //uacs by pap
+      public function get_uacs_by_pap(Request $request){
+        if(isset($request->pap_code))
+    {
+        $appro_setup=ApproSetup::where('pap_code','=',$request->pap_code && 'allotment_class','=',1)->get();
+        $uacs=ApproSetupDetail::where('appro_setup_id','=',$appro_setup->appro_setup_id )->get();
+
+    }
+    return response()->json($uacs);
     }
     //pap
-    public function load_paps_auth_fundsource_chargeto(Request $request)
-    {
 
-    if(isset($request->budget_type))
-    {
-       // $allotmentclasses=AllotmentClass::where('description','like','%'.$request->term.'%' && 'uacs_classification_id','=',5)->get();
-        $paps=PAP::where('budget_type','=',$request->budget_type && charge_to)->get();
+public function get_pap_by_id(Request $request)
+{
 
-    }
+//if(isset($request->pap_id))
+//{
+    $papIds = explode(',', $request->input('pap_ids'));
+    $paps = PAP::whereIn('pap_id', $papIds)->get();
 
-    return response()->json($paps);
+
+//}
+
+return response()->json($paps);
 }
 
 //pap by fundsource
 
+public function get_paps(Request $request)
+{
+
+if(isset($request->fund_source_id))
+{
+
+    //$paps=PAP::where('fund_source_id','=',$request->fund_source_id )->get();
+    $paps = ApproSetup::where('fund_source_id', $request->fund_source_id)
+            ->where('allotment_class_id',     $request->allotment_class_id)
+            ->where('budget_type', $request->budget_type)
+
+
+           ->get();
+           //$paps2=PAP::where('pap_id','=',$request->$paps->pap_code )->get();
+}
+
+return response()->json($paps);
+}
 public function get_paps_by_fundsource(Request $request)
 {
 
 if(isset($request->fund_source_id))
 {
-   // $allotmentclasses=AllotmentClass::where('description','like','%'.$request->term.'%' && 'uacs_classification_id','=',5)->get();
+
     $paps=PAP::where('fund_source_id','=',$request->fund_source_id )->get();
+
 
 }
 
 return response()->json($paps);
 }
+
     //get_fund_cluster_by_desc
     public function get_fund_cluster_by_desc(Request $request)
     {
@@ -228,13 +276,13 @@ public function get_res_center(Request $request)
 //get uacs subobject code
 public function get_uacs_subobject_code(Request $request)
 {
-    if(isset($request->term))
-    {
-        $uacs=UACS::where('description','like','%'.$request->term.'%')->get();
-    }
-    else{
-        $uacs=UACS::All();
-    }
+    // if(isset($request->term))
+    // {
+    //     $uacs=ApproSetupDetail::where('description','like','%'.$request->term.'%')->get();
+    // }
+    // else{
+        $uacs=ApproSetupDetail::All();
+    // }
 
     return response()->json($uacs);
 }

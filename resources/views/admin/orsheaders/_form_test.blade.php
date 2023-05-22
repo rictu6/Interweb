@@ -7,21 +7,21 @@
 <div class="row">
     <div class="col-5">
         <label for="">ORS No</label>
-        <input disabled="disabled" type="text" class="form-control" id="">
+        <input disabled="disabled" type="text" class="form-control" name="ors_no" id="ors_no">
     </div>
     <div class="col-4">
         <label for="">ORS Date</label>
-        <input disabled="disabled" type="date" class="form-control" id="" value="{{ date('MM/DD/YYYY') }}">
+        <input disabled="disabled" type="date" class="form-control" name="ors_date" id="ors_date" value="{{ date('MM/DD/YYYY') }}">
     </div>
     <div class="col-3">
         <label for="">Date Received</label>
-        <input type="date" class="form-control" id="" placeholder="Select Date Received">
+        <input type="date" class="form-control" name ="date_received"id="" placeholder="Select Date Received">
     </div>
 </div>
 <div class="row">
     <div class="col-4">
-        <label for="payee_id">{{__('Payee')}}</label>
-        <select class="form-control" name="payee_id" id="payee_id">
+        <label for="payee">{{__('Payee')}}</label>
+        <select class="form-control" name="payee" id="payee_id">
             @if(isset($ors)&&isset($ors['payee']))
             <option value="{{$ors['payee']['payee_id']}}" selected>{{$ors['payee']['name']}}
             </option>
@@ -30,16 +30,16 @@
     </div>
     <div class="col-4">
         <label for="">Office</label>
-        <input type="text" class="form-control" id="" placeholder="">
+        <input type="text" class="form-control" name="office_id" id="" placeholder="">
     </div>
     <div class="col-4">
         <label for="">Address</label>
-        <input type="text" class="form-control" id="" placeholder="">
+        <input type="text" class="form-control" name="address" id="" placeholder="">
     </div>
 </div>
 <div class="form-group">
     <label for="">Particulars</label>
-    <textarea type="text" class="form-control" id="" placeholder=""></textarea>
+    <textarea type="text" class="form-control" name="particulars" id="" placeholder=""></textarea>
 </div>
 
 <div class="row">
@@ -47,7 +47,7 @@
         <label for="uacs_subclass_id">{{__('Allotment Class')}}</label>
         <select class="form-control" name="uacs_subclass_id" id="uacs_subclass_id">
             @if(isset($ors)&&isset($ors['allotmentclass']))
-            <option value="{{$ors['allotmentclass']['uacs_subclass_id']}}" selected>{{$ors['allotmentclass']['code']}} -
+            <option value="{{$ors['allotmentclass']['cluster_code']}}" selected>{{$ors['allotmentclass']['cluster_code']}} -
                 {{$ors['allotmentclass']['description']}}
             </option>
             @endif
@@ -106,6 +106,7 @@
 
                 </ul>
             </div>
+
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-12" style="overflow-x: auto">
@@ -137,10 +138,10 @@
                                             {{-- <label for="res_center_id">{{__('Responsibility Center')}}</label> --}}
                                             <select class="form-control" name="ORSDetails[0][responsibility_center]"
                                                 id="responsibility_center">
-                                                @if(isset($ors)&&isset($ors['orsdetails']))
-                                                <option value="{{$ors['orsdetails']['responsibilitycenter']}}" selected>
-                                                    {{$ors['orsdetails']['responsibilitycenter']['code']}} -
-                                                    {{$ors['orsdetails']['responsibilitycenter']['description']}}
+                                                @if(isset($ors)&&isset($ors['ORSDetails']))
+                                                <option value="{{$ors['ORSDetails']['responsibilitycenter']}}" selected>
+                                                    {{$ors['ORSDetails']['responsibilitycenter']['code']}} -
+                                                    {{$ors['ORSDetails']['responsibilitycenter']['description']}}
                                                 </option>
                                                 @endif
                                             </select>
@@ -151,11 +152,11 @@
 
                                             {{-- <label for="charge_to">{{__('Charge to')}}</label> --}}
 
-                                            <select class="form-control" name="charge_to" placeholder="{{__(' to')}}" id="charge_to" required>
+                                            <select class="form-control" name="ORSDetails[0][allotment_class_id]" placeholder="{{__(' to')}}" id="allotment_class_id" required>
                                                 <option value="" disabled selected>{{__('CHARGE TO')}}</option>
-                                                <option value="1" {{ old('charge_to') =="ALLOTMENT"? "selected" : '' }}>
+                                                <option value="1" {{ old('charallotment_class_idge_to') =="ALLOTMENT"? "selected" : '' }}>
                                                         {{__('ALLOTMENT')}}</option>
-                                                <option value="2" {{ old('charge_to') =="SUB- ALLOTMENT"? "selected" : '' }}>
+                                                <option value="2" {{ old('allotment_class_id') =="SUB- ALLOTMENT"? "selected" : '' }}>
                                                         {{__('SUB- ALLOTMENT')}}</option>
 
                                             </select>
@@ -166,10 +167,10 @@
 
                                             {{-- <label for="ORSDetails[0][pap_id]">{{__('PAP')}}</label> --}}
                                             <select class="form-control" name="ORSDetails[0][pap_id]" id="pap_id">
-                                                @if(isset($ors)&&isset($ors['pap']))
-                                                <option value="{{$ors['orsdetails']['pap_id']}}" selected>
-                                                    {{$ors['orsdetails']['pap']['code']}} -
-                                                    {{$ors['orsdetails']['pap']['description']}}
+                                                @if(isset($ors)&&isset($ors['ORSDetails']))
+                                                <option value="{{$ors['ORSDetails']['pap_id']}}" selected>
+                                                    {{$ors['ORSDetails']['pap']['code']}} -
+                                                    {{$ors['ORSDetails']['pap']['description']}}
                                                 </option>
                                                 @endif
                                             </select>
@@ -180,9 +181,9 @@
 
                                             {{-- <label for="ORSDetails[0][pap_id]">{{__('Sub-Allotment')}}</label> --}}
                                             <select class="form-control" name="ORSDetails[0][sub_allotment_id]" id="sub_allotment_id">
-                                                @if(isset($ors)&&isset($ors['orsdetails']))
-                                                <option value="{{$ors['orsdetails']['sub_allotment_id']}}" selected>
-                                                    {{$ors['orsdetails']['appro_sub_allotment']['sub_allotment_no']}}
+                                                @if(isset($ors)&&isset($ors['ORSDetails']))
+                                                <option value="{{$ors['ORSDetails']['sub_allotment_id']}}" selected>
+                                                    {{$ors['ORSDetails']['appro_sub_allotment']['sub_allotment_no']}}
                                                 </option>
                                                 @endif
                                             </select>
@@ -193,9 +194,9 @@
 
                                             {{-- <label for="ORSDetails[0][pap_id]">{{__('UACS')}}</label> --}}
                                             <select class="form-control" name="ORSDetails[0][uacs_id]" id="uacs_id">
-                                                @if(isset($ors)&&isset($ors['orsdetails']))
-                                                <option value="{{$ors['orsdetails']['uacs_id']}}" selected>
-                                                    {{$ors['orsdetails']['approsetupdtl_uacs']['uacs_subobject_code']}}
+                                                @if(isset($ors)&&isset($ors['ORSDetails']))
+                                                <option value="{{$ors['ORSDetails']['uacs_id']}}" selected>
+                                                    {{$ors['ORSDetails']['approsetupdtl_uacs']['uacs_subobject_code']}}
                                                 </option>
                                                 @endif
                                             </select>
@@ -204,7 +205,7 @@
                                     <td>
                                         <div class="form-group">
 
-                                         <input type="number" class="form-control" name="component[${count}][amount]" placeholder="{{__('Amount')}}"  required>
+                                         <input type="number" class="form-control" name="ORSDetails[0][amount]" placeholder="{{__('Amount')}}"  required>
                                          <span class="input-group-text">
                                                       {{get_currency()}}
                                                   </span>

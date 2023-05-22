@@ -200,7 +200,7 @@ $('#budget_type').select2({
                             if(index == 0) {
                                 $('#pap_id').append('<option value="">-SELECT-</option>');
                             }
-                            $('#pap_id').append('<option value="' + item.code + '">'+ item.code+'-'  + item.description + '</option>');
+                            $('#pap_id').append('<option value="' + item.pap_id + '">'+ item.code+'-'  + item.description + '</option>');
                         });
                     },
                     complete:function()
@@ -318,7 +318,7 @@ $('#budget_type_id').select2({
           }
        }
   });
-//get uacs_subobject_code
+//get uacs_subobject_code  sa appro details all
 $('#uacs_subobject_code').select2({
     width:"100%",
     placeholder:trans("UACS"),
@@ -333,8 +333,8 @@ $('#uacs_subobject_code').select2({
              return {
                    results: $.map(data, function (item) {
                       return {
-                         text: item.description,
-                         id: item.uacs_subobject_id
+                         text: item.uacs_subobject_code,
+                         id: item.uacs_subobject_code
                       }
                    })
              };
@@ -346,6 +346,8 @@ $('#uacs_subobject_code').select2({
           }
        }
   });
+
+
   //get uacs_subobject_code
 $('#component_2_uacs_subobject_code').select2({
     width:"100%",
