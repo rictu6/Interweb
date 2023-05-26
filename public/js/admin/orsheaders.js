@@ -122,9 +122,9 @@ var orsNoValue = uacs_subclass_Value+'-'  + fundSourceCode + '-' + formattedDate
 $('#ors_no').val(orsNoValue);
  }
 
-function trigger_get_pAp(){
+function trigger_get_pAp(charge_to){
     $.ajax({
-        url:ajax_url('get_paps'+'?fund_source_id='+ dynamic_fund_source+ '&allotment_class_id=' + dynamic_chargeto+ '&budget_type=' + dynamic_budget_type),
+        url:ajax_url('get_paps'+'?fund_source_id='+ dynamic_fund_source+ '&allotment_class_id=' + charge_to+ '&budget_type=' + dynamic_budget_type),
         beforeSend:function(){
             $('.preloader').show();
             $('.loader').show();
@@ -144,17 +144,17 @@ function trigger_get_pAp(){
         url:ajax_url('get_pap_by_id'+'?pap_ids=' + papIds),
         success: function(pap_data) {
             // Process the $paps data as needed
-            $('#pap_id').empty();
             $.each(pap_data, function(index, item) {
                 if(index == 0) {
-                    $('#pap_id').append('<option value="">-SELECT-</option>');
+            $("#pap_id").empty();
+            $('#pap_id').append('<option value="">-SELECT-</option>');
                 }
 
 
-                 $('#pap_id').append('<option value="' + item.pap_id + '">'+ item.code + "-"  + item.description +'</option>');
+                 $('#pap_id'+count).append('<option value="' + item.pap_id + '">'+ item.code + "-"  + item.description +'</option>');
 
             });
-            console.log(pap_data);
+            console.log(count);
             //pap_datas=pap_data;
         }
     });
@@ -186,10 +186,24 @@ $('#datefrom, #dateto').datepicker({
     yearRange: '-100:+0'
 });
 //assign value to dynamic allotment class
-$('#allotment_class_id').on('change', function() {
+//$('#allotment_class_id').on('change', function() {
+$(document).on('change', '.allotment_class_id', function() {
     var selectedChargeto = $(this).val();
-dynamic_chargeto=selectedChargeto;
-trigger_get_pAp();
+//dynamic_chargeto=selectedChargeto;
+trigger_get_pAp(selectedChargeto);
+console.log(count);
+if(dynamic_chargeto==1){
+ // Empty the selection of the "suballotment" dropdown
+ $('#sub_allotment_id').val('');
+ $('#uacs_id').val('');
+ // Disable the "suballotment" dropdown
+ $('#sub_allotment_id').prop('disabled', true);
+}else{
+
+ // Disable the "suballotment" dropdown
+ $('#sub_allotment_id').prop('disabled', false);
+ $('#uacs_id').val('');
+}
 });
 
 // Validate date range
@@ -328,6 +342,9 @@ $('#responsibility_center').select2({
     var el=$(e.target);
     var data = e.params.data;
 dynamic_budget_type=data.id;
+$('#sub_allotment_id').val('');
+$('#uacs_id').val('');
+$('#pap_id').val('');
     $.ajax({
         url:ajax_url('get_fundsource_by_auth'+'?budget_type='+ data.id),
         beforeSend:function(){
@@ -348,13 +365,16 @@ dynamic_budget_type=data.id;
             $('#fund_source_id').on('change', function() {
                 var selectedFundsourceId = $(this).val();
                 dynamic_fund_source=selectedFundsourceId;
-
+                $('#sub_allotment_id').val('');
+                $('#uacs_id').val('');
                 trigger_get_pAp();
             });
 
             // Get sub-allotment number based on PAP selection
             $('#pap_id').on('change', function() {
                 var selectedPapId = $(this).val();
+                $('#sub_allotment_id').val('');
+$('#uacs_id').val('');
                 $.ajax({
                     url:ajax_url('get_sub_allotment_by_pap'+'?pap_code='+ selectedPapId),
                     beforeSend:function(){
@@ -571,7 +591,7 @@ function setupORSComponents(){
                 });
 
                 // Get sub-allotment number based on PAP selection
-                $('#pap_id').on('change', function() {
+                $('pap_id').on('change', function() {
                     var selectedPapId = $(this).val();
                     $.ajax({
                         url:ajax_url('get_sub_allotment_by_pap'+'?pap_code='+ selectedPapId),
@@ -780,5 +800,8 @@ function setupORSComponents(){
         }
     });
 });
+
+//componenst
+
 
 })(jQuery);
