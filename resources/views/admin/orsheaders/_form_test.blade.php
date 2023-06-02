@@ -176,7 +176,7 @@
                                     <div class="form-group">
 
                                         {{-- <label for="ORSDetails[0][pap_id]">{{__('Sub-Allotment')}}</label> --}}
-                                        <select class="form-control sub_allotment_id" name="ORSDetails[0][sub_allotment_id]" id="sub_allotment_id{{$count}}">
+                                        <select class="form-control sub_allotment_id" name="ORSDetails[0][sub_allotment_id]" id="sub_allotment_id">
                                             @if(isset($ors)&&isset($ors['ORSDetails']))
                                             <option value="{{$ors['ORSDetails']['sub_allotment_id']}}" selected>
                                                 {{$ors['ORSDetails']['appro_sub_allotment']['sub_allotment_no']}}
@@ -189,7 +189,7 @@
                                     <div class="form-group">
 
 
-                                        <select class="form-control uacs_id" name="ORSDetails[0][uacs_id]" id="uacs_id{{$count}}">
+                                        <select class="form-control uacs_id" name="ORSDetails[0][uacs_id]" id="uacs_id">
                                             @if(isset($ors)&&isset($ors['ORSDetails']))
                                             <option value="{{$ors['ORSDetails']['uacs_id']}}" selected>
                                                 {{$ors['ORSDetails']['approsetupdtl_uacs']['uacs_subobject_code']}}
