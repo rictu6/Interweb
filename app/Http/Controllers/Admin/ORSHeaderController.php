@@ -91,7 +91,7 @@ class ORSHeaderController extends \Illuminate\Routing\Controller
 public function create()
 {
 //     $payee=Payee::all();
-//         $responsibilitycenters=ResponsibilityCenter::all();
+         $rescenter=ResponsibilityCenter::all();
 //         $allotments=AllotmentClass::all();
 //         $fundclusters=FundCluster::all();
 //         $budgettypes=BudgetType::all();

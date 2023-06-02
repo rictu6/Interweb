@@ -506,8 +506,13 @@ $('.add_component').on('click', function() {
 
                                             <select class="form-control responsibility_center" name="ORSDetails[${count}][responsibility_center]"
                                                 id="responsibility_center${count}">
-                                                <option value=""  disabled selected>-- SELECT--</option>
-                                                <option value="${rcOption}" selected>${rcOption}</option>
+                                                <option value=""  disabled selected>- SELECT-</option>
+                                                @foreach($rescenters as $rescenter)
+                                                @php
+                                                    $selected = (${rcOption} == $rescenter) ? 'selected' : '';
+                                                @endphp
+                                                <option value="{{ $rescenter }}" {{ $selected }}>{{ $rescenter }}</option>
+                                            @endforeach
 
                                             </select>
       </td>
