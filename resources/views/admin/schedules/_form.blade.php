@@ -110,16 +110,11 @@
     <label>{{__('Select Attendee/s')}}</label>
     <select name="roles[]" id="roles_assign" placeholder="{{__('Select Attendee/s')}}" class="form-control select2" multiple required>
         @foreach($roles as $role)
-             <option  value="{{$role['emp_id']}}"  @if(isset($role)&&$role['ateendee_name']=='last_name') selected @endif>{{$role['last_name']}}, {{$role['first_name']}} {{$role['middle_name']}}</option>
+             <option  value="{{$role['emp_id']}}">{{$role['last_name']}}, {{$role['first_name']}} {{$role['middle_name']}}</option>
         @endforeach
      </select>
 
-{{-- 
-     <select name="currency" id="currency" class="form-control select2">@if(isset($role)&&$role['ateendee_name']=='last_name')  selected @endif
-        @foreach($currencies as $currency)
-          <option value="{{$currency['iso']}}" @if($settings["currency"]==$currency['iso']) selected @endif>{{$currency['name']}}</option>
-        @endforeach
-    </select>  --}}
+
 
 
 

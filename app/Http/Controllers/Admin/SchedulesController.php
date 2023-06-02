@@ -129,7 +129,7 @@ class SchedulesController extends Controller
                 }
             }
         
-
+dd($request);
      
     
             session()->flash('success','Schedule saved successfully');
