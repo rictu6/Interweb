@@ -63,6 +63,11 @@ Route::get('get_uacs_by_pap','AjaxController@get_uacs_by_pap')->name('get_uacs_b
     Route::post('create_division','AjaxController@create_division')->name('create_division');
 
 
+    //get schedules
+    Route::get('get_schedules','AjaxController@get_schedules')->name('get_schedules');
+    //create schedules
+    Route::post('create_schedule','AjaxController@create_schedule')->name('create_schedule');
+
     //get nationality
     Route::get('get_nationalities','AjaxController@get_nationalities')->name('get_nationalities');
     //create nationality
@@ -87,10 +92,6 @@ Route::get('get_uacs_by_pap','AjaxController@get_uacs_by_pap')->name('get_uacs_b
     Route::post('create_agenda','AjaxController@create_agenda')->name('create_agenda');
 
 
-    //get timetables
-    Route::get('get_timetables','AjaxController@get_timetables')->name('get_timetables');
-    //create timetables
-    Route::post('create_timetable','AjaxController@create_timetable')->name('create_timetable');
 
       //get permission
       Route::get('get_permissions','AjaxController@get_permissions')->name('get_permissions');
@@ -104,6 +105,7 @@ Route::get('get_uacs_by_pap','AjaxController@get_uacs_by_pap')->name('get_uacs_b
 
     //get positions
     Route::get('get_positions','AjaxController@get_positions')->name('get_positions');
+    Route::get('get_attendees_by_pos','AjaxController@get_attendees_by_pos')->name('get_attendees_by_pos');
     //create positions
     Route::post('create_position','AjaxController@create_position')->name('create_position');
 

@@ -20,7 +20,8 @@ class FilesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('can:view_file',     ['only' => ['index', 'show','ajax','file_list']]);
+        $this->middleware('can:view_legal_dash',     ['only' => ['index']]);
+        $this->middleware('can:view_file',     ['only' => ['show','ajax','file_list']]);
         $this->middleware('can:create_file',   ['only' => ['create', 'store']]);
         $this->middleware('can:edit_file',     ['only' => ['edit', 'update','fileview']]);
         $this->middleware('can:download_file',     ['only' => ['download']]);
@@ -38,8 +39,22 @@ class FilesController extends Controller
 
         try
         {
-            $files = File::count();
-            return view('admin.files.index',compact('files'));
+           
+            $files_count_barangaymatters = File::where('cat_id', '2')->count();
+            $files_count_conflictofinterest = File::where('cat_id', '3')->count();
+            $files_count_benefitsofbrgyoff = File::where('cat_id', '4')->count();
+            $files_count_adminprocess = File::where('cat_id', '5')->count();
+            $files_count_benefitslocaloff = File::where('cat_id', '8')->count();
+            $files_count_na = File::where('cat_id', '9')->count();
+
+            $files_count_provlevelconcerns = File::where('cat_id', '10')->count();
+            $files_count_lguconcerns = File::where('cat_id', '11')->count();
+            $files_count_barangaylevelconcerns = File::where('cat_id', '12')->count();
+            return view('admin.files.index',compact('files_count_barangaymatters','files_count_conflictofinterest',
+            'files_count_benefitsofbrgyoff','files_count_adminprocess','files_count_benefitslocaloff','files_count_na','files_count_provlevelconcerns','files_count_lguconcerns','files_count_barangaylevelconcerns'));
+
+
+
         } catch (\Exception $th) {
 
             dd($th->getMessage());

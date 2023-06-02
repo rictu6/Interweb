@@ -422,20 +422,7 @@ public function delete_uacs($dtl_id)
         return response()->json($agendas);
 
     }
-    public function get_timetable_by_desc(Request $request)
-    {
-        if(isset($request->term))
-
-        {
-            $timetables=Timetable::where('weekday','like','%'.$request->term.'%')->get();
-        }
-        else{
-            $timetables=Timetable::All();
-        }
-
-        return response()->json($timetables);
-
-    }
+   
     public function get_permission_by_desc(Request $request)
     {
         if(isset($request->term))
@@ -490,6 +477,16 @@ public function delete_uacs($dtl_id)
         if(isset($request->div_id))
         {
             $secs=Section::query()->where('div_id','=',$request->div_id)->get();
+        }
+
+        return response()->json($secs);
+
+    }
+    public function get_attendees_by_pos(Request $request)
+    {//wala sya ng gana pag omit ko muncit::all kay didti sya ga dirirtso after ka if condition
+        if(isset($request->pos_id))
+        {
+            $attendees=User::query()->where('pos_id','=',$request->pos_id)->get();
         }
 
         return response()->json($secs);
@@ -758,21 +755,7 @@ public function delete_uacs($dtl_id)
 
         return response()->json($agendas);
     }
-    public function get_timetables(Request $request)
-    {
-        if(isset($request->term))
-        {
-            $timetables=Timetable::where('weekday','like','%'.$request->term.'%')->get();
-
-
-        }
-        else{
-            $timetables=Timetable::All();
-        }
-
-        return response()->json($timetables);
-    }
-
+ 
 
     public function get_permissions(Request $request)
     {

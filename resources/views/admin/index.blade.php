@@ -275,20 +275,6 @@
                 class="fas fa-arrow-circle-right"></i></a>
     </div>
 </div>
-<div class="col-lg-2 col-6">
-    <!-- small box -->
-    <div class="small-box bg-info">
-        <div class="inner">
-            <h3>{{$timetables_count}}</h3>
-            <p>{{__('Time Table')}}</p>
-        </div>
-        <div class="icon">
-            <i class="fas fa-file-contract nav-icon"></i>
-        </div>
-        <a href="{{route('admin.timetables.index')}}" class="small-box-footer">{{__('More info')}} <i
-                class="fas fa-arrow-circle-right"></i></a>
-    </div>
-</div>
 
 <!-- today statistics -->
 

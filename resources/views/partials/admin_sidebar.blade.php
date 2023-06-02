@@ -91,7 +91,19 @@
 
                 </li>
                 @endcan
+                {{-- @can('view_pms') --}}
+                <li class="nav-item">
 
+                        <a href="https://pms.region6.dilg.gov.ph/" target="_blank" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>{{__('PMS')}}
+                            </p>
+
+
+                        </a>
+
+                </li>
+                {{-- @endcan --}}
                 @can('view_fta')
                 <li class="nav-item">
                     <a href="{{route('admin.ftas.index')}}" class="nav-link" id="ftas">
@@ -102,15 +114,103 @@
                 </li>
                 @endcan
 
-                @can('view_legal')
+              
                 <li class="nav-item">
-                    <a href="{{route('admin.files.index')}}" class="nav-link" id="legalopinion">
+                    {{-- <a href="{{route('admin.files.index')}}" class="nav-link" id="legalopinion">
                         <i class="far fa-circle nav-icon"></i>
                         <p>{{__('LEGAL OPINION')}}
                         </p>
+                    </a> --}}
+                    <a href="#" class="nav-link" id="legalopinion">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{__('LEGAL OPINION')}}
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
                     </a>
+                  
+                    <ul class="nav nav-treeview"> 
+                         @can('view_legal_dash')
+                        <li class="nav-item">
+                            <a href="{{route('admin.files.index')}}" class="nav-link">
+                                <i class="far fa-square nav-icon"></i>
+                                <p>{{__('DASHBOARD')}}
+                                </p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('view_legal')
+                        <li class="nav-item">
+                            <a href="{{route('admin.file_list')}}" class="nav-link">
+                                <i class="far fa-square nav-icon"></i>
+                                <p>{{__('INITIATE LEGAL')}}
+                                </p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
                 </li>
-                @endcan
+
+                  {{-- @can('view_schedule') --}}
+                  <li class="nav-item">
+                    <a href="#" class="nav-link" id="schedule">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{__('SCHEDULE')}}
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+
+                        {{-- @can('view_agenda') --}}
+                        <li class="nav-item">
+                            <a href="{{route('admin.schedules.index')}}" class="nav-link">
+                                <i class="far fa-square nav-icon"></i>
+                                <p>{{__('DASHBOARD')}}
+                                </p>
+                            </a>
+                        </li>
+                        {{-- @endcan --}}
+
+                        {{-- @can('view_timetable') --}}
+                        <li class="nav-item">
+                            <a href="{{route('admin.schedule_list')}}" class="nav-link">
+                                <i class="far fa-square nav-icon"></i>
+                                <p>{{__('PLAN A SCHEDULE')}}
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                           
+                                <a href="{{route('admin.calendar_show')}}" class="nav-link">
+                                <i class="far fa-square nav-icon"></i>
+                                {{-- calendar_show --}}
+                                <p>{{__('CALENDAR')}}
+                                </p>
+                            </a>
+                        </li>
+                        {{-- @endcan --}}
+
+                       {{--  @can('view_calendar')
+                        <li class="nav-item">
+                            <a href="{{route('admin.divisions.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>{{__('CALENDAR')}}
+                                </p>
+                            </a>
+                        </li>
+                        @endcan --}}
+                    </ul>
+
+
+
+
+
+
+
+
+
+                </li>
+
+
                 @can('view_orsheader')
                 <li class="nav-item">
                     <a href="{{route('admin.orsheaders.index')}}" class="nav-link" id="orsheaders">
@@ -120,7 +220,8 @@
                     </a>
                 </li>
                 @endcan
-                @can('view_schedule','view_agenda','view_timetable','view_calendar')
+                
+                {{-- @can('view_schedule','view_agenda','view_timetable','view_calendar')
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-list"></i>
@@ -163,7 +264,7 @@
 
                     </ul>
                 </li>
-                @endcan
+                @endcan --}}
 
 
 

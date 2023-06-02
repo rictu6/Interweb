@@ -133,7 +133,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserRole::class,'user_id','emp_id');
     }
-
+  
     public function getDescriptionForEvent(string $eventName): string
     {
         return "User was {$eventName}";

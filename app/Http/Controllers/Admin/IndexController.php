@@ -44,7 +44,6 @@ class IndexController extends Controller
         // $filecategories_count=FileCategory::count();
         // $files_count=File::count();
 
-        $timetables_count=Timetable::count();
         $agendas_count=Agenda::count();
        
          $users_count=User::count();
@@ -76,7 +75,7 @@ class IndexController extends Controller
             'divisions_count',
 
             'agendas_count',
-            'timetables_count',
+            
             'modules_count',
            
             'provinces_count',

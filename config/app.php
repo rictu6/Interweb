@@ -161,7 +161,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+       
         /*
          * Package Service Providers...
          */
@@ -182,7 +182,7 @@ return [
         niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
         LaravelQRCode\Providers\QRCodeServiceProvider::class,     
         Maatwebsite\Excel\ExcelServiceProvider::class,
-
+        MaddHatter\LaravelFullcalendar\ServiceProvider::class,
 
     ],
 
@@ -238,7 +238,7 @@ return [
         'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class,
         'QRCode' => LaravelQRCode\Facades\QRCode::class,   
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-  
+        'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
 
     ],
 

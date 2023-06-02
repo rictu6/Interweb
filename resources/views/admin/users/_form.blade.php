@@ -230,7 +230,7 @@
                     <button type="button" class="btn btn-warning btn-sm float-right" data-toggle="modal" data-target="#offic
                             e_modal"><i class="fa fa-exclamation-triangle"></i> {{__('Not Listed ?')}}</button>
                     @endcan --}}
-                    <select class="form-control" name="office_id" id="office">
+                    <select class="form-control" name="office_id" id="office" required>
                         @if(isset($user)&&isset($user['office']))
                         <option value="{{$user['office']['office_id']}}" selected>{{$user['office']['office_desc']}}
                         </option>
@@ -280,7 +280,7 @@
                         data-target="#division_modal"><i class="fa fa-exclamation-triangle"></i>
                         {{__('Not Listed ?')}}</button>
                     @endcan --}}
-                    <select class="form-control" name="div_id" id="division">
+                    <select class="form-control" name="div_id" id="division" required>
                         @if(isset($user)&&isset($user['division']))
                         <option value="{{$user['division']['div_id']}}" selected>{{$user['division']['acronym']}}
                         </option>
@@ -316,7 +316,7 @@
                         data-target="#empstatus_modal"><i class="fa fa-exclamation-triangle"></i>
                         {{__('Not Listed ?')}}</button>
                     @endcan --}}
-                    <select class="form-control" name="emp_status_id" id="empstatus">
+                    <select class="form-control" name="emp_status_id" id="empstatus" required>
                         @if(isset($user)&&isset($user['empstatus']))
                         <option value="{{$user['empstatus']['emp_status_id']}}" selected>
                             {{$user['empstatus']['stat_desc']}}
@@ -333,7 +333,7 @@
                         data-target="#position_modal"><i class="fa fa-exclamation-triangle"></i>
                         {{__('Not Listed ?')}}</button>
                     @endcan --}}
-                    <select class="form-control" name="pos_id" id="position">
+                    <select class="form-control" name="pos_id" id="position" required>
                         @if(isset($user)&&isset($user['position']))
                         <option value="{{$user['position']['pos_id']}}" selected>{{$user['position']['pos_desc']}}
                         </option>
