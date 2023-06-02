@@ -122,104 +122,100 @@
                             </thead>
                             <tbody class="items">
                                 @php
-                                $count=0;
-                                $option_count=0;
+                                $count = 0;
                                 @endphp
-                                {{-- @if(isset($ors))
-                                @foreach($ors['orsdetails'] as $orsdtl) --}}
+                                @if(isset($ors) && isset($ors['orsdetails']) && !empty($ors['orsdetails']))
+                                @foreach($ors['orsdetails'] as $orsdtl)
                                 @php
                                 $count++;
                                 @endphp
-                               {{-- num="{{$count}}"  test_id="{{$component['id']}}" --}}
-                               {{-- dtl_id="{{$orsdtl['ors_dtl_id']}}" --}}
-                               <tr>
-                                    <td>
-                                        <div class="form-group">
-                                            {{-- <label for="res_center_id">{{__('Responsibility Center')}}</label> --}}
-                                            <select class="form-control" name="ORSDetails[0][responsibility_center]"
-                                                id="responsibility_center">
-                                                @if(isset($ors)&&isset($ors['ORSDetails']))
-                                                <option value="{{$ors['ORSDetails']['responsibilitycenter']}}" selected>
-                                                    {{$ors['ORSDetails']['responsibilitycenter']['code']}} -
-                                                    {{$ors['ORSDetails']['responsibilitycenter']['description']}}
-                                                </option>
-                                                @endif
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
+                               <tr num="{{$count}}" dtl_id="{{$orsdtl['ors_dtl_id']}}">
+                                <td>
+                                    <div class="form-group">
+                                        {{-- <label for="res_center_id">{{__('Responsibility Center')}}</label> --}}
+                                        <select class="form-control responsibility_center" name="ORSDetails[0][responsibility_center]"
+                                            id="responsibility_center">
+                                            @if(isset($ors)&&isset($ors['ORSDetails']))
+                                            <option value="{{$ors['ORSDetails']['responsibilitycenter']}}" selected>
+                                                {{$ors['ORSDetails']['responsibilitycenter']['code']}} -
+                                                {{$ors['ORSDetails']['responsibilitycenter']['description']}}
+                                            </option>
+                                            @endif
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
 
-                                            {{-- <label for="charge_to">{{__('Charge to')}}</label> --}}
+                                        <select class="form-control allotment_class_id" name="ORSDetails[0][allotment_class_id]" placeholder="{{__(' to')}}"
+                                        id="allotment_class_id{{$count}}" required>
+                                            <option value="" disabled selected>{{__('CHARGE TO')}}</option>
+                                            <option value="1" {{ old('allotment_class_id') =="ALLOTMENT"? "selected" : '' }}>
+                                                    {{__('ALLOTMENT')}}</option>
+                                            <option value="2" {{ old('allotment_class_id') =="SUB- ALLOTMENT"? "selected" : '' }}>
+                                                    {{__('SUB- ALLOTMENT')}}</option>
 
-                                            <select class="form-control" name="ORSDetails[0][allotment_class_id]" placeholder="{{__(' to')}}" id="allotment_class_id" required>
-                                                <option value="" disabled selected>{{__('CHARGE TO')}}</option>
-                                                <option value="1" {{ old('charallotment_class_idge_to') =="ALLOTMENT"? "selected" : '' }}>
-                                                        {{__('ALLOTMENT')}}</option>
-                                                <option value="2" {{ old('allotment_class_id') =="SUB- ALLOTMENT"? "selected" : '' }}>
-                                                        {{__('SUB- ALLOTMENT')}}</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
 
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
+                                        {{-- <label for="ORSDetails[0][pap_id]">{{__('PAP')}}</label> --}}
+                                        <select class="form-control pap_id" name="ORSDetails[0][pap_id]" id="pap_id{{$count}}">
+                                            @if(isset($ors)&&isset($ors['ORSDetails']))
+                                            <option value="{{$ors['ORSDetails']['pap_id']}}" selected>
+                                                {{$ors['ORSDetails']['pap']['code']}} -
+                                                {{$ors['ORSDetails']['pap']['description']}}
+                                            </option>
+                                            @endif
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
 
-                                            {{-- <label for="ORSDetails[0][pap_id]">{{__('PAP')}}</label> --}}
-                                            <select class="form-control" name="ORSDetails[0][pap_id]" id="pap_id">
-                                                @if(isset($ors)&&isset($ors['ORSDetails']))
-                                                <option value="{{$ors['ORSDetails']['pap_id']}}" selected>
-                                                    {{$ors['ORSDetails']['pap']['code']}} -
-                                                    {{$ors['ORSDetails']['pap']['description']}}
-                                                </option>
-                                                @endif
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
+                                        {{-- <label for="ORSDetails[0][pap_id]">{{__('Sub-Allotment')}}</label> --}}
+                                        <select class="form-control sub_allotment_id" name="ORSDetails[0][sub_allotment_id]" id="sub_allotment_id{{$count}}">
+                                            @if(isset($ors)&&isset($ors['ORSDetails']))
+                                            <option value="{{$ors['ORSDetails']['sub_allotment_id']}}" selected>
+                                                {{$ors['ORSDetails']['appro_sub_allotment']['sub_allotment_no']}}
+                                            </option>
+                                            @endif
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
 
-                                            {{-- <label for="ORSDetails[0][pap_id]">{{__('Sub-Allotment')}}</label> --}}
-                                            <select class="form-control" name="ORSDetails[0][sub_allotment_id]" id="sub_allotment_id">
-                                                @if(isset($ors)&&isset($ors['ORSDetails']))
-                                                <option value="{{$ors['ORSDetails']['sub_allotment_id']}}" selected>
-                                                    {{$ors['ORSDetails']['appro_sub_allotment']['sub_allotment_no']}}
-                                                </option>
-                                                @endif
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
 
-                                            {{-- <label for="ORSDetails[0][pap_id]">{{__('UACS')}}</label> --}}
-                                            <select class="form-control" name="ORSDetails[0][uacs_id]" id="uacs_id">
-                                                @if(isset($ors)&&isset($ors['ORSDetails']))
-                                                <option value="{{$ors['ORSDetails']['uacs_id']}}" selected>
-                                                    {{$ors['ORSDetails']['approsetupdtl_uacs']['uacs_subobject_code']}}
-                                                </option>
-                                                @endif
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
+                                        <select class="form-control uacs_id" name="ORSDetails[0][uacs_id]" id="uacs_id{{$count}}">
+                                            @if(isset($ors)&&isset($ors['ORSDetails']))
+                                            <option value="{{$ors['ORSDetails']['uacs_id']}}" selected>
+                                                {{$ors['ORSDetails']['approsetupdtl_uacs']['uacs_subobject_code']}}
+                                            </option>
+                                            @endif
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
 
-                                         <input type="number" class="form-control" name="ORSDetails[0][amount]" placeholder="{{__('Amount')}}"  required>
-                                         <span class="input-group-text">
-                                                      {{get_currency()}}
-                                                  </span>
-                                          </div>
-                                      </td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger delete_row">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
+                                     <input type="number" class="form-control amount" name="ORSDetails[0][amount]" placeholder="{{__('Amount')}}"  required>
+                                     <span class="input-group-text">
+                                                  {{get_currency()}}
+                                              </span>
+                                      </div>
+                                  </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger delete_row">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
 
                                 </tr>
-                                {{-- @endforeach
-                             @endif --}}
+                                @endforeach
+                             @endif
                             </tbody>
                         </table>
                     </div>
@@ -230,4 +226,4 @@
 </div>
 
 <input type="hidden" name="" id="count" value="{{$count}}">
-<input type="hidden" name="" id="option_count" value="{{$option_count}}">
+

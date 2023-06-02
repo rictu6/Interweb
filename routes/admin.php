@@ -60,6 +60,8 @@ Route::get('get_orsheaders','ORSHeaderController@ajax')->name('get_orsheaders');
 Route::get('get_orsheader_list','ORSHeaderController@orsheader_list')->name('orsheader_list');
 //Sub Allotment
 Route::resource('suballotments','SubAllotmentController');
+//Allotment
+Route::resource('allotments','AllotmentController');
 
 Route::resource('menus','MenusController');
 Route::get('get_contactus','MenusController@contactus')->name('contactus');

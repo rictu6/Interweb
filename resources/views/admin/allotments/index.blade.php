@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-{{ __('Encode Sub-Allotment') }}
+{{ __('Encode ORS') }}
 @endsection
 
 @section('css')
@@ -15,16 +15,16 @@
             <div class="col-sm-6">
                 <h1 class="m-0 text-dark">
                     <i class="fa fa-home"></i>
-                    {{__('FDMS')}}
+                    {{__('Allotment')}}
                 </h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{route('admin.orsheaders.index')}}">{{__('FDMS Dashboard')}}</a></li>
-                    {{-- <li class="breadcrumb-item">
+                    <li class="breadcrumb-item"><a href="{{route('admin.orsheaders.index')}}">{{__('Home')}}</a></li>
+                    <li class="breadcrumb-item">
                         <a href="{{route('admin.orsheader_list')}}">{{ __('FDMS') }}</a>
-                    </li> --}}
-                    <li class="breadcrumb-item active">{{ __('Encode Sub-Allotment') }}</li>
+                    </li>
+                    <li class="breadcrumb-item active">{{ __('Encode Allotment') }}</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -35,14 +35,14 @@
 @section('content')
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">{{ __('Create Sub-Allotment') }}</h3>
+        <h3 class="card-title">{{ __('Create Allotment') }}</h3>
     </div>
     <!-- /.card-header -->
-    <form method="POST" action="{{route('admin.suballotments.store')}}" enctype="multipart/form-data">
+    <form method="POST" action="{{route('admin.allotments.store')}}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="col-lg-12">
-                @include('admin.suballotments._form_suballotment')
+                @include('admin.allotments._form_allotment')
             </div>
         </div>
         <div class="card-footer">
@@ -60,13 +60,11 @@
 
 @endsection
 @section('scripts')
-
 <script>
     //components
     var count=$('#count').val();
  $('.add_component').on('click',function(){
    count++;
-   console.log(count);
    $('.components .items').append(`
    <tr dtl_id="approdtls${count}" num="${count}">
     <td>
@@ -106,5 +104,5 @@
 </script>
     <script src="{{url('plugins/datetimepicker/js/jquery.datetimepicker.full.js')}}"></script>
     <script src="{{url('js/admin/disableInspectElecment.js')}}"></script>
-    <script src="{{url('js/admin/suballotment.js')}}"></script>
+    <script src="{{url('js/admin/allotment.js')}}"></script>
 @endsection

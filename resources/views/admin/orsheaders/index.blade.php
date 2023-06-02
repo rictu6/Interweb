@@ -66,7 +66,16 @@
         <div class="card-header" style="display: flex; justify-content: center; align-items: center;">
         <a class="btn btn-primary btn-sm text-uppercase" href="{{route('admin.suballotments.index')}}" >
             <i class="fa fa-list"></i>
-            {{__('Sub-Allotemnt Encoding')}}
+            {{__('Sub-Allotment Encoding')}}
+          </a>
+
+        </div>
+    </div>
+    <div class="card card-primary" style="width: 400px; margin: 0 auto;">
+        <div class="card-header" style="display: flex; justify-content: center; align-items: center;">
+        <a class="btn btn-primary btn-sm text-uppercase" href="{{route('admin.allotments.index')}}" >
+            <i class="fa fa-list"></i>
+            {{__('Allotment Encoding')}}
           </a>
 
         </div>
