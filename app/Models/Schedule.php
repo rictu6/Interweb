@@ -64,8 +64,8 @@ class Schedule extends Model
         return $this->hasMany(ScheduleUser::class,'schedule_id','id');
     }
 
-    // public function att()
-    // {
-    //     return $this->hasMany(ScheduleUser::class,'schedule_id','id');
-    // }
+    public function attendees()
+    {
+        return $this->hasMany(User::class,'last_name','attendee_name');
+    }
 }

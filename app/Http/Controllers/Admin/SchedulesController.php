@@ -69,8 +69,10 @@ class SchedulesController extends Controller
 
 
 
-
         $user=new Schedule;
+        
+        
+          
         
         
           
@@ -107,20 +109,32 @@ class SchedulesController extends Controller
          
             $user->save();
 
+            if($request->has('attendees'))
+            {
+                foreach($request['attendees'] as $attendee)
+                {
+                    ScheduleUser::firstOrCreate([
+                        'emp_id'=>$user['emp_id'],
+                        'schedule_id'=>$user['id'],
+                        'emp_id'=>$role,
+                        'attendee_name'=>$attendee,
+                        'start'=>$user['start'],
+                        'end'=>$user['end']
+                     
+                        
+                    ]);
+                
+                }
+            }
+         
+                 
+                
+          
+                     
 
-           
 
 
-                        ScheduleUser::firstOrCreate([
-                            'emp_id'=>$user['emp_id'],
-                            'schedule_id'=>$user['id'],
-                            'emp_id'=>$role,
-                            'attendee_name'=>$role,
-                            'start'=>$user['start'],
-                            'end'=>$user['end']
-                         
-                            
-                        ]);
+
                     }   
                   
 
@@ -129,7 +143,7 @@ class SchedulesController extends Controller
                 }
             }
         
-dd($request);
+// dd($request);
      
     
             session()->flash('success','Schedule saved successfully');
