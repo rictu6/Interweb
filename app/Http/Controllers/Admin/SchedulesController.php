@@ -66,86 +66,79 @@ class SchedulesController extends Controller
     public function store(Request $request)
     {
       
-
-
-
         $user=new Schedule;
         
-        
-          
-        
-        
-          
-
-
             if($request->has('roles'))
             {
                 foreach($request['roles'] as $role)
                 {
-
-                    if (ScheduleUser::where('emp_id', $role)->first()) 
-                    
-                    
-                    
-                    {
-                        return redirect()->back()->withErrors("Attendee/s already have schedule on this date")->withInput();
-                    } 
-                    else 
-                    {
-
-                        
-            $user->posted_by=$request->posted_by;
-            $user->posted_date=$request->posted_date;
-            $user->office_id=$request->office_id;
-            $user->div_id=$request->div_id;
-            $user->color=$request->color;
-            $user->venue=$request->venue;
-            $user->sec_id=$request->sec_id;
-            
-            $user->emp_id=$request->emp_id;
-            $user->start=$request->start;
-            $user->end=$request->end;
-            $user->title=$request->title;
-         
-            $user->save();
-
-            if($request->has('attendees'))
-            {
-                foreach($request['attendees'] as $attendee)
-                {
-                    ScheduleUser::firstOrCreate([
-                        'emp_id'=>$user['emp_id'],
-                        'schedule_id'=>$user['id'],
-                        'emp_id'=>$role,
-                        'attendee_name'=>$attendee,
-                        'start'=>$user['start'],
-                        'end'=>$user['end']
-                     
-                        
-                    ]);
-                
-                }
-            }
-         
-                 
-                
-          
-                     
-
-
-
-
-                    }   
+                   
+                    $data = ScheduleUser::all() ;
                   
+                    // if (ScheduleUser::where('emp_id', $role)->first()
+                    // ) 
+                    // {
 
+                        $stations = ScheduleUser::all();
+                        $station_ids = [];
                     
+                        foreach ($stations as $station) {
+                            $station_ids['emp_ids'] =  $station->emp_id;
+                            return redirect()->back()->withErrors($station->attendee_name . ' IS NOW ATTENDING ' . $station->title . ' @ ' . $station->venue . ' FROM ' . $station->start. ' TO ' . $station->end . '.')->withInput();
+                        
+                       
+                        }
+                      
+                        
+                       
+                            // foreach ($data as $key => $value) 
+                            // {
+                            //        }
+                       
+
+            // //         }
+            // //         else 
+            // //         {
+
+                        
+            // // $user->posted_by=$request->posted_by;
+            // // $user->posted_date=$request->posted_date;
+            // // $user->office_id=$request->office_id;
+            // // $user->div_id=$request->div_id;
+            // // $user->color=$request->color;
+            // // $user->venue=$request->venue;
+            // // $user->sec_id=$request->sec_id;
+            
+            // // $user->emp_id=$request->emp_id;
+            // // $user->start=$request->start;
+            // // $user->end=$request->end;
+            // // $user->title=$request->title;
+         
+            // // $user->save();
+
+            // // $group_test=User::where('emp_id',$role)->firstOrFail();
+            
+            // //         ScheduleUser::firstOrCreate([
+            // //             'emp_id'=>$user['emp_id'],
+            // //             'schedule_id'=>$user['id'],
+            // //             'emp_id'=>$role,
+            // //             'title'=>$request->title,
+            // //             'venue'=>$request->venue,
+            // //             'attendee_name'=>$group_test['last_name'] . ' ' .$group_test['first_name']. ',' .$group_test['middle_name'],
+            // //             'start'=>$user['start'],
+            // //             'end'=>$user['end']
+                     
+                        
+            // //         ]);
+                
+            //         }   
+                  
 
                 }
             }
         
 // dd($request);
      
-    
             session()->flash('success','Schedule saved successfully');
             
             return redirect()->route('admin.schedule_list');
@@ -268,6 +261,23 @@ class SchedulesController extends Controller
         $users=Schedule::all();
         return view('admin.schedules.schedule_list',compact('users'));
     }
+    public function schedule_popup($id)
+    {
+        try
+        {
+           
+            $user=Schedule::findOrFail($id);
+            $roles=Attendee::all();
+            $user_attendee=User::all();
+
+
+        return view('admin.schedules.schedule_popup',compact('user','roles','user_attendee'));
+        }
+        catch (\Exception $e)
+        {
+            dd($e -> getMessage());
+        }
+    }
     public function calendar_show()
     {
         // $tasks=Schedule::all();
@@ -285,19 +295,32 @@ class SchedulesController extends Controller
                     true,
                     new \DateTime($value->start),
                     new \DateTime($value->end.'+1 day'),
-                    null,
-                    // Add color
+                    
                  [
                     'color'=> $value->color,
                      'textColor' => $value->textColor,
+                    
+                 ],
+                 [
+                   
+                    'url' => 'schedules/' .$value->id. '/edit'
+                 
+
+                   
                  ]
+                 
                 );
+                
             }
         }
-$calendar =\Calendar::addEvents($events);
-return view('admin.schedules.calendar_show',compact('events','calendar'));
+                $calendar =\Calendar::addEvents($events);
+                return view('admin.schedules.calendar_show',compact('events','calendar'));
       
     }
+
+
+
+
     public function destroy($id)
     {
         $users=Schedule::findOrFail($id);

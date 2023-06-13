@@ -888,6 +888,7 @@ public function delete_uacs($dtl_id)
 
         return response()->json($module);
     }
+    
     public function create_user(Request $request)
     {
         $request->validate([
@@ -934,6 +935,21 @@ public function delete_uacs($dtl_id)
         return response()->json($muncit);
     }
     public function create_section(Request $request)
+    {
+        $request->validate([
+            'sec_desc'=>[
+                'required',
+                Rule::unique('sections')->whereNull('deleted_at')
+            ],
+        ]);
+
+        $request['section_desc']=section_description();
+
+        $section=Section::create($request->except('_token'));
+
+        return response()->json($section);
+    }
+    public function create_schedule(Request $request)
     {
         $request->validate([
             'sec_desc'=>[
