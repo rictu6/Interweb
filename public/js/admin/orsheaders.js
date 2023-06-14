@@ -64,10 +64,36 @@
           fixedHeader: true,
           "columns": [
             {data:"ors_no"},
-            {data:"office"},
 
-
-            {data:"action",searchable:false,orderable:false,sortable:false}
+            {
+                data: null,
+                render: function(data, type, row) {
+                  return data.fundsource.code + "-" + data.fundsource.description;
+                }
+              },
+              {
+                data: null,
+                render: function(data, type, row) {
+                  return data.payee.name + "-" + data.particulars;
+                }
+              },
+              {
+                data: null,
+                render: function(data, type, row) {
+                    var totalAmount = 0;
+                    for (var i = 0; i < data.details.length; i++) {
+                        totalAmount += parseFloat(data.details[i].amount);
+                    }
+                    return totalAmount.toFixed(2);
+                }
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                  return data.processed.first_name;
+                }
+              },
+            //{data:"ors_no",searchable:false,orderable:false,sortable:false}
           ],
           "language": {
             "sEmptyTable":     trans("No data available in table"),
@@ -149,7 +175,7 @@ $(document).on('change', '.allotment_class_id', function() {//if me count wala g
 //dynamic_chargeto=selectedChargeto;
 trigger_get_pAp(selectedChargeto);
 console.log(count);
-if(dynamic_chargeto==1){
+if(selectedChargeto==1){
  // Empty the selection of the "suballotment" dropdown
  $('#sub_allotment_id'+count).val('');
  $('#uacs_id'+count).val('');
@@ -330,6 +356,113 @@ $('#responsibility_center').select2({
             //pap_datas=pap_data;
         }
     });
+    //added june 6
+    $('#pap_id'+count).on('change', function() {
+
+        var selectedPapId = $(this).val();
+        $('#sub_allotment_id'+count).val('');
+        $('#uacs_id'+count).val('');
+        if(charge_to==2){
+            $.ajax({
+                url:ajax_url('get_sub_allotment_by_pap'+'?pap_code='+ selectedPapId),
+                beforeSend:function(){
+                    $('.preloader').show();
+                    $('.loader').show();
+                },
+                success:function(subAllotmentNo)
+                {   $('#sub_allotment_id'+count).empty();
+                    $.each(subAllotmentNo, function(index, item) {
+                    if(index == 0) {
+                        $('#sub_allotment_id'+count).append('<option value="">-SELECT-</option>');
+                    }
+
+                    $('#sub_allotment_id'+count).append('<option value="' + item.sub_allotment_no + '">'+ item.sub_allotment_no + '</option>');
+                   });
+
+                    // $('#sub_allotment_no').val(subAllotmentNo);
+                },
+                error:function(xhr, status, error)
+                {
+                    console.error('Error:', error); // log the error to console
+                },
+
+                complete:function()
+                {
+                    $('.preloader').hide();
+                    $('.loader').hide();
+                }
+            });
+        }else{
+            $.ajax({
+
+                url:ajax_url('get_uacs_by_pap'+'?pap_code='+ selectedPapId.trimEnd()),
+                beforeSend:function(){
+                    $('.preloader').show();
+                    $('.loader').show();
+                },
+                success:function(allotmentclass)
+                {   $('#uacs_id'+count).empty();
+                    $.each(allotmentclass, function(index, item) {
+                    if(index == 0) {
+                        $('#uacs_id'+count).append('<option value="">-SELECT-</option>');
+                    }
+
+                    $('#uacs_id'+count).append('<option value="' + item.appro_setup_id + '">'+ item.uacs_subobject_code + '</option>');
+                   });
+
+                    // $('#sub_allotment_no').val(subAllotmentNo);
+                },
+                error:function(xhr, status, error)
+                {
+                    console.error('Error:', error); // log the error to console
+                },
+
+                complete:function()
+                {
+                    $('.preloader').hide();
+                    $('.loader').hide();
+                }
+            });
+        }
+
+    });
+     // Get uacs by pap
+     // DIRI ANG CONDITION IF PAG CLICK SANG PAP UACS KUHAON YA OR SUB ALLOTMENT
+    //  if(selected_chargeto==1)
+     $('#sub_allotment_id'+count).on('change', function() {
+        var selectedaclass = $(this).val();
+
+        $.ajax({
+
+            url:ajax_url('get_uacs_by_sub_allotment'+'?sub_allotment_no='+ selectedaclass.trimEnd()),
+            beforeSend:function(){
+                $('.preloader').show();
+                $('.loader').show();
+            },
+            success:function(allotmentclass)
+            {   $('#uacs_id'+count).empty();
+                $.each(allotmentclass, function(index, item) {
+                if(index == 0) {
+                    $('#uacs_id'+count).append('<option value="">-SELECT-</option>');
+                }
+
+                $('#uacs_id'+count).append('<option value="' + item.appro_setup_id + '">'+ item.uacs_subobject_code + '</option>');
+               });
+
+                // $('#sub_allotment_no').val(subAllotmentNo);
+            },
+            error:function(xhr, status, error)
+            {
+                console.error('Error:', error); // log the error to console
+            },
+
+            complete:function()
+            {
+                $('.preloader').hide();
+                $('.loader').hide();
+            }
+        });
+    });
         },
         complete:function()
         {
@@ -365,84 +498,14 @@ $('#pap_id'+count).val('');
             $('#fund_source_id').on('change', function() {
                 var selectedFundsourceId = $(this).val();
                 dynamic_fund_source=selectedFundsourceId;
-                $('#sub_allotment_id'+count).val('');
-                $('#uacs_id'+count).val('');
+                $('#sub_allotment_id').val('');
+                $('#uacs_id').val('');
+                console.log(count);
                 trigger_get_pAp();
             });
 
-            // Get sub-allotment number based on PAP selection
-            $('#pap_id'+count).on('change', function() {
+            // gn omit ko diri ang pap onchange ke d na ma pass ang value sang count
 
-                var selectedPapId = $(this).val();
-                $('#sub_allotment_id'+count).val('');
-                $('#uacs_id'+count).val('');
-                $.ajax({
-                    url:ajax_url('get_sub_allotment_by_pap'+'?pap_code='+ selectedPapId),
-                    beforeSend:function(){
-                        $('.preloader').show();
-                        $('.loader').show();
-                    },
-                    success:function(subAllotmentNo)
-                    {   $('#sub_allotment_id'+count).empty();
-                        $.each(subAllotmentNo, function(index, item) {
-                        if(index == 0) {
-                            $('#sub_allotment_id'+count).append('<option value="">-SELECT-</option>');
-                        }
-
-                        $('#sub_allotment_id'+count).append('<option value="' + item.sub_allotment_no + '">'+ item.sub_allotment_no + '</option>');
-                       });
-
-                        // $('#sub_allotment_no').val(subAllotmentNo);
-                    },
-                    error:function(xhr, status, error)
-                    {
-                        console.error('Error:', error); // log the error to console
-                    },
-
-                    complete:function()
-                    {
-                        $('.preloader').hide();
-                        $('.loader').hide();
-                    }
-                });
-            });
-             // Get uacs by pap
-             // DIRI ANG CONDITION IF PAG CLICK SANG PAP UACS KUHAON YA OR SUB ALLOTMENT
-            //  if(selected_chargeto==1)
-             $('#sub_allotment_id'+count).on('change', function() {
-                var selectedaclass = $(this).val();
-
-                $.ajax({
-
-                    url:ajax_url('get_uacs_by_sub_allotment'+'?sub_allotment_no='+ selectedaclass.trimEnd()),
-                    beforeSend:function(){
-                        $('.preloader').show();
-                        $('.loader').show();
-                    },
-                    success:function(allotmentclass)
-                    {   $('#uacs_id'+count).empty();
-                        $.each(allotmentclass, function(index, item) {
-                        if(index == 0) {
-                            $('#uacs_id'+count).append('<option value="">-SELECT-</option>');
-                        }
-
-                        $('#uacs_id'+count).append('<option value="' + item.appro_setup_id + '">'+ item.uacs_subobject_code + '</option>');
-                       });
-
-                        // $('#sub_allotment_no').val(subAllotmentNo);
-                    },
-                    error:function(xhr, status, error)
-                    {
-                        console.error('Error:', error); // log the error to console
-                    },
-
-                    complete:function()
-                    {
-                        $('.preloader').hide();
-                        $('.loader').hide();
-                    }
-                });
-            });
         },
         complete:function()
         {
@@ -500,55 +563,76 @@ $('.add_component').on('click', function() {
    //console.log(count);
     $('.components .items').append(`
      <tr  num="${count}" >
-      <td>
+     <td>
+     <div class="form-group">
+         <select class="form-control responsibility_center" name="details[${count}][responsibility_center]" id="responsibility_center${count}">
+             <option value="" disabled selected>- SELECT -</option>
+            <option value="1" {{ old('responsibility_center') =="ALLOTMENT"? "selected" : '' }}>
+                OFFICE OF THE REGIONAL DIRECTOR (ORD)</option>
+            <option value="2" {{ old('responsibility_center') =="SUB- ALLOTMENT"? "selected" : '' }}>
+                OFFICE OF THE ASSISTANT REGIONAL DIRECTOR</option>
+            <option value="3" {{ old('responsibility_center') =="ALLOTMENT"? "selected" : '' }}>
+                PROJECT DEVELOPMENT AND MANAGEMENT UNIT</option>
+            <option value="4" {{ old('responsibility_center') =="SUB- ALLOTMENT"? "selected" : '' }}>
+                PLANNING UNIT</option>
+            <option value="5" {{ old('responsibility_center') =="ALLOTMENT"? "selected" : '' }}>
+                LOCAL GOVERNMENT MONITORING AND EVALUATION DIVISION (LGMED)
+            </option>
+            <option value="6" {{ old('responsibility_center') =="SUB- ALLOTMENT"? "selected" : '' }}>
+                LOCAL GOVERNMENT CAPACITY DEVELOPMENT DIVISION (LGCDD)</option>
+            <option value="7" {{ old('responsibility_center') =="ALLOTMENT"? "selected" : '' }}>
+                PROJECT DEVELOPMENT AND MANAGEMENT UNIT</option>
+            <option value="8" {{ old('responsibility_center') =="SUB- ALLOTMENT"? "selected" : '' }}>
+                FINANCE AND ADMINISTRATIVE DIVISION (FAD)</option>
+            <option value="9" {{ old('responsibility_center') =="ALLOTMENT"? "selected" : '' }}>
+                AKLAN PROVINCIAL OFFICE</option>
+            <option value="10" {{ old('responsibility_center') =="SUB- ALLOTMENT"? "selected" : '' }}>
+                ANTIQUE PROVINCIAL OFFICE</option>
+            <option value="11" {{ old('responsibility_center') =="ALLOTMENT"? "selected" : '' }}>
+                CAPIZ PROVINCIAL OFFICE</option>
+            <option value="12" {{ old('responsibility_center') =="SUB- ALLOTMENT"? "selected" : '' }}>
+                GUIMARAS PROVINCIAL OFFICE</option>
+            <option value="13" {{ old('responsibility_center') =="ALLOTMENT"? "selected" : '' }}>
+            ILOILO PROVINCIAL OFFICE</option>
+            <option value="14" {{ old('responsibility_center') =="SUB- ALLOTMENT"? "selected" : '' }}>
+            ILOILO CITY OFFICE</option>
+            <option value="15" {{ old('responsibility_center') =="ALLOTMENT"? "selected" : '' }}>
+            NEGROS OCCIDENTAL PROVINCIAL OFFICE</option>
+            <option value="16" {{ old('responsibility_center') =="SUB- ALLOTMENT"? "selected" : '' }}>
+            BACOLOD CITY OFFICE</option>
 
-        <div class="form-group">
+ </select>
+     </div>
+ </td>
+ <td>
+ <div class="form-group">
 
-                                            <select class="form-control responsibility_center" name="ORSDetails[${count}][responsibility_center]"
-                                                id="responsibility_center${count}">
-                                                <option value=""  disabled selected>- SELECT-</option>
-                                                @foreach($rescenters as $rescenter)
-                                                @php
-                                                    $selected = (${rcOption} == $rescenter) ? 'selected' : '';
-                                                @endphp
-                                                <option value="{{ $rescenter }}" {{ $selected }}>{{ $rescenter }}</option>
-                                            @endforeach
+ <select class="form-control allotment_class_id" name="details[${count}][allotment_class_id]" placeholder="{{__(' to')}}"
+ id="allotment_class_id${count}" required>
+     <option value="" disabled selected>CHARGE TO</option>
+     <option value="1" {{ old('allotment_class_id') =="ALLOTMENT"? "selected" : '' }}>
+             ALLOTMENT</option>
+     <option value="2" {{ old('allotment_class_id') =="SUB- ALLOTMENT"? "selected" : '' }}>
+             SUB- ALLOTMENT</option>
 
-                                            </select>
-      </td>
-
-      <td>
-      <div class="form-group">
-
-
-
-      <select class="form-control allotment_class_id" name="ORSDetails[${count}[allotment_class_id]" placeholder="{{__(' to')}}"
-      id="allotment_class_id${count}" required>
-          <option value="" disabled selected>CHARGE TO</option>
-          <option value="1" {{ old('allotment_class_id') =="ALLOTMENT"? "selected" : '' }}>
-                  ALLOTMENT</option>
-          <option value="2" {{ old('allotment_class_id') =="SUB- ALLOTMENT"? "selected" : '' }}>
-                  SUB- ALLOTMENT</option>
-
-      </select>
-  </div>
-      </td>
+ </select>
+</div>
+ </td>
 
       <td>
            <div class="form-group">
 
-                                            <select class="form-control pap_id" name="ORSDetails[${count}][pap_id]" id="pap_id${count}">
-                                            <option value=""  disabled selected>-- SELECT--</option>
-                                            <option value="${papOption}" selected>${papOption}</option>
-
-                                            </select>
+                  <select class="form-control pap_id" name="details[${count}][pap_id]" id="pap_id${count}">
+                  <option value=""  disabled selected>- SELECT-</option>
+                <option value="${papOption}" selected>${papOption}</option>
+                  </select>
            </div>
       </td>
 
     <td>
                                     <div class="form-group">
 
-                                        <select class="form-control sub_allotment_id" name="ORSDetails[${count}][sub_allotment_id]"
+                                        <select class="form-control sub_allotment_id" name="details[${count}][sub_allotment_id]"
                                          id="sub_allotment_id${count}">
                                          <option value=""  disabled selected>-- SELECT--</option>
                                          <option value="${subOption}" selected>${subOption}</option>
@@ -559,7 +643,7 @@ $('.add_component').on('click', function() {
         <td>
            <div class="form-group">
 
-                                            <select class="form-control uacs_subobject_code" name="ORSDetails[${count}][uacs_subobject_code]"
+                                            <select class="form-control uacs_subobject_code" name="details[${count}][uacs_id]"
                                             id="uacs_id${count}">
                                             <option value="">-SELECT-</option>
                                             <option value="${uacsOption}" selected>${uacsOption}</option>
@@ -569,7 +653,7 @@ $('.add_component').on('click', function() {
       <td>
                                         <div class="form-group">
                                                             <div class="input-group form-group mb-3">
-                                                                <input type="number" class="form-control amount" name="ORSDetails[${count}][amount]"  min="0" class="amount" required>
+                                                                <input type="number" class="form-control amount" name="details[${count}][amount]"  min="0" class="amount" required>
                                                                 <div class="input-group-append">
                                                                 <span class="input-group-text">
                                                                     ${currency}

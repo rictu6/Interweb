@@ -80,6 +80,22 @@
 
         </div>
     </div>
+    <div class="card card-primary" style="width: 400px; margin: 0 auto;">
+        <div class="card-header" style="display: flex; justify-content: center; align-items: center;">
+        <a class="btn btn-primary btn-sm text-uppercase" href="{{route('admin.reports.index')}}" >
+            <i class="fa fa-list"></i>
+            {{__('Reports')}}
+          </a>
+        </div>
+    </div>
+    <div class="card card-primary" style="width: 400px; margin: 0 auto;">
+        <div class="card-header" style="display: flex; justify-content: center; align-items: center;">
+        <a class="btn btn-primary btn-sm text-uppercase" href="{{route('admin.dvreceivings.index')}}" >
+            <i class="fa fa-list"></i>
+            {{__('DV Entry')}}
+          </a>
+        </div>
+    </div>
 </div>
 
 @endcan

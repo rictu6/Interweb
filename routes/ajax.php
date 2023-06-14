@@ -16,8 +16,10 @@ Route::group(['prefix'=>'ajax','as'=>'ajax.'],function(){
  Route::get('get_lce_by_name','AjaxController@get_lce_by_name')->name('get_lce_by_name');
 //payee
 Route::get('get_payee_by_name','AjaxController@get_payee_by_name')->name('get_payee_by_name');
-//get ORs
-Route::get('get_orsheaders','AjaxController@get_orsheaders')->name('get_lces');
+//get dv type
+ Route::get('get_dv_type','AjaxController@get_dv_type')->name('get_dv_type');
+ //get ors
+ Route::get('get_orsheaders','AjaxController@get_orsheaders')->name('get_orsheaders');
 //allotment class
 Route::get('get_alot_by_desc','AjaxController@get_alot_by_desc')->name('get_alot_by_desc');
 //fund cluster

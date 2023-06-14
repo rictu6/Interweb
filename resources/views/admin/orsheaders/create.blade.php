@@ -65,7 +65,7 @@
     var rcOption = "{{ isset($ors) && isset($ors['ORSDetails']['responsibilitycenter']['code']) ? $ors['ORSDetails']['responsibilitycenter']['code'] : '' }}";
     var papOption = "{{ isset($ors) && isset($ors['ORSDetails']['pap']['code']) ? $ors['ORSDetails']['pap']['code'] : '' }}";
     var subOption = "{{ isset($ors) && isset($ors['ORSDetails']['appro_sub_allotment']['sub_allotment_no']) ? $ors['ORSDetails']['appro_sub_allotment']['sub_allotment_no'] : '' }}";
-    // var rcOption = "{{ isset($ors) && isset($ors['ORSDetails']['responsibilitycenter']['code']) ? $ors['ORSDetails']['responsibilitycenter']['code'] : '' }}";
+    // var rcOption = "       @foreach ($rescenter as $row)<option value="{{$row->code}}">{{ $row->code}} - {{ $row->description}}</option>@endforeach";
     var uacsOption = "{{ isset($ors) && isset($ors['ORSDetails']['approsetupdtl_uacs']['uacs_subobject_code']) ? $ors['ORSDetails']['approsetupdtl_uacs']['uacs_subobject_code'] : '' }}";
     var currency =" {{get_currency()}}"
 </script>
