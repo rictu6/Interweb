@@ -58,6 +58,7 @@ class Schedule extends Model
 
 
 	
+	
    
     public function roles()
     {

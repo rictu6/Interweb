@@ -76,6 +76,7 @@ class SchedulesController extends Controller
 
 
 
+
             if($request->has('roles'))
             {
                 foreach($request['roles'] as $role)
@@ -107,23 +108,14 @@ class SchedulesController extends Controller
 
             $user->save();
 
-dd($user->roles());
 
-            // foreach ($request->approdtls as $detail) {
-            //     if ($appro->save()) {
-            //        // dd($request);
-            //         ApproSetupDetail::create([
-            //             'appro_setup_id' => $appro['appro_setup_id'],
-            //             'uacs_subobject_code' => $detail['uacs_subobject_code'],
-            //             'allotment_received' => $detail['allotment_received'],
-            //         ]);
-            //     }
-            //  }
+
+
 
                         ScheduleUser::firstOrCreate([
                             'emp_id'=>$user['emp_id'],
                             'schedule_id'=>$user['id'],
-                           // 'emp_id'=>$role,
+                            'emp_id'=>$role,
                             'attendee_name'=>$role,
                             'start'=>$user['start'],
                             'end'=>$user['end']
@@ -138,7 +130,7 @@ dd($user->roles());
                 }
             }
 
-dd($request);
+
 
 
             session()->flash('success','Schedule saved successfully');
@@ -263,6 +255,23 @@ dd($request);
         $users=Schedule::all();
         return view('admin.schedules.schedule_list',compact('users'));
     }
+    public function schedule_popup($id)
+    {
+        try
+        {
+
+            $user=Schedule::findOrFail($id);
+            $roles=Attendee::all();
+            $user_attendee=User::all();
+
+
+        return view('admin.schedules.schedule_popup',compact('user','roles','user_attendee'));
+        }
+        catch (\Exception $e)
+        {
+            dd($e -> getMessage());
+        }
+    }
     public function calendar_show()
     {
         // $tasks=Schedule::all();
@@ -280,19 +289,32 @@ dd($request);
                     true,
                     new \DateTime($value->start),
                     new \DateTime($value->end.'+1 day'),
-                    null,
-                    // Add color
+
                  [
                     'color'=> $value->color,
                      'textColor' => $value->textColor,
+
+                 ],
+                 [
+
+                    'url' => 'schedules/' .$value->id. '/edit'
+
+
+
                  ]
+
                 );
+
             }
         }
-$calendar =\Calendar::addEvents($events);
-return view('admin.schedules.calendar_show',compact('events','calendar'));
+                $calendar =\Calendar::addEvents($events);
+                return view('admin.schedules.calendar_show',compact('events','calendar'));
 
     }
+
+
+
+
     public function destroy($id)
     {
         $users=Schedule::findOrFail($id);

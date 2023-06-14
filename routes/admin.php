@@ -97,6 +97,7 @@ Route::get('get_keyofficials','MenusController@keyofficials')->name('keyofficial
  Route::resource('schedules','SchedulesController');
  Route::get('get_schedules','SchedulesController@ajax')->name('get_schedules');
  Route::get('get_schedule_list','SchedulesController@schedule_list')->name('schedule_list');
+
  Route::get('get_calendar_show','SchedulesController@calendar_show')->name('calendar_show');
 
       //nationality

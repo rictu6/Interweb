@@ -24,18 +24,24 @@ class ScheduleUser extends Model
         'emp_id',
        'schedule_id',
        'attendee_name',
+       'title',
+       'venue',
        'start',
        'end',
         'created_at',
         'updated_at',
         'deleted_at'
-     
+
     ];
-   
-   
+
+
     public function user()
     {
         return $this->belongsTo(User::class,'emp_id','emp_id');
     }
-  
+
+    public function attendeename()
+    {
+        return $this->belongsTo(ScheduleUser::class,'emp_id','emp_id');
+    }
 }

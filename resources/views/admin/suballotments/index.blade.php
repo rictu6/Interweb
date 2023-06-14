@@ -66,7 +66,6 @@
     var count=$('#count').val();
  $('.add_component').on('click',function(){
    count++;
-   console.log(count);
    $('.components .items').append(`
    <tr dtl_id="approdtls${count}" num="${count}">
     <td>
