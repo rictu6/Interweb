@@ -296,9 +296,10 @@ $('#office').select2({
        processResults: function (data) {
              return {
                    results: $.map(data, function (item) {
-                      return {
-                         text: item.description,
-                         id: item.res_center_id
+                    //var description = item.res_center_id >= 1 && item.res_center_id <= 6 ? "Regional Office" : item.description;
+                    return {
+                        text: item.description,
+                        id: item.res_center_id
                       }
                    })
              };

@@ -29,8 +29,8 @@
 <div class="card card-primary card-outline">
     <div class="card-header">
       <h3 class="card-title">{{__('DV Listing Table')}}</h3>
-      @can('create_orsheader')
-        <a href="{{route('admin.orsheaders.create')}}" class="btn btn-primary btn-sm float-right">
+      @can('create_dvreceive')
+        <a href="{{route('admin.dvreceivings.create')}}" class="btn btn-primary btn-sm float-right">
           <i class="fa fa-plus"></i> {{ __('Create') }}
         </a>
       @endcan
@@ -61,6 +61,6 @@
 
 @endsection
 @section('scripts')
-  <script src="{{url('js/admin/dvreceiving.js')}}"></script>
+  <script src="{{url('js/admin/dvreceivings.js')}}"></script>
   <script src="{{url('js/admin/disableInspectElecment.js')}}"></script>
 @endsection

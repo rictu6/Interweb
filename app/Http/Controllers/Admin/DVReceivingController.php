@@ -91,10 +91,10 @@ public function create()
 {
     $user =  Auth::guard('admin')->user();
 
-         $selectedOffice=ResponsibilityCenter::where('res_center_id', '=', $user->office_id)->first();
-         if(   $selectedOffice==1){
-            // $selectedOffice=
-         }
+      $selectedOffice=ResponsibilityCenter::where('res_center_id', '=', $user->office_id)->get();
+        //  if($selectedOffice >= 1 && $selectedOffice <= 6){
+        //     // $selectedOffice=
+        //  }
 
     return view('admin.dvreceivings.create', compact('selectedOffice'));
 }

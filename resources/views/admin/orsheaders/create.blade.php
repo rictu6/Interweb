@@ -62,11 +62,11 @@
 @section('scripts')
 <script>
 
-    var rcOption = "{{ isset($ors) && isset($ors['ORSDetails']['responsibilitycenter']['code']) ? $ors['ORSDetails']['responsibilitycenter']['code'] : '' }}";
-    var papOption = "{{ isset($ors) && isset($ors['ORSDetails']['pap']['code']) ? $ors['ORSDetails']['pap']['code'] : '' }}";
-    var subOption = "{{ isset($ors) && isset($ors['ORSDetails']['appro_sub_allotment']['sub_allotment_no']) ? $ors['ORSDetails']['appro_sub_allotment']['sub_allotment_no'] : '' }}";
+    var rcOption = "{{ isset($ors) && isset($ors['details']['responsibilitycenter']['code']) ? $ors['details']['responsibilitycenter']['code'] : '' }}";
+    var papOption = "{{ isset($ors) && isset($ors['details']['pap']['code']) ? $ors['details']['pap']['code'] : '' }}";
+    var subOption = "{{ isset($ors) && isset($ors['details']['appro_sub_allotment']['sub_allotment_no']) ? $ors['details']['appro_sub_allotment']['sub_allotment_no'] : '' }}";
     // var rcOption = "       @foreach ($rescenter as $row)<option value="{{$row->code}}">{{ $row->code}} - {{ $row->description}}</option>@endforeach";
-    var uacsOption = "{{ isset($ors) && isset($ors['ORSDetails']['approsetupdtl_uacs']['uacs_subobject_code']) ? $ors['ORSDetails']['approsetupdtl_uacs']['uacs_subobject_code'] : '' }}";
+    var uacsOption = "{{ isset($ors) && isset($ors['details']['approsetupdtl_uacs']['uacs_subobject_code']) ? $ors['details']['approsetupdtl_uacs']['uacs_subobject_code'] : '' }}";
     var currency =" {{get_currency()}}"
 </script>
 <script src="{{url('plugins/datetimepicker/js/jquery.datetimepicker.full.js')}}"></script>

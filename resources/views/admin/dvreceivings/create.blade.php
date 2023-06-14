@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-{{ __('Encode ORS') }}
+{{ __('Encode DV') }}
 @endsection
 
 @section('css')
@@ -15,7 +15,7 @@
             <div class="col-sm-6">
                 <h1 class="m-0 text-dark">
                     <i class="fa fa-home"></i>
-                    {{__('ORS')}}
+                    {{__('DV')}}
                 </h1>
             </div><!-- /.col -->
             <div class="col-sm-6">

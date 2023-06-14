@@ -8,7 +8,7 @@
     <select class="form-control office" name="office_id"
         id="office">
 
-        @if(isset($selectedOffice))
+        @if(isset($dv))
         <option value="{{$dv['office']['res_center_id']}}" selected>
 
             {{$dv['office']['description']}}
