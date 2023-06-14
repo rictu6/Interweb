@@ -93,7 +93,7 @@ public function create()
     return view('admin.orsheaders.create', compact('paps','rescenter'));
 }
 function store (Request $request){
-//  //dd ($request);
+  //dd ($request);
 $ors =new ORSHeader;
 $ors_last_no=ORSHeader::latest()->first();
 if (empty($ors_last_no)) {

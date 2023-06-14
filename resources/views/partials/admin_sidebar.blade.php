@@ -180,7 +180,7 @@
                         </li>
                         <li class="nav-item">
                            
-                                <a href="{{route('admin.calendar_show')}}" target="_blank" class="nav-link">
+                                <a href="{{route('admin.calendar_show')}}" class="nav-link">
                                 <i class="far fa-square nav-icon"></i>
                                 {{-- calendar_show --}}
                                 <p>{{__('CALENDAR')}}
