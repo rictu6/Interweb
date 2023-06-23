@@ -114,7 +114,7 @@
                 </li>
                 @endcan
 
-              
+
                 <li class="nav-item">
                     {{-- <a href="{{route('admin.files.index')}}" class="nav-link" id="legalopinion">
                         <i class="far fa-circle nav-icon"></i>
@@ -127,8 +127,8 @@
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
-                  
-                    <ul class="nav nav-treeview"> 
+
+                    <ul class="nav nav-treeview">
                          @can('view_legal_dash')
                         <li class="nav-item">
                             <a href="{{route('admin.files.index')}}" class="nav-link">
@@ -179,7 +179,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                           
+
                                 <a href="{{route('admin.calendar_show')}}" class="nav-link">
                                 <i class="far fa-square nav-icon"></i>
                                 {{-- calendar_show --}}
@@ -211,7 +211,7 @@
                 </li>
 
 
-                @can('view_orsheader')
+                @can('view_orsheader','view_dvreceive')
                 <li class="nav-item">
                     <a href="{{route('admin.orsheaders.index')}}" class="nav-link" id="orsheaders">
                         <i class="far fa-circle nav-icon"></i>
@@ -220,7 +220,7 @@
                     </a>
                 </li>
                 @endcan
-                
+
                 {{-- @can('view_schedule','view_agenda','view_timetable','view_calendar')
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
@@ -514,15 +514,7 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{route('admin.accounting.doctor_report')}}" class="nav-link"
-                        id="accounting_doctor_reports">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>
-                            {{__('Doctor accounting report')}}
-                        </p>
-                    </a>
-                </li>
+
                 @endcan
 
             </ul>

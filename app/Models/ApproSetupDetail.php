@@ -38,4 +38,8 @@ class ApproSetupDetail extends Model
     {
         return $this->belongsTo(ApproSetup::class,'appro_setup_id','appro_setup_id')->withTrashed();
     }
+       public function uacs()
+     {
+       return $this->belongsTo(UACS::class,'uacs_subobject_id','uacs_subobject_code');
+     }
 }

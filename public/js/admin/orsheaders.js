@@ -68,13 +68,22 @@
             {
                 data: null,
                 render: function(data, type, row) {
-                  return data.fundsource.code + "-" + data.fundsource.description;
+                     if (data.fundsource === null) {
+      return "NONE";
+    } else {
+       return data.fundsource.code + "-" + data.fundsource.description;
+    }
+
                 }
               },
               {
                 data: null,
                 render: function(data, type, row) {
-                  return data.payee.name + "-" + data.particulars;
+                  if (data.payee === null) {
+      return "  " + data.particulars;
+    } else {
+      return data.payee.name + "-" + data.particulars;
+    }
                 }
               },
               {
@@ -90,7 +99,12 @@
             {
                 data: null,
                 render: function(data, type, row) {
-                  return data.processed.first_name;
+                                    if (data.processed === null) {
+      return "NONE";
+    } else {
+       return data.processed.first_name;
+    }
+
                 }
               },
             //{data:"ors_no",searchable:false,orderable:false,sortable:false}
@@ -407,7 +421,7 @@ $('#responsibility_center').select2({
                         $('#uacs_id'+count).append('<option value="">-SELECT-</option>');
                     }
 
-                    $('#uacs_id'+count).append('<option value="' + item.appro_setup_id + '">'+ item.uacs_subobject_code + '</option>');
+                    $('#uacs_id'+count).append('<option value="' + item.uacs_subobject_id + '">'+ item.code + '</option>');
                    });
 
                     // $('#sub_allotment_no').val(subAllotmentNo);
@@ -446,7 +460,8 @@ $('#responsibility_center').select2({
                     $('#uacs_id'+count).append('<option value="">-SELECT-</option>');
                 }
 
-                $('#uacs_id'+count).append('<option value="' + item.appro_setup_id + '">'+ item.uacs_subobject_code + '</option>');
+                // $('#uacs_id'+count).append('<option value="' + item.appro_setup_id + '">'+ item.uacs_subobject_code + '</option>');
+                $('#uacs_id'+count).append('<option value="' + item.uacs_subobject_id + '">'+ item.code + '</option>');
                });
 
                 // $('#sub_allotment_no').val(subAllotmentNo);

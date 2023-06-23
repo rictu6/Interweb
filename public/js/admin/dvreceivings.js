@@ -127,6 +127,25 @@
     table.draw();
  });
 
+
+  //prepare edit user page
+  var user_roles=$('#user_roles').val();
+
+  if(user_roles!=null)
+  {
+      var user_roles= JSON.parse(user_roles);
+      var o_r_s=[];
+      console.log('yes');
+      user_roles.forEach(function(role){
+        o_r_s.push(parseInt(role.emp_id));
+      });
+      console.log(roles);
+
+      $('#ors_assign').val(o_r_s).trigger('change');
+  }
+
+
+
  //ors_date
  $('#ors_date').val(formattedDate);
  function setORSNO(){//not used

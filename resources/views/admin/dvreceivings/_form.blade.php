@@ -30,7 +30,7 @@
             @endif
         </select>
     </div>
-    <div class="col-12">
+    {{-- <div class="col-12">
         <label for="ors">{{__('ORS No')}}</label>
         <select class="form-control" name="ors_hdr_id" id="ors">
             @if(isset($dv)&&isset($dv['o_r_s']))
@@ -38,7 +38,19 @@
             </option>
             @endif
         </select>
+    </div> --}}
+
+    <div  class="col-12">
+    <label>{{__('Select ORS No/s')}}</label>
+    <select name="o_r_s[]" id="ors_assign" placeholder="{{__('Select ORS No/s')}}" class="form-control select2" multiple required>
+        @foreach($ors_list as $obli)
+        <option value="{{ $obli->ors_hdr_id }}" >{{ $obli->ors_no }}</option>
+            </option>
+        @endforeach
+    </select>
     </div>
+
+
     <div class="col-12">
         <label for="payee_id">{{__('Payee')}}</label>
         <select class="form-control" name="payee_id" id="payee_id">

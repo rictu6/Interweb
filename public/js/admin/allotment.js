@@ -334,7 +334,7 @@ $('#uacs_subobject_code').select2({
                    results: $.map(data, function (item) {
                       return {
                          text: item.uacs_subobject_code,
-                         id: item.uacs_subobject_code
+                         id: item.uacs_subobject_id
                       }
                    })
              };
@@ -364,7 +364,7 @@ $('#component_2_uacs_subobject_code').select2({
                    results: $.map(data, function (item) {
                       return {
                          text: item.description,
-                         id: item.uacs_subobject_id
+                         id: item.uacs_subobject_code
                       }
                    })
              };

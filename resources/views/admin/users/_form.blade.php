@@ -163,8 +163,8 @@
                 </div>
             </div>
 
-          
-         
+
+
 
 
             <div class="col-lg-3">
@@ -406,7 +406,7 @@
                     </div>
 
 
-                    <input readonly type="text" class="form-control" placeholder="{{__('Username')}}" name="user_name" @if(isset($user)) value="{{$user['user_name']}}" @endif required>
+                    <input  type="text" class="form-control" placeholder="{{__('Username')}}" name="user_name" @if(isset($user)) value="{{$user['user_name']}}" readonly @endif required>
                 </div>
                 <label for="email">{{__('Email Address')}}</label>
                 <div class="input-group mb-3">

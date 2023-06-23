@@ -95,36 +95,65 @@ public function create()
         //  if($selectedOffice >= 1 && $selectedOffice <= 6){
         //     // $selectedOffice=
         //  }
-
-    return view('admin.dvreceivings.create', compact('selectedOffice'));
+    $ors_list=ORSHeader::all();
+    return view('admin.dvreceivings.create', compact('ors_list','selectedOffice'));
 }
 
 
 function store (Request $request){
-  //dd ($request);
-$dv =new DVReceiving;
-$dv_last_no=DVReceiving::latest()->first();
-if (empty($dv_last_no)) {
-    $dv_last_no = new ORSHeader();
-    $dv_last_no->ors_hdr_id = 1;
-} else {
-    $dv_last_no->ors_hdr_id += 1;
-}
-$user_id =     Auth::guard('admin')->user()->emp_id;
-$currentDate = Carbon::now()->format('Y-n');
 
-$dv->office_id= $request->office_id;
-$dv->dv_no=$request->dv_no;
-$dv->dv_type=$request->dv_type;
-$dv->ors_hdr_id=$request->ors_hdr_id;
-$dv->payee_id= $request->payee_id;
-$dv->dv_date=  $request->dv_date;
-$dv->check_no= $request->check_no;
-$dv->generated_by= $user_id;
- $dv->save();
 
-    session()->flash('success',__('New DV has been successfully added to database'));
-    return redirect()->route('admin.dvreceiving_list');
+//dd($request['o_r_s']);
+                //dd ($request);
+
+                // $dv_last_no=DVReceiving::latest()->first();
+                // if (empty($dv_last_no)) {
+                //     $dv_last_no = new DVReceiving();
+                //     $dv_last_no->ors_hdr_id = 1;
+                // } else {
+                //     $dv_last_no->ors_hdr_id += 1;
+                // }
+                $user_id =     Auth::guard('admin')->user()->emp_id;
+                // $currentDate = Carbon::now()->format('Y-n');
+    if($request->has('o_r_s'))
+    {
+       // foreach($request['o_r_s'] as $ors)
+       // {
+             $dv =new DVReceiving;
+             $orsNumbers = $request['o_r_s'];
+             $existingDV = DVReceiving::whereIn('ors_hdr_id', $orsNumbers)->first();
+
+             if ($existingDV) {
+                 return redirect()->back()->withErrors("One or more ORS numbers already attached to a DV")->withInput();
+             }
+            else
+            {
+
+                $dv->office_id= $request->office_id;
+                $dv->dv_no=$request->dv_no;
+                $dv->dv_type=$request->dv_type;
+                $dv->ors_hdr_id=implode(',', $request['o_r_s']);
+                $dv->payee_id= $request->payee_id;
+                $dv->dv_date=  $request->dv_date;
+                $dv->check_no= $request->check_no;
+                $dv->generated_by= $user_id;
+                $dv->save();
+                foreach ($request['o_r_s'] as $ors){
+                    $orshdr=ORSHeader::where('ors_hdr_id',$ors)->first();
+                    $orshdr->dv_received_id=$dv->dv_received_id;
+                    $orshdr->save();
+                }
+
+            }
+        //}
+    }
+
+// dd($request);
+
+
+session()->flash('success',__('New DV has been successfully added to database'));
+return redirect()->route('admin.dvreceiving_list');
+
 
 }
 

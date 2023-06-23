@@ -48,9 +48,27 @@ class ORSDetails extends Model
        return $this->belongsTo(ApproSetup::class,'sub_allotment_no','sub_allotment_id');
      }
 
-     public function approsetupdtl_uacs()
+     public function uacs()
      {
-       return $this->belongsTo(ApproSetupDetail::class,'uacs_subobject_code','uacs_id');
+       return $this->belongsTo(UACS::class,'uacs_id','uacs_subobject_id');
+     }
+     public function getDepositAttribute()
+     {
+
+// $deposit = 100000;
+
+// return $deposit;
      }
 
+   public function getWithdrawalAttribute()
+   {
+// Calculate the withdrawal based on your logic using the running balance
+// and return the calculated value
+   }
+
+   public function getBalanceAttribute()
+   {
+// Calculate the balance based on your logic using the running balance
+// and return the calculated value
+   }
 }

@@ -165,7 +165,9 @@ Route::get('get_keyofficials','MenusController@keyofficials')->name('keyofficial
 
 
 
-
+    //accounting reports
+    Route::get('accounting','AccountingController@index')->name('accounting.index');
+    Route::get('generate_report','AccountingController@generate_report')->name('accounting.generate_report');
 
 
 

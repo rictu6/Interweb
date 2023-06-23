@@ -45,7 +45,7 @@ class DVReceiving extends Model
           }
           public function o_r_s()
           {
-              return $this->belongsTo(ORSHeader::class,'ors_hdr_id','ors_hdr_id')->withTrashed();
+              return $this->hasMany(ORSHeader::class,'ors_hdr_id','ors_hdr_id')->withTrashed();
           }
 
 }

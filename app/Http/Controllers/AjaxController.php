@@ -157,8 +157,12 @@ class AjaxController extends Controller
         if (isset($request->sub_allotment_no)) {
             $appro_setup = ApproSetup::where('sub_allotment_no', '=', $request->sub_allotment_no)->first();
             if ($appro_setup) {
-                $uacs = ApproSetupDetail::where('appro_setup_id', '=', $appro_setup->appro_setup_id)->get();
-               // $uacs= UACS::whereIn('code','=',$detail->uacs_subobject_code)->get();
+                $appdtl = ApproSetupDetail::where('appro_setup_id', '=', $appro_setup->appro_setup_id)->get();
+
+                $uacsSubobjectCodes = $appdtl->pluck('uacs_subobject_code')->toArray();
+
+                $uacs = UACS::whereIn('uacs_subobject_id', $uacsSubobjectCodes)->get();
+
             } else {
                 $uacs = [];
             }
@@ -174,7 +178,12 @@ class AjaxController extends Controller
     ->where('allotment_class_id', 1)
     ->first();
         if ($appro_setup) {
-            $uacs = ApproSetupDetail::where('appro_setup_id', '=', $appro_setup->appro_setup_id)->get();
+            $appdtl = ApproSetupDetail::where('appro_setup_id', '=', $appro_setup->appro_setup_id)->get();
+
+            $uacsSubobjectCodes = $appdtl->pluck('uacs_subobject_code')->toArray();
+
+            $uacs = UACS::whereIn('uacs_subobject_id', $uacsSubobjectCodes)->get();
+
         } else {
             $uacs = [];
         }
