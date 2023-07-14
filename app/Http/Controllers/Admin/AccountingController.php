@@ -31,11 +31,24 @@ class AccountingController extends Controller
      */
     public function index()
     {   $total=0;
-        $orsheaders=ORSHeader::with('processed','details', 'details.uacs', 'details.pap','fundsource','payee')->get();
-        // dd($orsheaders);
-        $reports = [];
+        $ors_show=new ORSHeader();
+        $ors_payments = ORSHeader::with('processed', 'details', 'details.uacs', 'details.pap', 'fundsource', 'payee', 'disbursement')
+                ->where('ors_type', 2)
+                ->whereHas('disbursement', function ($query) {
+                $query->whereNotNull('dv_no');
+                })
+                // ->orderByDesc('ors_date')
+                ->get();
 
-        foreach ($orsheaders as $ors) {
+        $ors_deposit = ORSHeader::with('processed', 'details', 'details.uacs', 'details.pap', 'fundsource', 'payee')
+                    ->where('ors_type', 1)
+                    // ->orderByAsc('ors_date')
+                    ->get();
+                    $ors_show = $ors_payments->concat($ors_deposit)->sortBy('ors_date');
+
+        $reports = [];
+//dd($ors_show);
+        foreach ($ors_show as $ors) {
             foreach ($ors->details as $det) {
                 //  dd($ors->details);
                 //KUN ANO NKA ASSIGN SA DTO AMO NA NA ITADLONG YA REGARDLESS KANG KUN ANO NGA VALUE ASSIGN MO KNA RIDYA
@@ -45,11 +58,13 @@ class AccountingController extends Controller
                 $ors->disbursement ?$ors->disbursement->check_no: null,
                 $ors->ors_no,
                 $payeeName = isset($ors->payee) && is_object($ors->payee) ? $ors->payee->name . '-' . $ors->particulars : null,
-
-                $det->uacs?  $det->uacs->description:null,
-                $det->uacs?  $det->uacs->code:null,
+                $ors->ors_type==1?   $det->amount:null,
+                $ors->ors_type==2?   $det->amount:null,
                 $det->amount,
-                $det->uacs_id
+                $det->uacs?  $det->uacs->description:null,
+                $det->uacs?  $det->uacs->code:null
+
+                // $det->uacs_id
 
                // $ors->uacs_code
                 // $ors->amount,

@@ -1,17 +1,33 @@
+
+<div class="form-group">
+    <label>Deposit</label>
+    <div class="form-check">
+        <input type="hidden" name="ors_type" value="2">
+        <input type="checkbox" class="form-check-input" name="ors_type" id="deposit_payment_checkbox" value="1">
+        <label class="form-check-label" for="deposit_payment_checkbox">Deposit</label>
+    </div>
+
+</div>
+
 <div class="form-group">
     <label>DILG Office</label>
-    <select class="form-control select2" disabled="disabled" style="width: 100%;">
+    <select class="form-control select2" name="office" disabled="disabled" style="width: 100%;">
         <option selected="selected">REGION VI - WESTERN VISAYAS</option>
     </select>
 </div>
 <div class="row">
+    {{-- @if($errors->has('success'))
+    <div class="alert alert-danger">
+        {{ $errors->first('success') }}
+    </div>
+@endif --}}
     <div class="col-5">
         <label for="">ORS No</label>
         <input disabled="disabled" type="text" class="form-control" name="ors_no" id="ors_no">
     </div>
     <div class="col-4">
         <label for="">ORS Date</label>
-        <input disabled="disabled" type="date" class="form-control" name="ors_date" id="ors_date" value="{{ date('MM/DD/YYYY') }}">
+        <input disabled="disabled" type="date" class="form-control" name="ors_date" id="ors_date" value="{{ date('MM/DD/YYYY') }}" required>
     </div>
     <div class="col-3">
         <label for="">Date Received</label>
@@ -21,7 +37,7 @@
 <div class="row">
     <div class="col-4">
         <label for="payee_id">{{__('Payee')}}</label>
-        <select class="form-control" name="payee_id" id="payee_id">
+        <select class="form-control" name="payee_id" id="payee_id" required>
             @if(isset($ors)&&isset($ors['payee']))
             <option value="{{$ors['payee']['payee_id']}}" selected>{{$ors['payee']['name']}}
             </option>
@@ -30,16 +46,16 @@
     </div>
     <div class="col-4">
         <label for="">Office</label>
-        <input type="text" class="form-control" name="office_id" id="" placeholder="">
+        <input type="text" class="form-control" value="{{old('office_id')}}" name="office_id" id="" placeholder="" required>
     </div>
     <div class="col-4">
         <label for="">Address</label>
-        <input type="text" class="form-control" name="address" id="" placeholder="">
+        <input type="text" class="form-control" value="{{old('address')}}" name="address" id="" placeholder="" required>
     </div>
 </div>
 <div class="form-group">
     <label for="">Particulars</label>
-    <textarea type="text" class="form-control" name="particulars" id="" placeholder=""></textarea>
+    <textarea type="text" class="form-control" name="particulars" id="" placeholder="" required></textarea>
 </div>
 
 <div class="row">
@@ -57,8 +73,9 @@
         <label for="fund_cluster_id">{{__('Fund Cluster')}}</label>
         <select class="form-control" name="fund_cluster_id" id="fund_cluster_id">
             @if(isset($ors)&&isset($ors['fundcluster']))
-            <option value="{{$ors['fundcluster']['fund_cluster_id']}}" selected>{{$ors['fundcluster']['code']}} -
-                {{$ors['fundcluster']['description']}}
+            {{-- <option value="{{old($ors['fundcluster']['fund_cluster_id'])}}"  selected>{{$ors['fundcluster']['code']}} - --}}
+                <option value="{{ session()->get('fund_cluster_id', $ors['fundcluster']['fund_cluster_id']) }}" selected>
+                    {{$ors['fundcluster']['code']}}- {{$ors['fundcluster']['description']}}
             </option>
             @endif
         </select>
@@ -162,7 +179,7 @@
                                     <div class="form-group">
 
                                         {{-- <label for="details[0][pap_id]">{{__('PAP')}}</label> --}}
-                                        <select class="form-control pap_id" name="details[0][pap_id]" id="pap_id{{$count}}">
+                                        <select class="form-control pap_id" name="details[0][pap_id]" id="pap_id{{$count}}" required>
                                             @if(isset($ors)&&isset($ors['details']))
                                             <option value="{{$ors['details']['pap_id']}}" selected>
                                                 {{$ors['details']['pap']['code']}} -
@@ -189,7 +206,7 @@
                                     <div class="form-group">
 
 
-                                        <select class="form-control uacs_id" name="details[0][uacs_id]" id="uacs_id{{$count}}">
+                                        <select class="form-control uacs_id" name="details[0][uacs_id]" id="uacs_id{{$count}}" required>
                                             @if(isset($ors)&&isset($ors['details']))
                                             <option value="{{$ors['details']['uacs_id']}}" selected>
                                                 {{$ors['details']['approsetupdtl_uacs']['uacs_subobject_code']}}
@@ -200,13 +217,14 @@
                                 </td>
                                 <td>
                                     <div class="form-group">
+                                        <div id="toast_message" class="error-message"></div>
+                                        <input type="number" class="input_amount" name="details[0][amount]" placeholder="{{__('Amount')}}" required>
+                                        <span class="input-group-text">
+                                            {{ get_currency() }}
+                                        </span>
+                                    </div>
+                                </td>
 
-                                     <input type="number" class="form-control amount" name="details[0][amount]" placeholder="{{__('Amount')}}"  required>
-                                     <span class="input-group-text">
-                                                  {{get_currency()}}
-                                              </span>
-                                      </div>
-                                  </td>
                                 <td>
                                     <button type="button" class="btn btn-danger delete_row">
                                         <i class="fa fa-trash"></i>

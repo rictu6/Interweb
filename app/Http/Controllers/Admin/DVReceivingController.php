@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+use App\Models\ApproSetup;
 use App\Models\DVReceiving;
 use App\Models\Employee;
 
@@ -103,7 +104,7 @@ public function create()
 function store (Request $request){
 
 
-//dd($request['o_r_s']);
+// dd($request);
                 //dd ($request);
 
                 // $dv_last_no=DVReceiving::latest()->first();
@@ -137,12 +138,44 @@ function store (Request $request){
                 $dv->dv_date=  $request->dv_date;
                 $dv->check_no= $request->check_no;
                 $dv->generated_by= $user_id;
-                $dv->save();
-                foreach ($request['o_r_s'] as $ors){
-                    $orshdr=ORSHeader::where('ors_hdr_id',$ors)->first();
-                    $orshdr->dv_received_id=$dv->dv_received_id;
-                    $orshdr->save();
+
+                foreach ($request['o_r_s'] as $ors) {
+                    $orshdr = ORSHeader::where('ors_hdr_id', $ors)->first();
+                    $orshdr->dv_received_id = $dv->dv_received_id;
+
+
+                    // Update running balance whenever budget is allotted
+                    foreach ($orshdr->details as $dtl) {
+                        $approsetup = ApproSetup::with('approdtls')
+                            ->where('pap_code', $dtl->pap_id)
+                            ->get();
+//dd($approsetup);
+                        foreach ($approsetup as $setup) {
+                            if ($setup->relationLoaded('approdtls')) {
+                                $filteredApprodtls = $setup->approdtls->filter(function ($approdtl) use ($dtl) {
+                                    return $approdtl->uacs_subobject_code == $dtl->uacs_id;
+                                });
+                                //dd($filteredApprodtls);
+                                foreach ($filteredApprodtls as $approdtl) {
+                                    // Update running balance here
+                                    // $approdtl->running_balance =
+                                    if ($approdtl->uacs_subobject_code == $dtl->uacs_id) {
+                                        if ($approdtl->running_balance >= $dtl->amount) {
+                                            $approdtl->running_balance -= $dtl->amount;
+                                            $dv->save();
+                                            $orshdr->save();
+                                            $approdtl->save();
+                                        } else {
+                                            session()->flash('fail',__('Not enough balance.'));
+                                            //throw new Exception("Not enough balance.");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
+
 
             }
         //}

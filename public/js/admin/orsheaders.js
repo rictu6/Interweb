@@ -690,5 +690,108 @@ $('.add_component').on('click', function() {
         toolbar: []
     });
 });
+// // check amount whenever change
+// $(document).on('change','.input_amount',function(){
+//     var checked=$(this).prop('checked');
+//     var culture_id=$(this).val();
+//     var price=$(this).attr('price');
+//     if(checked)
+//     {
+//        $('.cultures').append(`
+//        <div class="selected_tests" id="selected_culture_`+culture_id+`">
+//           <input type="hidden"  name="cultures[]" value="`+culture_id+`">
+//           <input type="hidden"  class="price" value="`+price+`">
+//        </div>`);
+//     }
+//     else{
+//        $('#selected_culture_'+culture_id).remove();
+//     }
+//     calculate_total();
+//  });
+$('#deposit_payment_checkbox').on('change', function() {
+    if ($(this).is(':checked')) {
+        // Checkbox is checked, set the value to 1
+        $ors.ors_type = 1;
+    } else {
+        // Checkbox is not checked, set the value to 2
+        $ors.ors_type = 2;
+    }
+});
+  //submit form
+//   $('#ors_form').on('submit',function(){
+//     //event.preventDefault();
+
+//     // var toastMessage = $('#toast_message').val();
+//     // if (toastMessage) {
+//     //     toastr.error(toastMessage, 'Failed');
+//     // }
+//     //    toastr.error(trans('Amount should be less or equal to allotment balance'),trans('Failed'));
+//  });
+
+// $('#ors_form').on('submit', function(event) {
+//     //event.preventDefault(); // Prevent the form from submitting normally
+
+//     // Perform your AJAX request here
+//     $.ajax({
+//         url: 'admin.orsheaders.store',
+//         method: 'POST',
+//         data: $(this).serialize(),
+//         success: function(response) {
+
+//         },
+//         error: function(xhr, status, error) {
+//             if (xhr.status === 422) {
+//                 var errorMessage = xhr.responseJSON.message;
+
+//                 // Update the toast_message element with the error message
+//                 $('#toast_message').text(errorMessage);
+
+//                 // Display the toast message using a toast library of your choice
+//                 toastr.error(errorMessage, 'Failed');
+//             } else {
+//                 // Handle other error scenarios or actions
+//             }
+//         }
+
+//     });
+// });
+//
+
+$('#ors_form').on('submit', function(event) {
+    event.preventDefault(); // Prevent the form from submitting normally
+
+    // Perform your AJAX request here
+    $.ajax({
+        url: $(this).attr('action'), // Get the form action URL dynamically
+        method: 'POST',
+        data: $(this).serialize(),
+        success: function(response) {
+            // Handle the success response, if needed
+            // For example, redirect to a success page
+            // window.location.href = '{{ route("admin.orsheaders.store") }}';
+            // window.location.href = '{{ route("admin.orsheader_list") }}';
+//flash and redirect
+//Flash.success('ORS has been successfully added.');
+
+    // Redirect to the desired page
+    toastr.success(response.toast_message);
+    window.location.href = response.redirect_to;
+        },
+        error: function(xhr, status, error) {
+            if (xhr.status === 422) {
+                var errorMessage = xhr.responseJSON.message;
+
+                // Update the toast_message element with the error message
+                //$('#toast_message').text(errorMessage);
+
+                // Display the toast message using a toast library of your choice
+                toastr.error(errorMessage, 'Failed');
+            } else {
+                // Handle other error scenarios or actions
+            }
+        }
+
+    });
+});
 
 })(jQuery);

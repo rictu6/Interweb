@@ -16,7 +16,7 @@ class ORSHeader extends Model
 
     protected $table = 'tbl_ors_hdr';
     protected $primaryKey = 'ors_hdr_id';
-    protected $fillable=['office_id', 'type',
+    protected $fillable=['office_id', 'ors_type',
     'ors_hdr_id', 'ors_no', 'ors_date',
      'particulars', 'budget_type_id', 'fund_cluster_id',
       'fund_source_id', 'uacs_subclass_id', 'payee_id',
@@ -61,5 +61,5 @@ class ORSHeader extends Model
           {
               return $this->belongsTo(DVReceiving::class,'dv_received_id','dv_received_id')->withTrashed();
           }
-        
+
 }

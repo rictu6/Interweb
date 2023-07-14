@@ -71,10 +71,13 @@
                 <th>{{__('Check No')}}</th>
                 <th>{{__('ORS No')}}</th>
                 <th>{{__('Payee')}}</th>
+                <th>{{__('Deposits')}}</th>
+                <th>{{__('Withdrawal/Payments')}}</th>
+                <th>{{__('Balance')}}</th>
                 <th>{{__('Account Description')}}</th>
                 <th>{{__('UACS Code')}}</th>
-                <th>{{__('Amount')}}</th>
-                <th>{{__('Withholding Tax')}}</th>
+
+                {{-- <th>{{__('Withholding Tax')}}</th> --}}
               </tr>
             </thead>
             <tbody>
@@ -83,6 +86,7 @@
                     <td>{{ $ors->date }}</td>
                     <td>{{ $ors->dv_no }}</td>
                     <td>{{ $ors->check_no }}</td>
+                    <td>{{ $ors->ors_no }}</td>
                     <td>{{ $ors->payee }}</td>
                     <td>{{ $ors->deposits }}</td>
                     <td>{{ $ors->payments }}</td>
