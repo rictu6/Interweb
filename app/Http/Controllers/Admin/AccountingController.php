@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\ApproSetup;
 use App\Models\ReportDTO;
 use App\Http\Controllers\Controller;
 use App\Models\ORSHeader;
@@ -51,26 +52,38 @@ class AccountingController extends Controller
         foreach ($ors_show as $ors) {
             foreach ($ors->details as $det) {
                 //  dd($ors->details);
-                //KUN ANO NKA ASSIGN SA DTO AMO NA NA ITADLONG YA REGARDLESS KANG KUN ANO NGA VALUE ASSIGN MO KNA RIDYA
-            $report = new ReportDTO(
-                $ors->ors_date,
-                $ors->disbursement ? $ors->disbursement->dv_no : null,
-                $ors->disbursement ?$ors->disbursement->check_no: null,
-                $ors->ors_no,
-                $payeeName = isset($ors->payee) && is_object($ors->payee) ? $ors->payee->name . '-' . $ors->particulars : null,
-                $ors->ors_type==1?   $det->amount:null,
-                $ors->ors_type==2?   $det->amount:null,
-                $det->amount,
-                $det->uacs?  $det->uacs->description:null,
-                $det->uacs?  $det->uacs->code:null
 
-                // $det->uacs_id
 
-               // $ors->uacs_code
-                // $ors->amount,
-                // $ors->withholding_tax,
-                // $ors->other_deductions
-            );
+                $approsetup = ApproSetup::with('approdtls')
+                ->where('pap_code', $det->pap_id)
+                ->get();
+                foreach ($approsetup as $setup) {
+                    if ($setup->relationLoaded('approdtls')) {
+                        $filteredApprodtls = $setup->approdtls->filter(function ($approdtl) use ($det) {
+                            return $approdtl->uacs_subobject_code == $det->uacs_id;
+                        });
+                        foreach ($filteredApprodtls as $approdtl) {
+//KUN ANO NKA ASSIGN SA DTO AMO NA NA ITADLONG YA REGARDLESS KANG KUN ANO NGA VALUE ASSIGN MO KNA RIDYA
+$report = new ReportDTO(
+    $ors->ors_date,
+    $ors->disbursement ? $ors->disbursement->dv_no : null,
+    $ors->disbursement ?$ors->disbursement->check_no: null,
+    isset($ors->ors_no)?$ors->ors_no:null,
+
+    isset($ors->payee) && is_object($ors->payee) ? $ors->payee->name . '-' . $ors->particulars : null,
+    $ors->ors_type==1?   $det->amount:null,
+    $ors->ors_type==2?   $det->amount:null,
+    // $det->amount,
+    ($approdtl->uacs_subobject_code == $det->uacs_id &&   $ors->ors_type==2)?$approdtl->running_balance: $det->amount,
+    $det->uacs?  $det->uacs->description:null,
+    $det->uacs?  $det->uacs->code:null
+
+
+);
+                        }
+
+                    }}
+
             $reports[] = $report;
             }
 
