@@ -24,7 +24,7 @@ class ReportDTO
         $this->date = $date;
         $this->dv_no = $dv_no;
         $this->check_no = $check_no;
-        $this-> $ors_no= $ors_no;
+        $this-> ors_no= $ors_no;
         $this->payee = $payee;
         $this->deposits = $deposits;
         $this->payments = $payments;

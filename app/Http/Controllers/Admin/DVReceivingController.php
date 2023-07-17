@@ -97,6 +97,7 @@ public function create()
         //     // $selectedOffice=
         //  }
     $ors_list=ORSHeader::all();
+    // dd(   $ors_list);
     return view('admin.dvreceivings.create', compact('ors_list','selectedOffice'));
 }
 
@@ -123,7 +124,7 @@ function store (Request $request){
              $dv =new DVReceiving;
              $orsNumbers = $request['o_r_s'];
              $existingDV = DVReceiving::whereIn('ors_hdr_id', $orsNumbers)->first();
-
+//dd($request['o_r_s']);
              if ($existingDV) {
                  return redirect()->back()->withErrors("One or more ORS numbers already attached to a DV")->withInput();
              }
@@ -138,12 +139,12 @@ function store (Request $request){
                 $dv->dv_date=  $request->dv_date;
                 $dv->check_no= $request->check_no;
                 $dv->generated_by= $user_id;
-
+                $dv->save();
                 foreach ($request['o_r_s'] as $ors) {
                     $orshdr = ORSHeader::where('ors_hdr_id', $ors)->first();
                     $orshdr->dv_received_id = $dv->dv_received_id;
-
-
+                    $orshdr->save();
+//dd($orshdr);
                     // Update running balance whenever budget is allotted
                     foreach ($orshdr->details as $dtl) {
                         $approsetup = ApproSetup::with('approdtls')
@@ -162,8 +163,8 @@ function store (Request $request){
                                     if ($approdtl->uacs_subobject_code == $dtl->uacs_id) {
                                         if ($approdtl->running_balance >= $dtl->amount) {
                                             $approdtl->running_balance -= $dtl->amount;
-                                            $dv->save();
-                                            $orshdr->save();
+
+
                                             $approdtl->save();
                                         } else {
                                             session()->flash('fail',__('Not enough balance.'));
