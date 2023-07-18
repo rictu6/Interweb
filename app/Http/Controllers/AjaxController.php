@@ -6,6 +6,7 @@ use App\Models\AllotmentClass;
 use App\Models\ApproSetup;
 use App\Models\ApproSetupDetail;
 use App\Models\BudgetType;
+use App\Models\DVType;
 use App\Models\FundCluster;
 use App\Models\FundSource;
 use App\Models\LCE;
@@ -54,6 +55,7 @@ use Illuminate\Validation\Rule;
 
 class AjaxController extends Controller
 {
+    //FTA
     public function get_lces(Request $request)
     {
 
@@ -93,6 +95,21 @@ class AjaxController extends Controller
 
         return response()->json($lces);
 
+    }
+
+    //FDMS
+    public function get_dv_type(Request $request)
+    {
+
+        if(isset($request->term))
+        {
+            $dvtypes=DVType::where('title','like','%'.$request->term.'%')->get();
+        }
+        else{
+            $dvtypes=DVType::All();
+        }
+
+        return response()->json($dvtypes);
     }
     //payee
     public function get_payee_by_name(Request $request)
@@ -140,8 +157,12 @@ class AjaxController extends Controller
         if (isset($request->sub_allotment_no)) {
             $appro_setup = ApproSetup::where('sub_allotment_no', '=', $request->sub_allotment_no)->first();
             if ($appro_setup) {
-                $uacs = ApproSetupDetail::where('appro_setup_id', '=', $appro_setup->appro_setup_id)->get();
-               // $uacs= UACS::whereIn('code','=',$detail->uacs_subobject_code)->get();
+                $appdtl = ApproSetupDetail::where('appro_setup_id', '=', $appro_setup->appro_setup_id)->get();
+
+                $uacsSubobjectCodes = $appdtl->pluck('uacs_subobject_code')->toArray();
+
+                $uacs = UACS::whereIn('uacs_subobject_id', $uacsSubobjectCodes)->get();
+
             } else {
                 $uacs = [];
             }
@@ -153,9 +174,19 @@ class AjaxController extends Controller
       public function get_uacs_by_pap(Request $request){
         if(isset($request->pap_code))
     {
-        $appro_setup=ApproSetup::where('pap_code','=',$request->pap_code && 'allotment_class','=',1)->get();
-        $uacs=ApproSetupDetail::where('appro_setup_id','=',$appro_setup->appro_setup_id )->get();
+        $appro_setup = ApproSetup::where('pap_code', $request->pap_code)
+    ->where('allotment_class_id', 1)
+    ->first();
+        if ($appro_setup) {
+            $appdtl = ApproSetupDetail::where('appro_setup_id', '=', $appro_setup->appro_setup_id)->get();
 
+            $uacsSubobjectCodes = $appdtl->pluck('uacs_subobject_code')->toArray();
+
+            $uacs = UACS::whereIn('uacs_subobject_id', $uacsSubobjectCodes)->get();
+
+        } else {
+            $uacs = [];
+        }
     }
     return response()->json($uacs);
     }
@@ -305,9 +336,13 @@ public function delete_uacs($dtl_id)
     //get ors
     public function get_orsheaders(Request $request)
     {
-
-        $ors=ORSHeader::all();
-
+        if(isset($request->term))
+        {
+        $ors=ORSHeader::where('ors_no','like','%'.$request->term.'%')->get();
+    }
+        else{
+            $ors=ORSHeader::all();
+        }
         return response()->json($ors);
     }
     public function get_muncits(Request $request)
@@ -422,7 +457,7 @@ public function delete_uacs($dtl_id)
         return response()->json($agendas);
 
     }
-   
+
     public function get_permission_by_desc(Request $request)
     {
         if(isset($request->term))
@@ -794,7 +829,7 @@ public function delete_uacs($dtl_id)
 
         return response()->json($agendas);
     }
- 
+
 
     public function get_permissions(Request $request)
     {
@@ -927,7 +962,6 @@ public function delete_uacs($dtl_id)
 
         return response()->json($module);
     }
-    
     public function create_user(Request $request)
     {
         $request->validate([
@@ -974,21 +1008,6 @@ public function delete_uacs($dtl_id)
         return response()->json($muncit);
     }
     public function create_section(Request $request)
-    {
-        $request->validate([
-            'sec_desc'=>[
-                'required',
-                Rule::unique('sections')->whereNull('deleted_at')
-            ],
-        ]);
-
-        $request['section_desc']=section_description();
-
-        $section=Section::create($request->except('_token'));
-
-        return response()->json($section);
-    }
-    public function create_schedule(Request $request)
     {
         $request->validate([
             'sec_desc'=>[

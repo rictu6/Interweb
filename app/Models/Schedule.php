@@ -8,8 +8,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Carbon\Carbon;
 class Schedule extends Model
 {
-
-
     use SoftDeletes;
     use LogsActivity;
 
@@ -18,20 +16,20 @@ class Schedule extends Model
     protected $table = 'tbl_schedule';
 
     public $timestamps=false;
-   
+    protected $dates = ['date'];
     protected $primaryKey = 'id';
 
     protected $fillable = [
         'posted_by',
         'posted_date',
         'title',
-        'venue',
+'venue',
         'office_id',
         'div_id',
         'sec_id',
         'emp_id',
        'attendee',
-       'color',
+     'color',
         'start',
         'end'
      
@@ -58,14 +56,16 @@ class Schedule extends Model
         return $this->belongsTo(Position::class,'pos_id','pos_id')->withTrashed();
     }
 
-    public function user_()
-    {
-        return $this->belongsTo(User::class,'emp_id','emp_id')->withTrashed();
-    }
 
+	
    
     public function roles()
     {
         return $this->hasMany(ScheduleUser::class,'schedule_id','id');
     }
+
+    // public function att()
+    // {
+    //     return $this->hasMany(ScheduleUser::class,'schedule_id','id');
+    // }
 }

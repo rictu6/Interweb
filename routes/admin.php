@@ -62,6 +62,10 @@ Route::get('get_orsheader_list','ORSHeaderController@orsheader_list')->name('ors
 Route::resource('suballotments','SubAllotmentController');
 //Allotment
 Route::resource('allotments','AllotmentController');
+//DV
+Route::resource('dvreceivings','DVReceivingController');
+Route::get('get_dvreceivings','DVReceivingController@ajax')->name('get_dvreceivings');
+Route::get('get_dvreceiving_list','DVReceivingController@dvreceiving_list')->name('dvreceiving_list');
 
 Route::resource('menus','MenusController');
 Route::get('get_contactus','MenusController@contactus')->name('contactus');
@@ -93,7 +97,6 @@ Route::get('get_keyofficials','MenusController@keyofficials')->name('keyofficial
  Route::resource('schedules','SchedulesController');
  Route::get('get_schedules','SchedulesController@ajax')->name('get_schedules');
  Route::get('get_schedule_list','SchedulesController@schedule_list')->name('schedule_list');
-
  Route::get('get_calendar_show','SchedulesController@calendar_show')->name('calendar_show');
 
       //nationality
@@ -162,7 +165,9 @@ Route::get('get_keyofficials','MenusController@keyofficials')->name('keyofficial
 
 
 
-
+    //accounting reports
+    Route::get('accounting','AccountingController@index')->name('accounting.index');
+    Route::get('generate_report','AccountingController@generate_report')->name('accounting.generate_report');
 
 
 

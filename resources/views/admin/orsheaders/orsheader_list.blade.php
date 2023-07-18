@@ -38,16 +38,17 @@
     <!-- /.card-header -->
     <div class="card-body">
        <div class="col-lg-12 table-responsive">
-          <table id="ftas_table" class="table table-striped table-hover table-bordered"  width="100%">
+          <table id="ordheaders_table" class="table table-striped table-hover table-bordered"  width="100%">
             <thead>
               <tr>
-                <th width="10px">#</th>
+                {{-- <th width="10px">#</th> --}}
 
-                <th>{{__('Fullname')}}</th>
-
-
-                <th>{{__('Status')}}</th>
-                <th width="100px">{{__('Action')}}</th>
+                <th>{{__('ORS No')}}</th>
+                <th>{{__('Allotment Class/ Fund Source')}}</th>
+                <th>{{__('Payee/ Particulars')}}</th>
+                <th>{{__('Amount')}}</th>
+                <th>{{__('Processed By ')}}</th>
+                {{-- <th width="100px">{{__('Action')}}</th> --}}
               </tr>
             </thead>
             <tbody>
