@@ -52,4 +52,8 @@ class ORSHeader extends Model
           {
               return $this->belongsTo(AllotmentClass::class,'uacs_subclass_id','uacs_subclass_id')->withTrashed();
           }
+          public function disbursement()
+          {
+              return $this->belongsTo(DVReceiving::class,'dv_received_id','dv_received_id')->withTrashed();
+          }
 }
