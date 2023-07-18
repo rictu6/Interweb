@@ -157,6 +157,9 @@ Route::get('get_keyofficials','MenusController@keyofficials')->name('keyofficial
     Route::resource('empstatuss','EmpStatussController');
     Route::get('get_empstatuss','EmpStatussController@ajax')->name('get_empstatuss');
 
+  //accounting reports
+  Route::get('accounting','AccountingController@index')->name('accounting.index');
+  Route::get('generate_report','AccountingController@generate_report')->name('accounting.generate_report');
 
 
 

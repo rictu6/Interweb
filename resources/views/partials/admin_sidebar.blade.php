@@ -91,7 +91,7 @@
                             <p>{{__('HRMIS')}}
                             </p>
                         </a>
-                     
+
 
                 </li>
                 @endcan
@@ -118,7 +118,7 @@
                 </li>
                 @endcan
 
-              
+
                 <li class="nav-item">
                     {{-- <a href="{{route('admin.files.index')}}" class="nav-link" id="legalopinion">
                         <i class="far fa-circle nav-icon"></i>
@@ -131,8 +131,8 @@
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
-                  
-                    <ul class="nav nav-treeview"> 
+
+                    <ul class="nav nav-treeview">
                          @can('view_legal_dash')
                         <li class="nav-item">
                             <a href="{{route('admin.files.index')}}" class="nav-link">
@@ -183,7 +183,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                           
+
                                 <a href="{{route('admin.calendar_show')}}" target="_blank" class="nav-link">
                                 <i class="far fa-square nav-icon"></i>
                                 {{-- calendar_show --}}
@@ -224,7 +224,7 @@
                     </a>
                 </li>
                 @endcan
-                
+
                 {{-- @can('view_schedule','view_agenda','view_timetable','view_calendar')
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
