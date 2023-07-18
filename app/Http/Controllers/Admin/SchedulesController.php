@@ -176,7 +176,7 @@ class SchedulesController extends Controller
     public function update(Request $request, $id)
     {
      
-
+        try{
         $user=Schedule::findOrFail($id);
         $user->posted_by=$request->posted_by;
         $user->posted_date=$request->posted_date;
@@ -202,7 +202,7 @@ class SchedulesController extends Controller
                 foreach($request['roles'] as $role)
                 {
                
-                $group_test=User::where('emp_id',$role)->firstOrFail();
+               // $group_test=User::where('emp_id',$role)->firstOrFail();
                         
                 ScheduleUser::firstOrCreate([
     
@@ -211,7 +211,7 @@ class SchedulesController extends Controller
                     'emp_id'=>$role,
                     'title'=>$request->title,
                     'venue'=>$request->venue,
-                    'attendee_name'=>$group_test['last_name'] . ' ' .$group_test['first_name']. ',' .$group_test['middle_name'],
+                   // 'attendee_name'=>$group_test['last_name'] . ' ' .$group_test['first_name']. ',' .$group_test['middle_name'],
                     'start'=>$user['start'],
                     'end'=>$user['end']
 
@@ -227,6 +227,9 @@ class SchedulesController extends Controller
         session()->flash('success','Schedule saved successfully');
         
         return redirect()->route('admin.schedule_list');
+    } catch (\Exception $th) {
+        dd($th->getMessage());
+    }
     }
 
     public function schedule_list()

@@ -166,22 +166,13 @@
         </div>
         <div class="form-group">
             <label>{{__('Select Attendee/s')}}</label>
-            <select disabled name="roles[]" id="roles_assign" placeholder="{{__('Select Attendee/s')}}"
+            <select  name="roles[]" id="roles_assign" placeholder="{{__('Select Attendee/s')}}"
                 class="form-control select2" multiple required>
                 @foreach($roles as $role)
-                <option value="{{$role->emp_id}}">{{$role->last_name}}, {{$role->first_name}} {{$role->middle_name}}
+                <option value="{{$role->emp_id}}" >{{$role->last_name}}, {{$role->first_name}} {{$role->middle_name}}
                 </option>
                 @endforeach
             </select>
-            {{-- <div class="form-group">
-                <label>{{__('Select Position')}}</label>
-                <select class="form-control" name="emp_id" id="user_">
-                    @if(isset($user)&&isset($user['user_']))
-                    <option value="{{$user['user_']['emp_id']}}" selected>{{$user['user_']['last_name']}}</option>
-                    @endif
-                </select>
-            </div> --}}
-
 
 
 
