@@ -66,7 +66,6 @@
     var count=$('#count').val();
  $('.add_component').on('click',function(){
    count++;
-   console.log(count);
    $('.components .items').append(`
    <tr dtl_id="approdtls${count}" num="${count}">
     <td>
@@ -74,7 +73,7 @@
         <select class="form-control" id="uacs_subobject_code" name="approdtls[${count}][uacs_subobject_code]" >
         <option value="">Select</option>
         @foreach ($uacs as $row)
-        <option value="{{$row->uacs_subobject_id}}">{{ $row->code}} - {{ $row->description}}</option>
+        <option value="{{$row->code}}">{{ $row->code}} - {{ $row->description}}</option>
         @endforeach
         </select>
         </div>

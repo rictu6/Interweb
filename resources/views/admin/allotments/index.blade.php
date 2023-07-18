@@ -72,7 +72,7 @@
         <select class="form-control" id="uacs_subobject_code" name="approdtls[${count}][uacs_subobject_code]" >
         <option value="">Select</option>
         @foreach ($uacs as $row)
-        <option value="{{$row->uacs_subobject_id}}">{{ $row->code}} - {{ $row->description}}</option>
+        <option value="{{$row->code}}">{{ $row->code}} - {{ $row->description}}</option>
         @endforeach
         </select>
         </div>
