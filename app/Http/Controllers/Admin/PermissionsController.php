@@ -43,7 +43,9 @@ class PermissionsController extends Controller
     */
     public function ajax(Request $request)
     {
+        
         $model=Permission::query()->with('module');
+        
         return DataTables::eloquent($model)
         ->addColumn('action',function($permission){
             return view('admin.permissions._action',compact('permission'));

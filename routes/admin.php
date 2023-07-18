@@ -119,7 +119,7 @@ Route::get('get_keyofficials','MenusController@keyofficials')->name('keyofficial
     //users
     Route::resource('users','UsersController');
     Route::get('get_users','UsersController@ajax')->name('get_users');
-
+    Route::get('get_users_lastname','UsersController@ajax')->name('get_users_lastname');
 
     //employee
     Route::resource('employees','EmployeesController');

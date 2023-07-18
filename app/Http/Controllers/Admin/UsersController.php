@@ -120,7 +120,7 @@ class UsersController extends Controller
         $user->div_id=$request->div_id;
         // $user->eligibility=$request->eligibility;
         // $user->license=$request->license;
-        $user->remarks=$request->remarks;
+        $user->emp_remarks=$request->emp_remarks;
         $user->nationality="Filipino";
         $user->fb=$request->fb;
         $user->payee_id=$request->payee_id;
@@ -245,9 +245,9 @@ class UsersController extends Controller
         $user->office_id=$request->office_id;
         $user->prov_code=$request->prov_code;
         $user->div_id=$request->div_id;
-        // $user->eligibility=$request->eligibility;
-        // $user->license=$request->license;
-        $user->remarks=$request->remarks;
+            // $user->eligibility=$request->eligibility;
+            // $user->license=$request->license;
+        $user->emp_remarks=$request->emp_remarks;
         $user->nationality="Filipino";
         $user->fb=$request->fb;
         $user->payee_id=$request->payee_id;

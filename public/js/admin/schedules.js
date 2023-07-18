@@ -135,126 +135,6 @@ function myCustomRenderFunctionto(data, type, row, meta) {
 
 
 
-
-   //get category by name select2
-   $('#div_desc').select2({
-      width:"100%",
-      placeholder:trans("Desc"),
-      ajax: {
-         beforeSend:function()
-         {
-            $('.preloader').show();
-            $('.loader').show();
-         },
-         url: ajax_url('get_division_by_desc'),
-         processResults: function (data) {
-               return {
-                     results: $.map(data, function (item) {
-                        return {
-                           text: item.div_desc,
-                           id: item.div_id
-                        }
-                     })
-               };
-            },
-         complete:function()
-         {
-            $('.preloader').hide();
-            $('.loader').hide();
-         }
-      }
-   });
-
-
-   //get category by name select2
-   $('#sec_desc').select2({
-      width:"100%",
-      placeholder:trans("Desc"),
-      ajax: {
-         beforeSend:function()
-         {
-            $('.preloader').show();
-            $('.loader').show();
-         },
-         url: ajax_url('get_section_by_desc'),
-         processResults: function (data) {
-               return {
-                     results: $.map(data, function (item) {
-                        return {
-                           text: item.sec_desc,
-                           id: item.sec_id
-                        }
-                     })
-               };
-            },
-         complete:function()
-         {
-            $('.preloader').hide();
-            $('.loader').hide();
-         }
-      }
-   });
-
-
-
-   //get category by name select2
-   $('#office_desc').select2({
-      width:"100%",
-      placeholder:trans("Desc"),
-      ajax: {
-         beforeSend:function()
-         {
-            $('.preloader').show();
-            $('.loader').show();
-         },
-         url: ajax_url('get_office_by_desc'),
-         processResults: function (data) {
-               return {
-                     results: $.map(data, function (item) {
-                        return {
-                           text: item.office_desc,
-                           id: item.office_id
-                        }
-                     })
-               };
-            },
-         complete:function()
-         {
-            $('.preloader').hide();
-            $('.loader').hide();
-         }
-      }
-   });
-
-
-   //get category by name select2
-   $('#pos_desc').select2({
-      width:"100%",
-      placeholder:trans("Desc"),
-      ajax: {
-         beforeSend:function()
-         {
-            $('.preloader').show();
-            $('.loader').show();
-         },
-         url: ajax_url('get_position_by_desc'),
-         processResults: function (data) {
-               return {
-                     results: $.map(data, function (item) {
-                        return {
-                           text: item.pos_desc,
-                           id: item.pos_id
-                        }
-                     })
-               };
-            },
-         complete:function()
-         {
-            $('.preloader').hide();
-            $('.loader').hide();
-         }
-      }
-   });
    //get office select2 intialize
    $('#office').select2({
       width:"100%",
@@ -285,55 +165,35 @@ function myCustomRenderFunctionto(data, type, row, meta) {
     });
 
 
-
-   //create office
-   $('#create_office').on('submit',function(e){
-      e.preventDefault();
-      
-      var data=$('#create_office').serialize();
-       
-      var valid=$(this).valid();
-
-      if(valid)
-      {
-         $.ajax({
-            url:ajax_url("create_office"),
-            type:"post",
-            data:data,
-            beforeSend:function(){
-               $('.preloader').show();
-               $('.loader').show();
-            },
-            success:function(data){
-               $('#office').append(`<option value="`+data.office_id+`">`+data.office_desc+`</option>`);
-               $('#office').val(data.id).trigger('select2:select');
-               $('#office_modal').modal('hide');
-               toastr.success(trans('Office saved successfully'),trans('Success'));
-               $('#office_modal_error').html(``);
-               $('#create_office_inputs input').val(``);
-            },
-            error:function(xhr, status, error){
-                  toastr.error(trans('Something went wrong'),trans('Failed'));
-                  var errors=xhr.responseJSON.errors;
-                  var error_html=`<div class="callout callout-danger">
-                                    <h5 class="text-danger">
-                                       <i class="fa fa-times"></i> `+trans("Failed")+`
-                                    </h5>
-                                    <ul>`;
-                  for (var key in errors){
-                     error_html+=`<li>`+errors[key]+`</li>`;
-                  }
-                  error_html+=`</ul></div>`;
-                  $('#office_modal_error').html(error_html);
+   //get office select2 intialize
+   $('#user_').select2({
+      width:"100%",
+      placeholder:trans("user"),
+      ajax: {
+         beforeSend:function()
+         {
+            $('.preloader').show();
+            $('.loader').show();
+         },
+         url: ajax_url('get_users_lastname'),
+         processResults: function (data) {
+               return {
+                     results: $.map(data, function (item) {
+                        return {
+                           text: item.last_name,
+                           id: item.emp_id
+                        }
+                     })
+               };
             },
             complete:function()
             {
                $('.preloader').hide();
                $('.loader').hide();
             }
-         });
-      }
-   });
+         }
+    });
+
 
 
 
@@ -395,136 +255,88 @@ function myCustomRenderFunctionto(data, type, row, meta) {
     });
   
  
-   //create division
-   $('#create_division').on('submit',function(e){
-      e.preventDefault();
-      
-      var data=$('#create_division').serialize();
-       
-      var valid=$(this).valid();
-  
-      if(valid)
-      {
-         $.ajax({
-            url:ajax_url("create_division"),
-            type:"post",
-            data:data,
-            beforeSend:function(){
-               $('.preloader').show();
-               $('.loader').show();
-            },
-            success:function(data){
-               $('#division').append(`<option value="`+data.div_id+`">`+data.div_desc+`</option>`);
-               $('#division').val(data.id).trigger('select2:select');
-               $('#division_modal').modal('hide');
-               toastr.success(trans('Division saved successfully'),trans('Success'));
-               $('#division_modal_error').html(``);
-               $('#create_division_inputs input').val(``);
-            },
-            error:function(xhr, status, error){
-                  toastr.error(trans('Something went wrong'),trans('Failed'));
-                  var errors=xhr.responseJSON.errors;
-                  var error_html=`<div class="callout callout-danger">
-                                    <h5 class="text-danger">
-                                       <i class="fa fa-times"></i> `+trans("Failed")+`
-                                    </h5>
-                                    <ul>`;
-                  for (var key in errors){
-                     error_html+=`<li>`+errors[key]+`</li>`;
-                  }
-                  error_html+=`</ul></div>`;
-                  $('#division_modal_error').html(error_html);
-            },
-            complete:function()
-            {
-               $('.preloader').hide();
-               $('.loader').hide();
-            }
-         });
-      }
-   });
-  
 
-    //get section select2 intialize
-   //  $('#section').select2({
-   //     width:"100%",
-   //     placeholder:trans("Section"),
-   //     ajax: {
-   //        beforeSend:function()
-   //        {
-   //           $('.preloader').show();
-   //           $('.loader').show();
+   $(document).on('select2:select','#position', function (e) {
+      var el=$(e.target);
+      var data = e.params.data;
+      $.ajax({
+          // url:ajax_url('get_muncits_by_prov'+'?prov_code='+ data.id),
+          beforeSend:function(){
+            $('.preloader').show();
+            $('.loader').show();
+          },
+
+          success:function(nvm_this)
+          {
+            $('#roles_assign').prop('disabled', false);
+          
+
+          },
+          complete:function()
+          {
+            $('.preloader').hide();
+            $('.loader').hide();
+          }
+      });
+    });
+
+    $(document).on('select2:select','#position', function (e) {
+      var el=$(e.target);
+      var data = e.params.data;
+      $.ajax({
+          url:ajax_url('get_sections_by_div'+'?div_id='+ data.id),
+          beforeSend:function(){
+            $('.preloader').show();
+            $('.loader').show();
+          },
+
+          success:function(sec)
+          {
+            $('#emp_id').empty();
+            $.each(sec, function(index, item) {
+                //alert(item.muncit_desc);
+                $('#emp_id').append('<option value="' + item.sec_id + '">' + item.sec_desc + '</option>'); // name refers to the objects value when you do you ->lists('name', 'id') in laravel
+            });
+
+
+          },
+          complete:function()
+          {
+            $('.preloader').hide();
+            $('.loader').hide();
+          }
+      });
+    });
+   
+   //  $(document).on('select2:select','#position', function (e) {
+   //    var el=$(e.target);
+   //    var data = e.params.data;
+   //    $.ajax({
+   //        url:ajax_url('get_attendees_by_pos'+'?pos_id='+ data.emp_id),
+   //        beforeSend:function(){
+   //          $('.preloader').show();
+   //          $('.loader').show();
    //        },
-   //        url: ajax_url('get_sections'),
-   //        processResults: function (data) {
-   //              return {
-   //                    results: $.map(data, function (item) {
-   //                       return {
-   //                          text: item.sec_desc,
-   //                          id: item.sec_id
-   //                       }
-   //                    })
-   //              };
-   //           },
-   //           complete:function()
-   //           {
-   //              $('.preloader').hide();
-   //              $('.loader').hide();
-   //           }
+      
+   //        success:function(mun)
+   //        {
+   //          $('#emp_id').empty();
+   //          $.each(mun, function(index, item) {
+   //              //alert(item.muncit_desc);
+   //              $('#roles').append('<option value="' + item.emp_id + '">' + item.last_name + '</option>'); // name refers to the objects value when you do you ->lists('name', 'id') in laravel
+   //          });
+
+
+   //        },
+   //        complete:function()
+   //        {
+   //          $('.preloader').hide();
+   //          $('.loader').hide();
    //        }
-   //   });
-
-
-
-    //create section
-    $('#create_section').on('submit',function(e){
-      e.preventDefault();
-
-      var data=$('#create_section').serialize();
-
-      var valid=$(this).valid();
-
-      if(valid)
-      {
-         $.ajax({
-            url:ajax_url("create_section"),
-            type:"post",
-            data:data,
-            beforeSend:function(){
-               $('.preloader').show();
-               $('.loader').show();
-            },
-            success:function(data){
-               $('#section').append(`<option value="`+data.pos_id+`">`+data.pos_desc+`</option>`);
-               $('#section').val(data.pos_id).trigger('select2:select');
-               $('#section_modal').modal('hide');
-               toastr.success(trans('Section Status saved successfully'),trans('Success'));
-               $('#section_modal_error').html(``);
-               $('#create_section_inputs input').val(``);
-            },
-            error:function(xhr, status, error){
-                  toastr.error(trans('Something went wrong'),trans('Failed'));
-                  var errors=xhr.responseJSON.errors;
-                  var error_html=`<div class="callout callout-danger">
-                                    <h5 class="text-danger">
-                                       <i class="fa fa-times"></i> `+trans("Failed")+`
-                                    </h5>
-                                    <ul>`;
-                  for (var key in errors){
-                     error_html+=`<li>`+errors[key]+`</li>`;
-                  }
-                  error_html+=`</ul></div>`;
-                  $('#section_modal_error').html(error_html);
-            },
-            complete:function()
-            {
-               $('.preloader').hide();
-               $('.loader').hide();
-            }
-         });
-      }
-   });
-
+   //    });
+   //  });
+    
+ 
 
     //get position select2 intialize
     $('#position').select2({
@@ -556,83 +368,6 @@ function myCustomRenderFunctionto(data, type, row, meta) {
     });
  
  
-    $(document).on('select2:select','#position', function (e) {
-      var el=$(e.target);
-      var data = e.params.data;
-      $.ajax({
-          url:ajax_url('get_attendees_by_pos'+'?pos_id='+ data.id),
-          beforeSend:function(){
-            $('.preloader').show();
-            $('.loader').show();
-          },
-
-          success:function(pos)
-          {
-            $('#emp_id').empty();
-            $.each(pos, function(index, item) {
-                //alert(item.muncit_desc);
-                $('#emp_id').append('<option value="' + item.emp_id + '">' + item.last_name + '</option>'); // name refers to the objects value when you do you ->lists('name', 'id') in laravel
-            });
-
-
-          },
-          complete:function()
-          {
-            $('.preloader').hide();
-            $('.loader').hide();
-          }
-      });
-    });
- 
-   //create positions
-   $('#create_position').on('submit',function(e){
-      e.preventDefault();
- 
-      var data=$('#create_position').serialize();
- 
-      var valid=$(this).valid();
- 
-      if(valid)
-      {
-         $.ajax({
-            url:ajax_url("create_position"),
-            type:"post",
-            data:data,
-            beforeSend:function(){
-               $('.preloader').show();
-               $('.loader').show();
-            },
-            success:function(data){
-               $('#position').append(`<option value="`+data.pos_id+`">`+data.pos_desc+`</option>`);
-               $('#position').val(data.pos_id).trigger('select2:select');
-               $('#position_modal').modal('hide');
-               toastr.success(trans('Position Status saved successfully'),trans('Success'));
-               $('#position_modal_error').html(``);
-               $('#create_position_inputs input').val(``);
-            },
-            error:function(xhr, status, error){
-                  toastr.error(trans('Something went wrong'),trans('Failed'));
-                  var errors=xhr.responseJSON.errors;
-                  var error_html=`<div class="callout callout-danger">
-                                    <h5 class="text-danger">
-                                       <i class="fa fa-times"></i> `+trans("Failed")+`
-                                    </h5>
-                                    <ul>`;
-                  for (var key in errors){
-                     error_html+=`<li>`+errors[key]+`</li>`;
-                  }
-                  error_html+=`</ul></div>`;
-                  $('#position_modal_error').html(error_html);
-            },
-            complete:function()
-            {
-               $('.preloader').hide();
-               $('.loader').hide();
-            }
-         });
-      }
-   });
-
     //delete schedule
     $(document).on('click','.delete_schedules',function(e){
         e.preventDefault();
@@ -651,6 +386,7 @@ function myCustomRenderFunctionto(data, type, row, meta) {
         });
     });
   
+
   })(jQuery);
   
   

@@ -45,7 +45,7 @@
               <th width="10px">#</th>
               <th>{{__('Name')}}</th>
               <th>{{__('Key')}}</th>
-              <th>{{__('Module Name')}}</th>
+              <th>{{__('Module')}}</th>
               <th width="100px">{{__('Action')}}</th>
               
             </tr>

@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -26,14 +27,15 @@ class Permission extends Model
         'key'
      
     ];
- 
+   
     public function module()
     {
-        return $this->belonsTo(Module::class,'module_id','id');
+        return $this->belongsTo(Module::class,'module_id','module_id')->withTrashed();
     }
     public function getDescriptionForEvent(string $eventName): string
     {
-        return "Permission was {$eventName}";
+        return "Module was {$eventName}";
     }
     
 }
+

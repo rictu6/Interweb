@@ -19,7 +19,7 @@ Route::group(['middleware'=>['Install','Locale']],function(){
   include('admin.php');
   include('ajax.php');
  
-});
+}); 
 Route::get('filemanager', [FileManagerController::class, 'index']);
  Route::get('change_locale/{lang}','HomeController@change_locale')->name('change_locale');
 Route::get('clear-cache',function(){

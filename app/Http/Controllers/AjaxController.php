@@ -462,7 +462,7 @@ public function delete_uacs($dtl_id)
         return response()->json($muncits);
     }
     public function get_muncits_by_prov(Request $request)
-    {//wala sya ng gana pag omit ko muncit::all kay didti sya ga dirirtso after ka if condition
+    {
         if(isset($request->prov_code))
         {
 
@@ -489,7 +489,7 @@ public function delete_uacs($dtl_id)
             $attendees=User::query()->where('pos_id','=',$request->pos_id)->get();
         }
 
-        return response()->json($secs);
+        return response()->json($attendees);
 
     }
     public function get_province_by_desc(Request $request)
@@ -525,6 +525,7 @@ public function delete_uacs($dtl_id)
         else{
             $empstatuss=EmpStatus::All();
         }
+
 
         return response()->json($empstatuss);
 
@@ -569,6 +570,32 @@ public function delete_uacs($dtl_id)
         return response()->json($weekdays);
 
     }
+    public function get_office_by_name(Request $request)
+    {
+        if(isset($request->term))
+        {
+            $offices=Office::where('office_desc','like','%'.$request->term.'%')->get();
+        }
+        else{
+            $offices=Office::All();
+        }
+
+        return response()->json($offices);
+
+    }
+    public function get_division_by_name(Request $request)
+    {
+        if(isset($request->term))
+        {
+            $divisions=Division::where('div_desc','like','%'.$request->term.'%')->get();
+        }
+        else{
+            $divisions=Division::All();
+        }
+
+        return response()->json($divisions);
+
+    }
     public function get_module_by_name(Request $request)
     {
         if(isset($request->term))
@@ -609,13 +636,25 @@ public function delete_uacs($dtl_id)
 
     }
 
-
+  
 
     public function get_users(Request $request)
     {
         if(isset($request->term))
         {
             $users=User::where('emp_id','like','%'.$request->term.'%')->get();
+        }
+        else{
+            $users=User::All();
+        }
+
+        return response()->json($users);
+    }
+    public function get_users_lastname(Request $request)
+    {
+        if(isset($request->term))
+        {
+            $users=User::where('last_name','like','%'.$request->term.'%')->get();
         }
         else{
             $users=User::All();
@@ -635,7 +674,7 @@ public function delete_uacs($dtl_id)
 
         return response()->json($offices);
     }
-
+  
     public function get_empstatuss(Request $request)
     {
         if(isset($request->term))

@@ -43,7 +43,7 @@ class ScheduleUser extends Model
     {
         return $this->belongsTo(Attendee::class,'emp_id','emp_id');
     }
-    public function attendeename()
+    public function attendees()
     {
         return $this->belongsTo(ScheduleUser::class,'emp_id','emp_id');
     }

@@ -51,7 +51,7 @@
        {data:"id"},
        {data:"name"},
        {data:"key"},
-       {data:"module_name.name"},
+       {data:"module.module_name"},
        {data:"action",searchable:false,orderable:false,sortable:false}//action
     ],
     "language": {
@@ -75,34 +75,65 @@
     }
  });
 
-  //get patient by name select2
-  $('#module_name').select2({
-   width:"100%",
-   placeholder:trans("Module Name"),
-   ajax: {
-      beforeSend:function()
-      {
-         $('.preloader').show();
-         $('.loader').show();
-      },
-      url: ajax_url('get_module_by_name'),
-      processResults: function (data) {
-            return {
-                  results: $.map(data, function (item) {
-                     return {
-                        text: item.name,
-                        id: item.id
-                     }
-                  })
-            };
-         },
-      complete:function()
-      {
-         $('.preloader').hide();
-         $('.loader').hide();
-      }
-   }
-});
+  //get module_name by name select2
+//   $('#module_name').select2({
+//    width:"100%",
+//    placeholder:trans("Module Name"),
+//    ajax: {
+//       beforeSend:function()
+//       {
+//          $('.preloader').show();
+//          $('.loader').show();
+//       },
+//       url: ajax_url('get_module_by_name'),
+//       processResults: function (data) {
+//             return {
+//                   results: $.map(data, function (item) {
+//                      return {
+//                         text: item.name,
+//                         id: item.id
+//                      }
+//                   })
+//             };
+//          },
+//       complete:function()
+//       {
+//          $('.preloader').hide();
+//          $('.loader').hide();
+//       }
+//    }
+// });
+
+
+
+   //get patient by name select2
+   $('#module_name').select2({
+    width:"100%",
+    placeholder:trans("Module Desc"),
+    ajax: {
+       beforeSend:function()
+       {
+          $('.preloader').show();
+          $('.loader').show();
+       },
+       url: ajax_url('get_module_by_name'),
+       processResults: function (data) {
+             return {
+                   results: $.map(data, function (item) {
+                      return {
+                         text: item.name,
+                         id: item.id
+                      }
+                   })
+             };
+          },
+       complete:function()
+       {
+          $('.preloader').hide();
+          $('.loader').hide();
+       }
+    }
+ });
 
    //get division select2 intialize
    $('#module').select2({
@@ -134,34 +165,6 @@
     });
   
   
-   //get patient by name select2
-   $('#module_name').select2({
-      width:"100%",
-      placeholder:trans("Module Name"),
-      ajax: {
-         beforeSend:function()
-         {
-            $('.preloader').show();
-            $('.loader').show();
-         },
-         url: ajax_url('get_module_by_name'),
-         processResults: function (data) {
-               return {
-                     results: $.map(data, function (item) {
-                        return {
-                           text: item.name,
-                           id: item.id
-                        }
-                     })
-               };
-            },
-         complete:function()
-         {
-            $('.preloader').hide();
-            $('.loader').hide();
-         }
-      }
-   });
   
    //datatables
    $('.datatables').dataTable();

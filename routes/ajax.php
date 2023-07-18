@@ -7,6 +7,8 @@ Route::group(['prefix'=>'ajax','as'=>'ajax.'],function(){
     Route::get('get_weekday_by_name','AjaxController@get_weekday_by_name')->name('get_weekday_by_name');
     Route::get('get_filecategory_by_name','AjaxController@get_filecategory_by_name')->name('get_filecategory_by_name');
     Route::get('get_module_by_name','AjaxController@get_module_by_name')->name('get_module_by_name');
+    Route::get('get_office_by_name','AjaxController@get_office_by_name')->name('get_office_by_name');
+    Route::get('get_division_by_name','AjaxController@get_division_by_name')->name('get_division_by_name');
     Route::get('get_folder_by_name','AjaxController@get_folder_by_name')->name('get_folder_by_name');
 
 
@@ -55,7 +57,7 @@ Route::get('get_uacs_by_pap','AjaxController@get_uacs_by_pap')->name('get_uacs_b
     //create modules
     Route::post('create_module','AjaxController@create_module')->name('create_module');
 
-
+    Route::get('create','SchedulesController@create');
 
     //get divisions
     Route::get('get_divisions','AjaxController@get_divisions')->name('get_divisions');
@@ -98,14 +100,15 @@ Route::get('get_uacs_by_pap','AjaxController@get_uacs_by_pap')->name('get_uacs_b
     Route::post('create_permission','AjaxController@create_permission')->name('create_permission');
 
     //get users
-    Route::get('get_users','AjaxController@get_users')->name('get_users');
+    Route::get('get_users','AjaxContrlloer@get_users')->name('get_users');
+    Route::get('get_users_lastname','AjaxContrlloer@get_users_lastname')->name('get_users_lastname');
     //create users
     Route::post('create_user','AjaxController@create_user')->name('create_user');
 
 
     //get positions
     Route::get('get_positions','AjaxController@get_positions')->name('get_positions');
-    Route::get('get_attendees_by_pos','AjaxController@get_attendees_by_pos')->name('get_attendees_by_pos');
+   
     //create positions
     Route::post('create_position','AjaxController@create_position')->name('create_position');
 
@@ -139,7 +142,7 @@ Route::get('get_uacs_by_pap','AjaxController@get_uacs_by_pap')->name('get_uacs_b
       //get muncit
       Route::get('get_muncits','AjaxController@get_muncits')->name('get_muncits');
       Route::get('get_muncits_by_prov','AjaxController@get_muncits_by_prov')->name('get_muncits_by_prov');
-
+      Route::get('get_attendees_by_pos','AjaxController@get_attendees_by_pos')->name('get_attendees_by_pos');
     //create empstatus
     Route::post('create_muncit','AjaxController@create_muncit')->name('create_muncit');
 

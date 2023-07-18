@@ -22,9 +22,8 @@
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('Home')}}</a></li>
-            <li class="breadcrumb-item "><a href="{{route('admin.schedules.index')}}">{{__('Schedule')}}</a></li>
-            <li class="breadcrumb-item active">{{__('Create schedule')}}</li>
+
+            
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -66,22 +65,7 @@
 
   
   @parent
-  <script>
-      $('.date').datepicker({
-          autoclose: true,
-          dateFormat: "{{ config('app.date_format_js') }}"
-      });
-  </script>
-   <script src="{{url('js/admin/timepicker.js')}}"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.4.5/jquery-ui-timepicker-addon.min.js"></script>
-  <script src="https://cdn.datatables.net/select/1.2.0/js/dataTables.select.min.js"></script>    
-  <script>
-      $('.timepicker').datetimepicker({
-          autoclose: true,
-          timeFormat: "HH:mm:ss",
-          timeOnly: true
-      });
-  </script>
+
 
 
 @endsection

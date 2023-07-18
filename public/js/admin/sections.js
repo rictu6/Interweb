@@ -51,8 +51,8 @@
       "columns": [
          {data:"sec_id"},
          {data:"sec_desc"},
-        
-    
+         {data:"office.office_desc"},
+         {data:"division.div_desc"},
          {data:"action",searchable:false,orderable:false,sortable:false}//action
       ],
       "language": {
@@ -243,86 +243,66 @@
   
 
  
-   //get postion select2 intialize
-   $('#position').select2({
+
+   //get patient by name select2
+   $('#office_desc').select2({
       width:"100%",
-      placeholder:trans("Position Status"),
+      placeholder:trans("Office Desc"),
       ajax: {
          beforeSend:function()
          {
             $('.preloader').show();
             $('.loader').show();
          },
-         url: ajax_url('get_positions'),
+         url: ajax_url('get_office_by_name'),
          processResults: function (data) {
                return {
                      results: $.map(data, function (item) {
                         return {
-                           text: item.pos_desc,
-                           id: item.pos_id
+                           text: item.office_desc,
+                           id: item.office_id
                         }
                      })
                };
             },
-            complete:function()
-            {
-               $('.preloader').hide();
-               $('.loader').hide();
-            }
+         complete:function()
+         {
+            $('.preloader').hide();
+            $('.loader').hide();
          }
-    });
-  
-  
-  
-   //create positions
-   $('#create_position').on('submit',function(e){
-      e.preventDefault();
-      
-      var data=$('#create_position').serialize();
-       
-      var valid=$(this).valid();
-  
-      if(valid)
-      {
-         $.ajax({
-            url:ajax_url("create_position"),
-            type:"post",
-            data:data,
-            beforeSend:function(){
-               $('.preloader').show();
-               $('.loader').show();
-            },
-            success:function(data){
-               $('#position').append(`<option value="`+data.pos_id+`">`+data.pos_desc+`</option>`);
-               $('#position').val(data.id).trigger('select2:select');
-               $('#position_modal').modal('hide');
-               toastr.success(trans('Position Status saved successfully'),trans('Success'));
-               $('#position_modal_error').html(``);
-               $('#create_position_inputs input').val(``);
-            },
-            error:function(xhr, status, error){
-                  toastr.error(trans('Something went wrong'),trans('Failed'));
-                  var errors=xhr.responseJSON.errors;
-                  var error_html=`<div class="callout callout-danger">
-                                    <h5 class="text-danger">
-                                       <i class="fa fa-times"></i> `+trans("Failed")+`
-                                    </h5>
-                                    <ul>`;
-                  for (var key in errors){
-                     error_html+=`<li>`+errors[key]+`</li>`;
-                  }
-                  error_html+=`</ul></div>`;
-                  $('#position_modal_error').html(error_html);
-            },
-            complete:function()
-            {
-               $('.preloader').hide();
-               $('.loader').hide();
-            }
-         });
       }
    });
+
   
+
+   //get patient by name select2
+   $('#div_desc').select2({
+      width:"100%",
+      placeholder:trans("Divisizzon Desc"),
+      ajax: {
+         beforeSend:function()
+         {
+            $('.preloader').show();
+            $('.loader').show();
+         },
+         url: ajax_url('get_division_by_name'),
+         processResults: function (data) {
+               return {
+                     results: $.map(data, function (item) {
+                        return {
+                           text: item.div_desc,
+                           id: item.div_id
+                        }
+                     })
+               };
+            },
+         complete:function()
+         {
+            $('.preloader').hide();
+            $('.loader').hide();
+         }
+      }
+   });
 
     //delete sections
     $(document).on('click','.delete_section',function(e){
