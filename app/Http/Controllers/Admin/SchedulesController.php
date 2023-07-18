@@ -111,37 +111,13 @@ class SchedulesController extends Controller
                          
         $user->save();
 
+       
         if($request->has('roles'))
         {
             foreach($request['roles'] as $role)
             {      
                 $group_test=User::where('emp_id',$role)->firstOrFail();
                         
-                $rol=Attendee::pluck('emp_id');
-                $fetch = ScheduleUser::pluck('emp_id');
-                
-              
-                foreach($fetch as $list){
-                    if($list == $rol){
-                        return redirect()->back()->withErrors("Exist")->withInput();
-                    }
-                    else{
-                        return redirect()->back()->withErrors("Correct")->withInput();
-                    }           
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-
                 ScheduleUser::firstOrCreate([
               
                 'schedule_id'=>$user['id'],
@@ -222,8 +198,7 @@ class SchedulesController extends Controller
         if($request->has('roles'))
         {
 
-            foreach($request['roles'] as $attendee_name)
-            {
+           
                 foreach($request['roles'] as $role)
                 {
                
@@ -244,7 +219,7 @@ class SchedulesController extends Controller
                 ]);
             
                 }
-            }
+            
         }
        
 
