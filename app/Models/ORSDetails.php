@@ -11,7 +11,7 @@ class ORSDetails extends Model
 
     protected $table = 'tbl_ors_dtl';
     protected $primaryKey = 'ors_dtl_id';
-    protected $fillable=['ors_dtl_id','charge_to',
+    protected $fillable=['ors_dtl_id','allotment_class_id',
     'ors_id','responsibility_center','pap_id',
     'uacs_id', 'sub_allotment_id',
      'subsidiary_ledger', 'amount',
@@ -27,10 +27,10 @@ class ORSDetails extends Model
      {
        return $this->belongsTo(ResponsibilityCenter::class,'res_center_id','responsibility_center');
      }
-     public function chargeto()
-     {
-       return $this->belongsTo(Chargeto::class,'charge_id','charge_to');
-     }
+    //  public function chargeto()
+    //  {
+    //    return $this->belongsTo(Chargeto::class,'charge_id','charge_to');
+    //  }
      public function pap()
      {
        return $this->belongsTo(PAP::class,'pap_id','pap_id');
@@ -48,9 +48,27 @@ class ORSDetails extends Model
        return $this->belongsTo(ApproSetup::class,'sub_allotment_no','sub_allotment_id');
      }
 
-     public function approsetupdtl_uacs()
+     public function uacs()
      {
-       return $this->belongsTo(ApproSetupDetail::class,'uacs_subobject_code','uacs_id');
+       return $this->belongsTo(UACS::class,'uacs_id','uacs_subobject_id');
+     }
+     public function getDepositAttribute()
+     {
+
+// $deposit = 100000;
+
+// return $deposit;
      }
 
+   public function getWithdrawalAttribute()
+   {
+// Calculate the withdrawal based on your logic using the running balance
+// and return the calculated value
+   }
+
+   public function getBalanceAttribute()
+   {
+// Calculate the balance based on your logic using the running balance
+// and return the calculated value
+   }
 }

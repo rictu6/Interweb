@@ -28,7 +28,11 @@ class ORSHeader extends Model
           'created_at',
           'deleted_at'];
 
-          public function ORSDetails()
+          public function processed()
+          {
+              return $this->belongsTo(User::class,'created_by','emp_id')->withTrashed();
+          }
+          public function details()
           {
             return $this->hasMany(ORSDetails::class,'ors_id','ors_hdr_id');
           }
