@@ -81,16 +81,18 @@
                 @can('view_hrmis')
                 <li class="nav-item">
 
-                        {{-- <a href="https://hrmis.region6.dilg.gov.ph/" target="_blank" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>{{__('HRMIS')}}
-                            </p>
-                        </a> --}}
-                          <a href="http://127.0.0.1:8081/" target="_blank" class="nav-link">
+                        <a href="https://hrmis.region6.dilg.gov.ph/" target="_blank" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>{{__('HRMIS')}}
                             </p>
                         </a>
+                          {{-- <a href="http://127.0.0.1:8081/autologin?id={{auth::id() }}&api_token=token" target="_blank" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>{{__('Sample')}}
+                            </p>
+                        </a> --}}
+
+                     
 
 
                 </li>
