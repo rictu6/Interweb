@@ -162,13 +162,6 @@ Route::get('get_keyofficials','MenusController@keyofficials')->name('keyofficial
   Route::get('generate_report','AccountingController@generate_report')->name('accounting.generate_report');
 
 
-
-
-
-
-
-
-
     //reports
     Route::resource('reports','ReportsController');
     Route::post('reports/pdf/{id}','ReportsController@pdf')->name('reports.pdf');

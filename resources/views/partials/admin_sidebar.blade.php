@@ -519,7 +519,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('admin.accounting.doctor_report')}}" class="nav-link"
+                    <a href="{{route('admin.accounting.index')}}" class="nav-link"
                         id="accounting_doctor_reports">
                         <i class="far fa-circle nav-icon"></i>
                         <p>
