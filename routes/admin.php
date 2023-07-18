@@ -62,6 +62,12 @@ Route::get('get_orsheader_list','ORSHeaderController@orsheader_list')->name('ors
 Route::resource('suballotments','SubAllotmentController');
 //Allotment
 Route::resource('allotments','AllotmentController');
+//DV
+Route::resource('dvreceivings','DVReceivingController');
+Route::get('get_dvreceivings','DVReceivingController@ajax')->name('get_dvreceivings');
+Route::get('get_dvreceiving_list','DVReceivingController@dvreceiving_list')->name('dvreceiving_list');
+
+
 
 Route::resource('menus','MenusController');
 Route::get('get_contactus','MenusController@contactus')->name('contactus');
