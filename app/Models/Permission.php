@@ -30,7 +30,7 @@ class Permission extends Model
    
     public function module()
     {
-        return $this->belongsTo(Module::class,'module_id','module_id')->withTrashed();
+        return $this->belongsTo(Module::class,'id','module_id')->withTrashed();
     }
     public function getDescriptionForEvent(string $eventName): string
     {

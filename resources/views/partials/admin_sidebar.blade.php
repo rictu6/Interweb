@@ -86,15 +86,17 @@
                             <p>{{__('HRMIS')}}
                             </p>
                         </a>
-                          {{-- <a href="http://127.0.0.1:8081/autologin?id={{auth::id() }}&api_token=token" target="_blank" class="nav-link">
+                          {{-- <a href="127.0.0.1:8081" target="_blank" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>{{__('Sample')}}
+                            <p>{{__('HRMIS')}}
                             </p>
                         </a> --}}
-
-                     
-
-
+                          {{-- <a href="http://127.0.0.1:8081/autologin?id={{auth::id()}}&api_token=token" target="_blank" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>{{__('SSO')}}
+                            </p>
+  
+                        </a> --}}
                 </li>
                 @endcan
                 {{-- @can('view_pms') --}}
