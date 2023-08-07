@@ -197,10 +197,11 @@ foreach ($request->details as $detail) {
             DB::commit(); // Commit the transaction only if there were no errors
             // session()->flash('success',__('New ORS has been successfully added to the database'));
             // return redirect()->route('admin.orsheader_list');
-            session()->flash('toast_message', __('New ORS has been successfully added to the database'));
-            return response()->json(['redirect_to' => route('admin.orsheader_list')]);
+
 
  }
+ session()->flash('toast_message', __('New ORS has been successfully added to the database'));
+ return response()->json(['redirect_to' => route('admin.orsheader_list')]);
 } catch (\Exception $e) {
     DB::rollback(); // Rollback the transaction on any exception
     //return response()->json(['message' => 'Failed to save ORS. Please try again.'], 500);
