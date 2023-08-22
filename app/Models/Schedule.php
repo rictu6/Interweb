@@ -33,7 +33,8 @@ class Schedule extends Model
        'attendee',
        'color',
         'start',
-        'end'
+        'end',
+        'attendee_id'
      
     ];
    
@@ -57,12 +58,12 @@ class Schedule extends Model
     {
         return $this->belongsTo(Position::class,'pos_id','pos_id')->withTrashed();
     }
-
-    public function user_()
+    public function attendee()
     {
-        return $this->belongsTo(User::class,'emp_id','emp_id')->withTrashed();
+        return $this->belongsTo(Attendee::class,'attendee_id','emp_id')->withTrashed();
     }
-
+   
+   
    
     public function roles()
     {

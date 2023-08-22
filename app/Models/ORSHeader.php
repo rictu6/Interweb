@@ -28,11 +28,7 @@ class ORSHeader extends Model
           'created_at',
           'deleted_at'];
 
-          public function processed()
-          {
-              return $this->belongsTo(User::class,'created_by','emp_id')->withTrashed();
-          }
-          public function details()
+          public function ORSDetails()
           {
             return $this->hasMany(ORSDetails::class,'ors_id','ors_hdr_id');
           }
@@ -55,9 +51,5 @@ class ORSHeader extends Model
           public function allotmentclass()
           {
               return $this->belongsTo(AllotmentClass::class,'uacs_subclass_id','uacs_subclass_id')->withTrashed();
-          }
-          public function disbursement()
-          {
-              return $this->belongsTo(DVReceiving::class,'dv_received_id','dv_received_id')->withTrashed();
           }
 }

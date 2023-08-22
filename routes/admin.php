@@ -62,12 +62,6 @@ Route::get('get_orsheader_list','ORSHeaderController@orsheader_list')->name('ors
 Route::resource('suballotments','SubAllotmentController');
 //Allotment
 Route::resource('allotments','AllotmentController');
-//DV
-Route::resource('dvreceivings','DVReceivingController');
-Route::get('get_dvreceivings','DVReceivingController@ajax')->name('get_dvreceivings');
-Route::get('get_dvreceiving_list','DVReceivingController@dvreceiving_list')->name('dvreceiving_list');
-
-
 
 Route::resource('menus','MenusController');
 Route::get('get_contactus','MenusController@contactus')->name('contactus');
@@ -125,7 +119,7 @@ Route::get('get_keyofficials','MenusController@keyofficials')->name('keyofficial
     //users
     Route::resource('users','UsersController');
     Route::get('get_users','UsersController@ajax')->name('get_users');
-    Route::get('get_users_lastname','UsersController@ajax')->name('get_users_lastname');
+   
 
     //employee
     Route::resource('employees','EmployeesController');
@@ -135,6 +129,9 @@ Route::get('get_keyofficials','MenusController@keyofficials')->name('keyofficial
      Route::resource('positions','PositionsController');
      Route::get('get_positions','PositionsController@ajax')->name('get_positions');
 
+      //attendees
+      Route::resource('attendees','UsersController');
+      Route::get('get_attendees','UsersController@ajax')->name('get_attendees');
 
      //sections
      Route::resource('sections','SectionsController');
@@ -163,9 +160,13 @@ Route::get('get_keyofficials','MenusController@keyofficials')->name('keyofficial
     Route::resource('empstatuss','EmpStatussController');
     Route::get('get_empstatuss','EmpStatussController@ajax')->name('get_empstatuss');
 
-  //accounting reports
-  Route::get('accounting','AccountingController@index')->name('accounting.index');
-  Route::get('generate_report','AccountingController@generate_report')->name('accounting.generate_report');
+
+
+
+
+
+
+
 
 
     //reports

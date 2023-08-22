@@ -245,8 +245,8 @@ class UsersController extends Controller
         $user->office_id=$request->office_id;
         $user->prov_code=$request->prov_code;
         $user->div_id=$request->div_id;
-            // $user->eligibility=$request->eligibility;
-            // $user->license=$request->license;
+        // $user->eligibility=$request->eligibility;
+        // $user->license=$request->license;
         $user->emp_remarks=$request->emp_remarks;
         $user->nationality="Filipino";
         $user->fb=$request->fb;

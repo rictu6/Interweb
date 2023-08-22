@@ -104,13 +104,6 @@ function myCustomRenderFunctionto(data, type, row, meta) {
    });
   
 
-
-
-
-
-
-
-
  $('#users_roles_link').addClass('active');
     $('#users_roles').addClass('menu-open');
   
@@ -125,13 +118,28 @@ function myCustomRenderFunctionto(data, type, row, meta) {
        console.log('yes');
        user_roles.forEach(function(role){
            roles.push(parseInt(role.emp_id));
+           
        });
        console.log(roles);
 
        $('#roles_assign').val(roles).trigger('change');
+       
    }
 
    $('.select2').select2();
+
+
+   $('#filter_date').on( 'cancel.daterangepicker', function(){
+      $(this).val('');
+      table.draw();
+   });
+ 
+   $('#filter_date').on('apply.daterangepicker',function(){
+      table.draw();
+   });
+
+   $('.datepickerrange').val('');
+
 
 
 
@@ -152,36 +160,6 @@ function myCustomRenderFunctionto(data, type, row, meta) {
                         return {
                            text: item.office_desc,
                            id: item.office_id
-                        }
-                     })
-               };
-            },
-            complete:function()
-            {
-               $('.preloader').hide();
-               $('.loader').hide();
-            }
-         }
-    });
-
-
-   //get office select2 intialize
-   $('#user_').select2({
-      width:"100%",
-      placeholder:trans("user"),
-      ajax: {
-         beforeSend:function()
-         {
-            $('.preloader').show();
-            $('.loader').show();
-         },
-         url: ajax_url('get_users_lastname'),
-         processResults: function (data) {
-               return {
-                     results: $.map(data, function (item) {
-                        return {
-                           text: item.last_name,
-                           id: item.emp_id
                         }
                      })
                };
@@ -256,76 +234,20 @@ function myCustomRenderFunctionto(data, type, row, meta) {
   
  
 
-   $(document).on('select2:select','#position', function (e) {
-      var el=$(e.target);
-      var data = e.params.data;
-      $.ajax({
-          // url:ajax_url('get_muncits_by_prov'+'?prov_code='+ data.id),
-          beforeSend:function(){
-            $('.preloader').show();
-            $('.loader').show();
-          },
-
-          success:function(nvm_this)
-          {
-            $('#roles_assign').prop('disabled', false);
-          
-
-          },
-          complete:function()
-          {
-            $('.preloader').hide();
-            $('.loader').hide();
-          }
-      });
-    });
-
-    $(document).on('select2:select','#position', function (e) {
-      var el=$(e.target);
-      var data = e.params.data;
-      $.ajax({
-          url:ajax_url('get_sections_by_div'+'?div_id='+ data.id),
-          beforeSend:function(){
-            $('.preloader').show();
-            $('.loader').show();
-          },
-
-          success:function(sec)
-          {
-            $('#emp_id').empty();
-            $.each(sec, function(index, item) {
-                //alert(item.muncit_desc);
-                $('#emp_id').append('<option value="' + item.sec_id + '">' + item.sec_desc + '</option>'); // name refers to the objects value when you do you ->lists('name', 'id') in laravel
-            });
-
-
-          },
-          complete:function()
-          {
-            $('.preloader').hide();
-            $('.loader').hide();
-          }
-      });
-    });
-   
-   //  $(document).on('select2:select','#position', function (e) {
+   // $(document).on('select2:select','#position', function (e) {
    //    var el=$(e.target);
    //    var data = e.params.data;
    //    $.ajax({
-   //        url:ajax_url('get_attendees_by_pos'+'?pos_id='+ data.emp_id),
+   //        // url:ajax_url('get_muncits_by_prov'+'?prov_code='+ data.id),
    //        beforeSend:function(){
    //          $('.preloader').show();
    //          $('.loader').show();
    //        },
-      
-   //        success:function(mun)
-   //        {
-   //          $('#emp_id').empty();
-   //          $.each(mun, function(index, item) {
-   //              //alert(item.muncit_desc);
-   //              $('#roles').append('<option value="' + item.emp_id + '">' + item.last_name + '</option>'); // name refers to the objects value when you do you ->lists('name', 'id') in laravel
-   //          });
 
+   //        success:function(nvm_this)
+   //        {
+   //          $('#roles_assign').prop('disabled', false);
+          
 
    //        },
    //        complete:function()
@@ -335,8 +257,35 @@ function myCustomRenderFunctionto(data, type, row, meta) {
    //        }
    //    });
    //  });
-    
- 
+
+   
+    $('#attendee').select2({
+      width:"100%",
+      placeholder:trans("Attendee"),
+      ajax: {
+         beforeSend:function()
+         {
+            $('.preloader').show();
+            $('.loader').show();
+         },
+         url: ajax_url('get_attendees'),
+         processResults: function (data) {
+               return {
+                     results: $.map(data, function (item) {
+                        return {
+                           text: item.last_name,
+                           id: item.emp_id
+                        }
+                     })
+               };
+            },
+            complete:function()
+            {
+               $('.preloader').hide();
+               $('.loader').hide();
+            }
+         }
+    });
 
     //get position select2 intialize
     $('#position').select2({
@@ -367,6 +316,34 @@ function myCustomRenderFunctionto(data, type, row, meta) {
          }
     });
  
+    $(document).on('select2:select','#position', function (e) {
+      var el=$(e.target);
+      var data = e.params.data;
+      $.ajax({
+          url:ajax_url('get_attendees_by_pos'+'?pos_id='+ data.id),
+          beforeSend:function(){
+            $('.preloader').show();
+            $('.loader').show();
+          },
+
+          success:function(sec)
+          {
+            $('#emp_id').empty();
+            $.each(sec, function(index, item) {
+                //alert(item.muncit_desc);
+                $('#emp_id').append('<option value="' + item.emp_id + '">' + item.last_name + '</option>'); // name refers to the objects value when you do you ->lists('name', 'id') in laravel
+            });
+
+
+          },
+          complete:function()
+          {
+            $('.preloader').hide();
+            $('.loader').hide();
+          }
+      });
+    });
+  
  
     //delete schedule
     $(document).on('click','.delete_schedules',function(e){

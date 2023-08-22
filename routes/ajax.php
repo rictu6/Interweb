@@ -7,8 +7,8 @@ Route::group(['prefix'=>'ajax','as'=>'ajax.'],function(){
     Route::get('get_weekday_by_name','AjaxController@get_weekday_by_name')->name('get_weekday_by_name');
     Route::get('get_filecategory_by_name','AjaxController@get_filecategory_by_name')->name('get_filecategory_by_name');
     Route::get('get_module_by_name','AjaxController@get_module_by_name')->name('get_module_by_name');
-    Route::get('get_office_by_name','AjaxController@get_office_by_name')->name('get_office_by_name');
     Route::get('get_division_by_name','AjaxController@get_division_by_name')->name('get_division_by_name');
+    Route::get('get_office_by_name','AjaxController@get_office_by_name')->name('get_office_by_name');
     Route::get('get_folder_by_name','AjaxController@get_folder_by_name')->name('get_folder_by_name');
 
 
@@ -100,15 +100,16 @@ Route::get('get_uacs_by_pap','AjaxController@get_uacs_by_pap')->name('get_uacs_b
     Route::post('create_permission','AjaxController@create_permission')->name('create_permission');
 
     //get users
-    Route::get('get_users','AjaxContrlloer@get_users')->name('get_users');
-    Route::get('get_users_lastname','AjaxContrlloer@get_users_lastname')->name('get_users_lastname');
+    Route::get('get_users','AjaxController@get_users')->name('get_users');
+ 
     //create users
     Route::post('create_user','AjaxController@create_user')->name('create_user');
 
 
     //get positions
     Route::get('get_positions','AjaxController@get_positions')->name('get_positions');
-   
+      //get attendees
+    Route::get('get_attendees','AjaxController@get_attendees')->name('get_attendees');
     //create positions
     Route::post('create_position','AjaxController@create_position')->name('create_position');
 

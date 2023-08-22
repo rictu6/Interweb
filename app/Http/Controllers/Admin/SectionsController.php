@@ -31,9 +31,6 @@ class SectionsController extends Controller
      */
     public function index()
     {
-
-
-
         $sections=Section::all();
         return view('admin.sections.index',compact('sections'));
     }
@@ -55,15 +52,6 @@ class SectionsController extends Controller
         })
         ->toJson();
 
-
-
-        // $model=Timetable::query()->with('weekday');
-      
-        // return DataTables::eloquent($model)
-        // ->addColumn('action',function($timetable){
-        //     return view('admin.timetables._action',compact('timetable'));
-        // })
-        // ->toJson();
     }
     /**
      * Show the form for creating a new resource.
@@ -72,7 +60,6 @@ class SectionsController extends Controller
      */
     public function create()
     {
-
         $offices = Office::all();
         $divisions = Division::all();
       
@@ -113,8 +100,6 @@ class SectionsController extends Controller
      */
     public function edit($id)
     {
-
-
         $offices = Office::all();
         $divisions = Division::all();
       

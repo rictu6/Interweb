@@ -22,8 +22,9 @@
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-
-            
+            <li class="breadcrumb-item"><a href="{{route('admin.index')}}">{{__('Home')}}</a></li>
+            <li class="breadcrumb-item "><a href="{{route('admin.schedules.index')}}">{{__('Schedule')}}</a></li>
+            <li class="breadcrumb-item active">{{__('Create schedule')}}</li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -38,7 +39,8 @@
     </div>
    
     <form method="POST" action="{{route('admin.schedules.store')}}" enctype='multipart/form-data'>
-        <!-- /.card-header -->
+      {{ csrf_field() }}
+      <fieldset>
         <div class="card-body">
             @csrf
             @include('admin.schedules._form')
@@ -49,6 +51,7 @@
               <i class="fa fa-check"></i> {{__('Save')}}
             </button>
         </div>
+      </fieldset>
     </form>
  
     
@@ -57,15 +60,25 @@
 @endsection
 @section('scripts')
   <script src="{{url('js/admin/schedules.js')}}"></script>
-
   <script src="{{url('plugins/ekko-lightbox/ekko-lightbox.js')}}"></script>
-  {{-- <script src="{{url('js/admin/disableInspectElecment.js')}}"></script> --}}
-
-
-
+ 
+  <script src="{{url('js/select2.js')}}"></script>
+  {{-- <script>
+    $(function() {
+        $("#start" ).datepicker({dateFormat: 'dd/mm/yyyy'});
+    });
+    </script>
+    
+    <script type="text/javascript">
+    $(function() {
+        $("#end").datepicker({dateFormat: 'dd/mm/yyyy'});
+    });
+    </script> --}}
   
   @parent
 
 
 
+
 @endsection
+

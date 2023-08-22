@@ -52,7 +52,7 @@ class SchedulesController extends Controller
     } 
     public function ajax(Request $request)
     {
-        $model=Schedule::query()->with('division','office','section','position','roles');
+        $model=Schedule::query()->with('attendee','division','office','section','position','roles');
 
         return DataTables::eloquent($model)
         ->addColumn('roles',function($user){
@@ -62,38 +62,110 @@ class SchedulesController extends Controller
             return view('admin.schedules._action',compact('user'));
         })
         ->toJson();
-
-
-      
     }
     public function create(Request $request)
     {
-
-       
         //         $roles = Attendee::select(['emp_id', 'last_name', 'first_name', 'middle_name'])
-        //         ->whereNotIn('emp_id', static function ($query)
+        //         ->whereNotIn('emp_id', static function ($query) use($start, $end)
+        //          {
+        //             $query->select(['emp_id'])
+        //             ->from((new ScheduleUser)->getTable())
+        //            ->whereBetween('created_at', [$start , $end]);
+        //           // ->orWhereBetween('end', [$start , $end]);   
+        //         })
+        //         ->orderBy('last_name','asc')
+        //         ->get();
+        // if($request['filter_date']!=null)
+        //  {
+        // $date=explode('-',$request['filter_date']);
+        //             $from=date('Y-m-d',strtotime($date[0]));
+        //             $to=date('Y-m-d 23:59:59',strtotime($date[1]));
+        //   $roles = Attendee::select(['emp_id', 'last_name', 'first_name', 'middle_name'])
+        //         ->whereNotIn('emp_id', static function ($query) use($start, $end)
         //          {
                   
         //             $query->select(['emp_id'])
-        //             ->from((new ScheduleUser)->getTable())
-        //             ->whereBetween('start',[$start_date->start, $start_date->start])
-        //             ->whereBetween('end', [$end_date->start, $end_date->end])->get()
-        //             ;
+        //             ->from((new ScheduleUser)->getTable()) 
+        //            -> whereBetween('created_at',[$from,$to])
+        //             // ->whereDate('start', '>=', $start)
+        //             // ->whereDate('end', '<=', $end)
+
+        //             ->get();
                  
         //         })
         //         ->orderBy('last_name','asc')
         //         ->get();
-              
+        //     }
+        // $tripCheck = Trip:where('id', $request['trip_id'])
+        // ->whereDate('start_date', '>=', $start_dat)
+        // ->whereDate('end_date', '<', $end_date)
+        // ->first();
+        // $start =  date('d-m-Y', strtotime($request->start));
+        // $end =  date('d-m-Y', strtotime($request->end));
+      
+//         $start = Carbon::parse("$request->start 00:00:00")->format('Y-m-d H:i:s');
+// $end = Carbon::parse("$request->end 23:59:59")->format('Y-m-d H:i:s');
+        // $start = Carbon::parse($request->start)->format('Y-m-s');
+        // $end = Carbon::parse($request->end)->format('Y-m-s');
+        // $start = Carbon::parse($request->start )->format('Y-m-d');
+        // $end= Carbon::parse($request->end)->format('Y-m-d');
+
+                // $roles = Attendee::select(['emp_id', 'last_name', 'first_name', 'middle_name'])
+                // ->whereNotIn('emp_id', static function ($query) 
+                //  {
+                  
+                //     $query->select(['emp_id'])
+                //     ->from((new ScheduleUser)->getTable())
+                //    ->whereBetween('start',['2023-08-07', '2023-08-10'])  
+                //     ->whereBetween('end',['2023-08-07', '2023-08-10'])
+                //     ->get();
+                // })
+                // ->orderBy('last_name','asc')
+                // ->get();
+                 
+               $roles=Attendee::all();
+
+                // $user_attendee=User::all();
+
+              //  $roles = Attendee::select(['emp_id', 'last_name', 'first_name', 'middle_name','created_at'])
+                        // ->whereNotIn('emp_id', static function ($query) use($start, $end)
+                        //  {
+                          
+                        //     $query->select(['emp_id'])
+                        //     ->from((new ScheduleUser)->getTable()) 
+                          
         
-                $roles=Attendee::all();
-                $user_attendee=User::all();
-                return view('admin.schedules.create',compact('user_attendee','roles'));       
+                        //     ->get();
+                         
+                        // })
+                      //  ->orderBy('last_name','asc')
+                       // ->get();
+
+                    //   $roles=Attendee::all();
+
+
+                // if($request['filter_date']!=null)
+                // {
+                //     //format date
+                //     $date=explode('-',$request['filter_date']);
+                //     $from=date('Y-m-d',strtotime($date[0]));
+                //     $to=date('Y-m-d 23:59:59',strtotime($date[1]));
+        
+                //     //select groups of date between
+                //     ($from==$to)?$mode->whereDate('created_at',$from):$roles->whereBetween('created_at',[$from,$to]);
+                // }
+
+                // dd($request->input('posted_by'));
              
-               
+         
+              //  return view('admin.employeemaintenance.createSchedule',$employeeSched);
+
+               return view('admin.schedules.create',compact('roles'));   
+          
+       
     }
     public function store(Request $request)
     {
-       
         
         $user=new Schedule;
 
@@ -111,7 +183,6 @@ class SchedulesController extends Controller
                          
         $user->save();
 
-       
         if($request->has('roles'))
         {
             foreach($request['roles'] as $role)
@@ -119,16 +190,14 @@ class SchedulesController extends Controller
                 $group_test=User::where('emp_id',$role)->firstOrFail();
                         
                 ScheduleUser::firstOrCreate([
-              
                 'schedule_id'=>$user['id'],
                 'emp_id'=>$role,
                 'title'=>$request->title,
                 'venue'=>$request->venue,
-                'attendee_name'=>$group_test['last_name'] . ' ' .$group_test['first_name']. ',' .$group_test['middle_name'],
+                'attendee_name'=>$group_test['last_name']. ' ' .$group_test['first_name']. ',' .$group_test['middle_name'],
                 'start'=>$user['start'],
                 'end'=>$user['end']]);
             }
-
         }       
         session()->flash('success','Schedule saved successfully');
             
@@ -157,12 +226,16 @@ class SchedulesController extends Controller
     public function edit($id)
     {
        
-        $user=Schedule::findOrFail($id);
-        $roles=Attendee::all();
-        $user_attendee=User::all();
+     
+           
+            $user=Schedule::findOrFail($id);
+            $roles=Attendee::all();
+            $user_attendee=User::all();
+
 
         return view('admin.schedules.edit',compact('user','roles','user_attendee'));
       
+
     }
    
     /**
@@ -176,13 +249,13 @@ class SchedulesController extends Controller
     public function update(Request $request, $id)
     {
      
-       
+
         $user=Schedule::findOrFail($id);
         $user->posted_by=$request->posted_by;
         $user->posted_date=$request->posted_date;
         $user->office_id=$request->office_id;
         $user->venue=$request->venue;
-        $user->div_id=$request->div_id;
+       
         $user->color=$request->color;
         $user->sec_id=$request->sec_id;
        
@@ -191,18 +264,22 @@ class SchedulesController extends Controller
         $user->end=$request->end;
         $user->title=$request->title;
          
+        
+     
         $user->save();
 
+        
         ScheduleUser::where('schedule_id',$id)->delete();
 
         if($request->has('roles'))
         {
 
-           
+            foreach($request['roles'] as $attendee_name)
+            {
                 foreach($request['roles'] as $role)
                 {
                
-            
+                $group_test=User::where('emp_id',$role)->firstOrFail();
                         
                 ScheduleUser::firstOrCreate([
     
@@ -211,7 +288,7 @@ class SchedulesController extends Controller
                     'emp_id'=>$role,
                     'title'=>$request->title,
                     'venue'=>$request->venue,
-                   'attendee_name'=>$group_test['last_name'] . ' ' .$group_test['first_name']. ',' .$group_test['middle_name'],
+                    'attendee_name'=>$group_test['last_name'] . ' ' .$group_test['first_name']. ',' .$group_test['middle_name'],
                     'start'=>$user['start'],
                     'end'=>$user['end']
 
@@ -219,7 +296,7 @@ class SchedulesController extends Controller
                 ]);
             
                 }
-            
+            }
         }
        
 
@@ -227,9 +304,8 @@ class SchedulesController extends Controller
         session()->flash('success','Schedule saved successfully');
         
         return redirect()->route('admin.schedule_list');
-  
     }
- 
+
     public function schedule_list()
     {
         $users=Schedule::all();

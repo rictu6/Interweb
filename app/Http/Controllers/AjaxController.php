@@ -19,12 +19,10 @@ use App\Http\Requests\Admin\PatientRequest;
 use App\Http\Requests\Admin\DoctorRequest;
 use App\Http\Requests\Admin\DivisionRequest;
 
-
+use App\Models\Attendee;
 use App\Models\Role;
 use App\Models\Nationality;
 use App\Models\User;
-
-
 use App\Models\Division;
 use App\Models\Folder;
 use App\Models\File;
@@ -486,7 +484,7 @@ public function delete_uacs($dtl_id)
     {//wala sya ng gana pag omit ko muncit::all kay didti sya ga dirirtso after ka if condition
         if(isset($request->pos_id))
         {
-            $attendees=User::query()->where('pos_id','=',$request->pos_id)->get();
+            $attendees=Attendee::query()->where('pos_id','=',$request->pos_id)->get();
         }
 
         return response()->json($attendees);
@@ -570,32 +568,6 @@ public function delete_uacs($dtl_id)
         return response()->json($weekdays);
 
     }
-    public function get_office_by_name(Request $request)
-    {
-        if(isset($request->term))
-        {
-            $offices=Office::where('office_desc','like','%'.$request->term.'%')->get();
-        }
-        else{
-            $offices=Office::All();
-        }
-
-        return response()->json($offices);
-
-    }
-    public function get_division_by_name(Request $request)
-    {
-        if(isset($request->term))
-        {
-            $divisions=Division::where('div_desc','like','%'.$request->term.'%')->get();
-        }
-        else{
-            $divisions=Division::All();
-        }
-
-        return response()->json($divisions);
-
-    }
     public function get_module_by_name(Request $request)
     {
         if(isset($request->term))
@@ -607,6 +579,32 @@ public function delete_uacs($dtl_id)
         }
 
         return response()->json($modules);
+
+    }
+    public function get_division_by_name(Request $request)
+    {
+        if(isset($request->term))
+        {
+            $modules=Module::where('div_desc','like','%'.$request->term.'%')->get();
+        }
+        else{
+            $modules=Module::All();
+        }
+
+        return response()->json($modules);
+
+    }
+    public function get_office_by_name(Request $request)
+    {
+        if(isset($request->term))
+        {
+            $offices=Office::where('office_desc','like','%'.$request->term.'%')->get();
+        }
+        else{
+            $offices=Office::All();
+        }
+
+        return response()->json($offices);
 
     }
     public function get_filecategory_by_name(Request $request)
@@ -636,7 +634,7 @@ public function delete_uacs($dtl_id)
 
     }
 
-  
+   
 
     public function get_users(Request $request)
     {
@@ -650,18 +648,7 @@ public function delete_uacs($dtl_id)
 
         return response()->json($users);
     }
-    public function get_users_lastname(Request $request)
-    {
-        if(isset($request->term))
-        {
-            $users=User::where('last_name','like','%'.$request->term.'%')->get();
-        }
-        else{
-            $users=User::All();
-        }
-
-        return response()->json($users);
-    }
+    
     public function get_offices(Request $request)
     {
         if(isset($request->term))
@@ -686,6 +673,18 @@ public function delete_uacs($dtl_id)
         }
 
         return response()->json($empstatuss);
+    }
+   public function get_attendees(Request $request)
+    {
+        if(isset($request->term))
+        {
+            $attendees=Attendee::where('last_name','like','%'.$request->term.'%')->get();
+        }
+        else{
+            $attendees=Attendee::All();
+        }
+
+        return response()->json($attendees);
     }
     public function get_positions(Request $request)
     {

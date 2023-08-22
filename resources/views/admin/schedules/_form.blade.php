@@ -81,14 +81,7 @@
             </div>
         </div>
 
-
-
-
-
     </div>
-
-
-
 </div>
 
 <div class="row">
@@ -102,10 +95,15 @@
                     </span>
                 </div>
 
-                <input type="text" class="form-control datepicker" placeholder="{{__('Start Date')}}"
-                name="start" required @if(isset($user)) value="{{$user['start']}}" @endif
-                readonly>
 
+
+                {{-- <input type="date" class="form-control" id="start" placeholder="{{__('Start')}}"
+                    name="start" value= "{{ Carbon\Carbon::now()->addDay()->format('Y-m-d') }}"  > --}}
+                  
+                    <input type="text" class="form-control datepicker" id="start" placeholder="{{__('Start')}}"
+                    name="start" @if(isset($user)) value="{{$user['start']}}"  @endif>
+
+                   
 
             </div>
         </div>
@@ -120,23 +118,17 @@
                         <i class="fas fa-calendar"></i>
                     </span>
                 </div>
-           
-
-                <input type="text" class="form-control datepicker" placeholder="{{__('End Date')}}"
-                name="end" required @if(isset($user)) value="{{$user['end']}}" @endif
-                readonly>
-
+                <input type="text" class="form-control datepicker" id="end" placeholder="{{__('End')}}"
+                name="end" @if(isset($user)) value="{{$user['end']}}"  @endif>
             </div>
         </div>
     </div>
 </div>
-
-
-
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">{{__('Select Attendees By Position')}}</h3>
     </div>
+
 
     <div class="card-body">
 
@@ -148,11 +140,9 @@
         </button> --}}
 
 
-
-
         <div class="form-group">
             <label>{{__('Select Position')}}</label>
-            <select class="form-control" name="pos_id" id="position">
+            <select class="form-control" name="pos_id" id="position" multiple>
                 @if(isset($user)&&isset($user['position']))
                 <option value="{{$user['position']['pos_id']}}" selected>{{$user['position']['pos_desc']}}</option>
                 @endif
@@ -160,79 +150,45 @@
         </div>
 
 
-        <div class="btn btn-warning btn-sm add_patient float-right">
+        {{-- <div class="form-group">
+            <label>{{__('Select User')}}</label>
+            <select class="form-control" name="emp_id" id="attendee">
+                @if(isset($user)&&isset($user['attendee']))
+                <option value="{{$user['attendee']['emp_id']}}" selected>{{$user['attendee']['last_name']}}</option>
+                @endif
+            </select>
+        </div> --}}
+        
+     
+        {{-- <div class="btn btn-warning btn-sm add_patient float-right">
             <a href="{{route('admin.divisions.index')}}" style="color: white"
                 class="fa fa-exclamation-triangle">{{__('Override Attendees ?')}}</a>
-        </div>
+        </div> --}}
+        
         <div class="form-group">
             <label>{{__('Select Attendee/s')}}</label>
             <select  name="roles[]" id="roles_assign" placeholder="{{__('Select Attendee/s')}}"
                 class="form-control select2" multiple required>
                 @foreach($roles as $role)
-                <option value="{{$role->emp_id}}" >{{$role->last_name}}, {{$role->first_name}} {{$role->middle_name}}
+                <option value="{{$role->emp_id}}">{{$role->last_name}}, {{$role->first_name}} {{$role->middle_name}}
                 </option>
+
+            
                 @endforeach
             </select>
 
-
-
         </div>
+      
+
+
+
 
     </div>
 
 
-
 </div>
 
 
-
-{{-- 
-<div class="form-group">
-    <label for="name">{{__('Color Description (Calendar)')}}</label>
-    <input type="color" placeholder="Color" name="color" id="color" class="form-control" @if(isset($user))
-        value="{{$user['color']}}" @endif required>
-</div> --}}
-
-
-
-{{-- 
-<div class="row">
-    <div class="col-lg-6">
-       <div class="form-group">
-           <label for="datefrom">
-            {{__('Time From')}}
-</label>
-<div class="input-group mb-3">
-    <div class="input-group-prepend">
-        <span class="input-group-text" id="basic-addon1">
-            <i class="fas fa-clock"></i>
-        </span>
-    </div>
-    <input type="time" placeholder="time_from" name="time_from" id="time_from" class="form-control" @if(isset($user))
-        value="{{$user['time_from']}}" @endif required>
-
-
-</div>
-</div>
-</div>
-
-
-
-<div class="col-lg-6">
-    <div class="form-group">
-        <label for="dateto">{{__('Time To')}}</label>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">
-                    <i class="fas fa-clock"></i>
-                </span>
-            </div>
-            <input type="time" placeholder="time_to" name="time_to" id="time_to" class="form-control" @if(isset($user))
-                value="{{$user['time_to']}}" @endif required>
-        </div>
-    </div>
-</div>
-</div> --}}
 
 </div>
 

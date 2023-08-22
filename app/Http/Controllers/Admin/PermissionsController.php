@@ -43,9 +43,7 @@ class PermissionsController extends Controller
     */
     public function ajax(Request $request)
     {
-        
         $model=Permission::query()->with('module');
-        
         return DataTables::eloquent($model)
         ->addColumn('action',function($permission){
             return view('admin.permissions._action',compact('permission'));
@@ -63,7 +61,6 @@ class PermissionsController extends Controller
     {
         $modules = Module::all();
         return view('admin.permissions.create',compact('modules'));
-      
     }
 
     /**
@@ -105,7 +102,7 @@ class PermissionsController extends Controller
         $permission=Permission::findOrFail($id);
         return view('admin.permissions.edit',compact('permission','modules'));
 
-    
+       
     }
 
     /**
